@@ -12,16 +12,24 @@ export default function cardSetsReducer(state = cardSetsInitialState, action: Ca
       case CardSetTypes.AddSets: {
         const allIds = [] as string[]
         const byId = {} as {[key: string]: CardSet}
+        // @ts-ignore
         action.cardSets.forEach((set) => {
-            allIds.push(set.set_code)
-            byId[set.set_code] = set
+            allIds.push(set.set_name)
+            byId[set.set_name] = set
         })
+        // @ts-ignore
         localStorage.setItem("cardSets", JSON.stringify(action.cardSets));
         return {
             ...state,
             allIds,
             byId,
         }
+      }
+      case CardSetTypes.UpdateCardIds: {
+        const newState = {...state}
+        // @ts-ignore
+        newState.byId[action.set_name].card_ids = action.cards.map((card) => card.id)
+        return {...state, ...newState}
       }
       default:
         return state

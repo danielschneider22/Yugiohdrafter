@@ -16,7 +16,7 @@ function BoosterSelect(props: ParentProps) {
           Booster #{(boosterNum + 1) + ": "}
           <select value={booster.cardSetCode} onChange={(event) => boosterChanged(boosterNum, event.target.value)}>
             {cardSets.map((set) => {
-                return <option value={set.set_code} key={set.set_code}>{set.set_name}</option>;
+                return <option value={set.set_name} key={set.set_name}>{set.set_name}</option>;
             })}
         </select>
       </div>

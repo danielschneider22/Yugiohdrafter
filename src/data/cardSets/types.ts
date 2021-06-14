@@ -1,3 +1,4 @@
-export const CardSetTypes: any = {
+export const CardSetTypes = {
     'AddSets': 'cardSets/addSets',
+    'UpdateCardIds': 'cardSets/updateCardIds',
 };

@@ -6,15 +6,14 @@ import SealedBoosterOpener from './components/SealedBoosterOpener/SealedBoosterO
 import LandingPage from './components/BoosterPicker/LandingPage';
 import { useState } from 'react';
 
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+const store = createStore(
+  rootReducer,
+  initState,
+  composeEnhancers(),
+);
+
 function App() {
-
-  const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
-  const store = createStore(
-    rootReducer,
-    initState,
-    composeEnhancers(),
-  );
-
   const [page, changePage] = useState("LandingPage")
 
   function launch() {
