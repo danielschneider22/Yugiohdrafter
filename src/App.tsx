@@ -1,27 +1,33 @@
-import { useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
 import './App.css';
-import { CardSet, getCardSets } from './data/cardSets/operations';
+import { combineReducers, createStore } from 'redux'
+import BoosterPicker from './components/BoosterPicker/BoosterPicker';
+import cardSetsReducer, { cardSetsInitialState } from './data/cardSets/reducer';
+
+export const initState = {
+  cardSets: cardSetsInitialState,
+}
+
+// export const rootReducer = combineReducers({
+//   cardSets: cardSetsReducer
+// })
 
 function App() {
 
-  const [cardSets, setCardSets] = useState([] as CardSet[])
-
-  useEffect(() => {
-    const myCardSets = localStorage.getItem("cardSets");
-    if(myCardSets) {
-      console.log("hello");
-    } else {
-      getCardSets();
-    }
-    
-  }, []);
-
-  console.log(cardSets);
+  // const store = createStore(rootReducer);
+  const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+  const store = createStore(
+    combineReducers({
+      cardSets: cardSetsReducer
+    }),
+    initState,
+    composeEnhancers(),
+  );
 
   return (
-    <div className="App">
-      <input></input>
-    </div>
+    <Provider store={store}>
+      <BoosterPicker />
+    </Provider>
   );
 }
 

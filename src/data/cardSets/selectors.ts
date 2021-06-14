@@ -1,0 +1,1 @@
+export const getCardSets = (state: { cardSetsReducer: { cardSets: any; }; }) => state.cardSetsReducer.cardSets;
