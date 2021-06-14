@@ -3,10 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addSets } from '../../data/cardSets/actions';
 import { fetchCardSets } from '../../data/cardSets/operations';
 import { getCardSets } from '../../data/cardSets/selectors';
-import BoosterSelect from './BoosterSelect';
 import './BoosterPicker.css';
 import { Booster } from '../../constants/Booster';
-import { CardSet } from '../../constants/CardSet';
 import BoosterChooserArea from './BoosterChooserArea';
 
 function LandingPage() {
@@ -22,13 +20,13 @@ function LandingPage() {
     } else {
         fetchCardSets(dispatch);
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    if(boosters.length == 0 && cardSets.length > 0) {
+    if(boosters.length === 0 && cardSets.length > 0) {
         setBoosters([{cardSetCode: cardSets[0].set_code}])
     }
-  }, [cardSets]);
+  }, [cardSets, boosters]);
 
   const loadingBoosters = <div>Loading boosters...</div>
   const boosterChooserArea = <BoosterChooserArea boosters={boosters} cardSets={cardSets} setBoosters={setBoosters}/>
