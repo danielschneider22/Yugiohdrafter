@@ -3,14 +3,7 @@ import './App.css';
 import { combineReducers, createStore } from 'redux'
 import cardSetsReducer, { cardSetsInitialState } from './data/cardSets/reducer';
 import LandingPage from './components/BoosterPicker/LandingPage';
-
-export const initState = {
-  cardSets: cardSetsInitialState,
-}
-
-// export const rootReducer = combineReducers({
-//   cardSets: cardSetsReducer
-// })
+import { initState } from './data/reducers';
 
 function App() {
 

@@ -1,3 +1,3 @@
-import { initState } from "../../App";
+import { initState } from "../reducers";
 
-export const getCardSets = (state: typeof initState) => Object.values(state.cardSets.byId);
+export const getCards = (state: typeof initState) => Object.values(state.cards.byId);
