@@ -1,24 +1,29 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CardSet, getCardSets } from '../../data/cardSets/operations';
+import { fetchCardSets } from '../../data/cardSets/operations';
+import { getCardSets } from '../../data/cardSets/selectors';
 
 function BoosterPicker() {
 
   const dispatch = useDispatch();
-  // const cardSets = useSelector(getCardSets);
+  const cardSets = useSelector(getCardSets);
 
   useEffect(() => {
     const myCardSets = localStorage.getItem("cardSets");
     if(myCardSets) {
-      getCardSets(dispatch);
+        fetchCardSets(dispatch);
     } else {
-      getCardSets(dispatch);
+        fetchCardSets(dispatch);
     }
   }, []);
 
   return (
     <div>
-      <input></input>
+      <select>
+          {cardSets.map((set) => {
+              return <option>{set.set_name}</option>;
+          })}
+      </select>
     </div>
   );
 }
