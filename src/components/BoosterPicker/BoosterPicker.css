@@ -1,0 +1,23 @@
+.BoosterPickerWrapper{
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+.InfoBlurb{
+    font-size: 30px;
+    text-align: center;
+    padding-bottom: 40px;
+}
+.BoosterSelect{
+    font-size: 18px;
+    height: 20px;
+}
+.BoosterSelect > select{
+    font-size: 16px;
+    margin-left:40px;
+    background: rgba(0,0,0,0.75);
+    color:#fff;
+    text-shadow:0 1px 0 rgba(0,0,0,0.4)
+}

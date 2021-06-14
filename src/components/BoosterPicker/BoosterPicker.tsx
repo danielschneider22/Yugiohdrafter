@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addSets } from '../../data/cardSets/actions';
 import { fetchCardSets } from '../../data/cardSets/operations';
 import { getCardSets } from '../../data/cardSets/selectors';
+import BoosterSelect from './BoosterSelect';
+import './BoosterPicker.css';
 
 function BoosterPicker() {
 
@@ -19,12 +21,14 @@ function BoosterPicker() {
   }, []);
 
   return (
-    <div>
-      <select>
-          {cardSets.map((set) => {
-              return <option>{set.set_name}</option>;
-          })}
-      </select>
+    <div className="BoosterPickerWrapper">
+      <div className="InfoBlurb">
+          Pick the type of Draft and booster pack sets.
+      </div>
+      <BoosterSelect 
+        cardSets={cardSets}
+        boosterNum={1}
+      />
     </div>
   );
 }
