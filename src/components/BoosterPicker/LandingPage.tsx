@@ -36,11 +36,21 @@ function LandingPage() {
 
   return (
     <div className="BoosterPickerWrapper">
-      <div className="InfoBlurb">
-          Pick the type of Draft and booster pack sets.
+      <div className="BoosterWindowedArea">
+        <div className="InfoBlurb">
+            Pick the Format and booster pack sets.
+        </div>
+        <div className="FormatType">
+          <input type="radio" id="sealed" name="format" value="sealed" checked/>
+          <label htmlFor="sealed">Sealed</label>
+          <input type="radio" id="draft" name="format" value="draft" />
+          <label htmlFor="draft">Draft</label>
+        </div>
+        
+        {boosterArea}
       </div>
-      {boosterArea}
     </div>
+    
   );
 }
 

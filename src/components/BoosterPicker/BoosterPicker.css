@@ -1,6 +1,6 @@
 .BoosterPickerWrapper{
     position: fixed;
-    top: 20%;
+    top: 40%;
     left: 50%;
     /* bring your own prefixes */
     transform: translate(-50%, -50%);
@@ -8,11 +8,23 @@
 .InfoBlurb{
     font-size: 30px;
     text-align: center;
+    padding-bottom: 10px;
+}
+
+.FormatType{
+    font-size: 18px;
+    text-align: center;
     padding-bottom: 40px;
+    margin-left: 30px;
+}
+
+.FormatType > label{
+    margin-right: 20px;
 }
 .BoosterSelect{
     font-size: 18px;
     height: 20px;
+    margin-bottom: 5px;
 }
 .BoosterSelect > select{
     font-size: 16px;
@@ -20,4 +32,29 @@
     background: rgba(0,0,0,0.75);
     color:#fff;
     text-shadow:0 1px 0 rgba(0,0,0,0.4)
+}
+.BoosterWindowedArea{
+    height: 500px;
+}
+
+.AddBoosterButton{
+    position: absolute;
+    top: 90%;
+    left: 35%;
+    font-size: 30px;
+    display:inline-block;
+    padding:0.3em 1.2em;
+    margin:0 0.3em 0.3em 0;
+    border-radius:2em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-weight:300;
+    color:#FFFFFF;
+    background-color:#4eb5f1;
+    text-align:center;
+    transition: all 0.2s;
+}
+.AddBoosterButton:hover{
+    background-color:#4095c6;
 }

@@ -36,7 +36,7 @@ function BoosterChooserArea(props: ParentProps) {
           )
         })
       }
-      <button onClick={addBooster}>Add Booster</button>
+      <button className="AddBoosterButton" onClick={addBooster}>Add Booster</button>
   </div>
   );
 }
