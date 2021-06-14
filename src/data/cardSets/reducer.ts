@@ -1,5 +1,5 @@
+import { CardSet } from "../../constants/CardSet"
 import { CardSetsActions } from "./actions"
-import { CardSet } from "./operations"
 import { CardSetTypes } from "./types"
 
 export const cardSetsInitialState = {

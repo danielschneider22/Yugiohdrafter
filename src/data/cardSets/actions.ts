@@ -1,4 +1,4 @@
-import { CardSet } from "./operations";
+import { CardSet } from "../../constants/CardSet";
 import { CardSetTypes } from "./types";
 
 

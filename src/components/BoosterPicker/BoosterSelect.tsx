@@ -1,8 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addSets } from '../../data/cardSets/actions';
-import { CardSet, fetchCardSets } from '../../data/cardSets/operations';
-import { getCardSets } from '../../data/cardSets/selectors';
+import { CardSet } from "../../constants/CardSet";
 
 interface ParentProps {
     cardSets: CardSet[]

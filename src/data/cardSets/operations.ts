@@ -1,12 +1,6 @@
 import { Dispatch } from "react";
+import { CardSet } from "../../constants/CardSet";
 import { addSets } from "./actions";
-
-export interface CardSet{
-    set_name: string,
-    set_code: string,
-    num_of_cards: number,
-    tcg_date: string
-}
 
 export async function fetchCardSets(dispatch: Dispatch<any>) {
     const response = await fetch('https://db.ygoprodeck.com/api/v7/cardsets.php');
