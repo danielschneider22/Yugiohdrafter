@@ -32,6 +32,7 @@ function BoosterChooserArea(props: ParentProps) {
               boosterNum={idx}
               boosterChanged={boosterChanged}
               booster={booster}
+              key={idx}
             />
           )
         })
