@@ -1,13 +1,13 @@
 import { Provider } from 'react-redux';
 import './App.css';
-import { combineReducers, createStore } from 'redux'
-import cardSetsReducer, { cardSetsInitialState } from './data/cardSets/reducer';
-import LandingPage from './components/BoosterPicker/LandingPage';
+import { createStore } from 'redux'
 import { initState, rootReducer } from './data/reducers';
+import SealedBoosterOpener from './components/SealedBoosterOpener/SealedBoosterOpener';
+import LandingPage from './components/BoosterPicker/LandingPage';
+import { useState } from 'react';
 
 function App() {
 
-  // const store = createStore(rootReducer);
   const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
   const store = createStore(
     rootReducer,
@@ -15,9 +15,23 @@ function App() {
     composeEnhancers(),
   );
 
+  const [page, changePage] = useState("LandingPage")
+
+  function launch() {
+    changePage("SealedBooster")
+  }
+
   return (
     <Provider store={store}>
-      <LandingPage />
+      { page === "LandingPage" && 
+        <LandingPage 
+          launch={launch}
+        />
+      }
+      { page === "SealedBooster" && 
+        <SealedBoosterOpener />
+      }
+      
     </Provider>
   );
 }

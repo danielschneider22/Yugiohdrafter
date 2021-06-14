@@ -1,5 +1,5 @@
 export interface Card{
-    "id": number,
+    "id": string,
     "name": string,
     "type": string,
     "set_code": string,

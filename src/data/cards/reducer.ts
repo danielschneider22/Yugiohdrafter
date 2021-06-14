@@ -10,7 +10,19 @@ export const cardsInitialState = {
 export default function cardsReducer(state = cardsInitialState, action: CardActions) {
     switch (action.type) {
       case CardTypes.AddCards: {
-        return state
+        const allIds = [] as string[]
+        const byId = {} as {[key: string]: Card}
+        action.cards.forEach((card) => {
+            allIds.push(card.id)
+            byId[card.id] = card
+        })
+        const newState = {
+          ...state,
+          allIds,
+          byId,
+        }
+        localStorage.setItem("cards", JSON.stringify(newState));
+        return newState
       }
       default:
         return state

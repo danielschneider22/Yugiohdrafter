@@ -9,7 +9,7 @@ interface AddCards {
 
 export function addCards(cards: Card[]) {
     return {
-        type: CardTypes.AddSets,
+        type: CardTypes.AddCards,
         cards,
     }
 }

@@ -2,15 +2,20 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSets } from '../../data/cardSets/actions';
 import { fetchCardSets } from '../../data/cardSets/operations';
-import { getCardSets } from '../../data/cardSets/selectors';
+import { getCardSets, getCardSetsById } from '../../data/cardSets/selectors';
 import './BoosterPicker.css';
 import { Booster } from '../../constants/Booster';
 import BoosterChooserArea from './BoosterChooserArea';
 
-function LandingPage() {
+interface ParentProps{
+  launch: () => void
+}
+
+function LandingPage(props: ParentProps) {
 
   const dispatch = useDispatch();
   const cardSets = useSelector(getCardSets);
+  const cardSetsbyid = useSelector(getCardSetsById);
   const [boosters, setBoosters] = useState([] as Booster[]);
 
   useEffect(() => {
@@ -44,8 +49,8 @@ function LandingPage() {
           <input type="radio" id="draft" name="format" value="draft" />
           <label htmlFor="draft">Draft</label>
         </div>
-        
         {boosterArea}
+        <button className="LaunchButton" onClick={props.launch}>Launch</button>
       </div>
     </div>
     
