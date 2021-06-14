@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { addSets } from '../../data/cardSets/actions';
 import { fetchCardSets } from '../../data/cardSets/operations';
 import { getCardSets } from '../../data/cardSets/selectors';
 
@@ -9,9 +10,9 @@ function BoosterPicker() {
   const cardSets = useSelector(getCardSets);
 
   useEffect(() => {
-    const myCardSets = localStorage.getItem("cardSets");
-    if(myCardSets) {
-        fetchCardSets(dispatch);
+    const sets = localStorage.getItem("cardSets");
+    if(sets) {
+        dispatch(addSets(JSON.parse(sets)))
     } else {
         fetchCardSets(dispatch);
     }
