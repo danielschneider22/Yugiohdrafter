@@ -1,12 +1,9 @@
 import { Dispatch } from "react";
+import { Card } from "../../constants/Card";
 import { CardSet } from "../../constants/CardSet";
 
-export async function fetchCards(dispatch: Dispatch<any>) {
-    // const response = await fetch('https://db.ygoprodeck.com/api/v7/cardsets.php');
-    // let sets: CardSet[] = await response.json();
-    // sets = sets.filter((set) => {
-    //     return set.num_of_cards > 50;
-    // });
-    // localStorage.setItem("cardSets", JSON.stringify(sets));
+export async function fetchCards(dispatch: Dispatch<any>, set_code: string) {
+    const response = await fetch('https://db.ygoprodeck.com/api/v7/cardinfo.php?cardset=metal%20raiders');
+    let cards: Card[] = await response.json();
     // dispatch(addSets(sets))
 }

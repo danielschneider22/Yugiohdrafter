@@ -16,6 +16,7 @@ export default function cardSetsReducer(state = cardSetsInitialState, action: Ca
             allIds.push(set.set_code)
             byId[set.set_code] = set
         })
+        localStorage.setItem("cardSets", JSON.stringify(action.cardSets));
         return {
             ...state,
             allIds,
