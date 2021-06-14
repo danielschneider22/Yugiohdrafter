@@ -17,6 +17,11 @@ function BoosterChooserArea(props: ParentProps) {
     setBoosters(newBoosters);
   }
 
+  function addBooster() {
+    const newBoosters = [...boosters, {cardSetCode: boosters[boosters.length -1].cardSetCode}];
+    setBoosters(newBoosters);
+  }
+
   return (
     <div>
       {
@@ -26,11 +31,12 @@ function BoosterChooserArea(props: ParentProps) {
               cardSets={cardSets}
               boosterNum={idx}
               boosterChanged={boosterChanged}
+              booster={booster}
             />
           )
         })
       }
-      <button>Add Booster</button>
+      <button onClick={addBooster}>Add Booster</button>
   </div>
   );
 }
