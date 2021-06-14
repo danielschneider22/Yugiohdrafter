@@ -23,7 +23,7 @@ function BoosterChooserArea(props: ParentProps) {
   }
 
   return (
-    <div>
+    <div className={"ChooserArea"}>
       {
         boosters.map((booster, idx) => {
           return (

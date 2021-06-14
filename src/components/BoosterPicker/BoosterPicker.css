@@ -25,13 +25,15 @@
     font-size: 18px;
     height: 20px;
     margin-bottom: 5px;
+    width: 100%;
 }
 .BoosterSelect > select{
     font-size: 16px;
     margin-left:40px;
     background: rgba(0,0,0,0.75);
     color:#fff;
-    text-shadow:0 1px 0 rgba(0,0,0,0.4)
+    text-shadow:0 1px 0 rgba(0,0,0,0.4);
+    width: 70%;
 }
 .BoosterWindowedArea{
     height: 500px;
@@ -51,12 +53,12 @@
     font-family:'Roboto',sans-serif;
     font-weight:300;
     color:#FFFFFF;
-    background-color:#4eb5f1;
+    background-color:#25526d;
     text-align:center;
     transition: all 0.2s;
 }
 .AddBoosterButton:hover{
-    background-color:#4095c6;
+    background-color:#0e202b;
 }
 
 .LaunchButton{
@@ -79,4 +81,14 @@
 }
 .LaunchButton:hover{
     background-color:#0e2c11;
+}
+.BoosterText{
+    width: 20%;
+    float: left;
+}
+
+.ChooserArea{
+    height: 275px;
+    overflow-y: scroll;
+    overflow: auto;
 }
