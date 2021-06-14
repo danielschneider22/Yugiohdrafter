@@ -1,8 +1,8 @@
 import { Provider } from 'react-redux';
 import './App.css';
 import { combineReducers, createStore } from 'redux'
-import BoosterPicker from './components/BoosterPicker/BoosterPicker';
 import cardSetsReducer, { cardSetsInitialState } from './data/cardSets/reducer';
+import LandingPage from './components/BoosterPicker/LandingPage';
 
 export const initState = {
   cardSets: cardSetsInitialState,
@@ -26,7 +26,7 @@ function App() {
 
   return (
     <Provider store={store}>
-      <BoosterPicker />
+      <LandingPage />
     </Provider>
   );
 }
