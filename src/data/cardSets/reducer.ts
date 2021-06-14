@@ -3,15 +3,23 @@ import { CardSetsActions } from "./actions"
 import { CardSetTypes } from "./types"
 
 export const cardSetsInitialState = {
-    cardSets: [] as CardSet[],
+    allIds: [] as string[],
+    byId: {} as {[key: string]: CardSet}
 }
 
 export default function cardSetsReducer(state = cardSetsInitialState, action: CardSetsActions) {
     switch (action.type) {
       case CardSetTypes.AddSets: {
+        const allIds = [] as string[]
+        const byId = {} as {[key: string]: CardSet}
+        action.cardSets.forEach((set) => {
+            allIds.push(set.set_code)
+            byId[set.set_code] = set
+        })
         return {
             ...state,
-            cardSets: action.cardSets,
+            allIds,
+            byId,
         }
       }
       default:

@@ -4,6 +4,7 @@ function SealedBoosterOpener() {
 
   return (
     <div>
+        
     </div>
     
   );
