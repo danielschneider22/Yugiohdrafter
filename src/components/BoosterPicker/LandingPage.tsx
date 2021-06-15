@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSets } from '../../data/cardSets/actions';
 import { fetchCardSets } from '../../data/cardSets/operations';
-import { getCardSets } from '../../data/cardSets/selectors';
 import './BoosterPicker.css';
-import { Booster } from '../../constants/Booster';
 import BoosterChooserArea from './BoosterChooserArea';
+import { getCardSetsById } from '../../data/cardSets/selectors';
+import { getBoosterIds, getBoosters } from '../../data/boosters/selectors';
+import { addBooster } from '../../data/boosters/actions';
+import * as _ from "lodash"
 
 interface ParentProps{
   launch: () => void
@@ -14,8 +16,9 @@ interface ParentProps{
 function LandingPage(props: ParentProps) {
 
   const dispatch = useDispatch();
-  const cardSets = useSelector(getCardSets);
-  const [boosters, setBoosters] = useState([] as Booster[]);
+  const cardSets = Object.values(useSelector(getCardSetsById));
+  const boosters = useSelector(getBoosters)
+  const boosterIds = useSelector(getBoosterIds)
 
   useEffect(() => {
     const sets = localStorage.getItem("cardSets");
@@ -27,13 +30,13 @@ function LandingPage(props: ParentProps) {
   }, [dispatch]);
 
   useEffect(() => {
-    if(boosters.length === 0 && cardSets.length > 0) {
-        setBoosters([{cardSetCode: cardSets[0].set_name}])
+    if(boosterIds.length === 0 && cardSets.length > 0) {
+        dispatch(addBooster({cardSetCode: cardSets[0].set_name, id: _.uniqueId("booster-")}))
     }
   }, [cardSets, boosters]);
 
   const loadingBoosters = <div>Loading boosters...</div>
-  const boosterChooserArea = <BoosterChooserArea boosters={boosters} cardSets={cardSets} setBoosters={setBoosters}/>
+  const boosterChooserArea = <BoosterChooserArea />
   const boosterArea = cardSets.length === 0 ? loadingBoosters : boosterChooserArea
 
   return (
@@ -57,3 +60,4 @@ function LandingPage(props: ParentProps) {
 }
 
 export default LandingPage;
+

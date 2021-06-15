@@ -1,43 +1,40 @@
-import { Booster } from "../../constants/Booster";
-import { CardSet } from "../../constants/CardSet";
+import _ from "lodash";
+import { useDispatch, useSelector } from "react-redux";
+import { addBooster, changeBooster } from "../../data/boosters/actions";
+import { getBoosters, getBoosterIds } from "../../data/boosters/selectors";
+import { getCardSetsById } from "../../data/cardSets/selectors";
 import BoosterSelect from "./BoosterSelect";
 
-interface ParentProps {
-    boosters: Booster[],
-    cardSets: CardSet[],
-    setBoosters: (value: React.SetStateAction<Booster[]>) => void
-}
+function BoosterChooserArea() {
+  const dispatch = useDispatch();
+  const cardSets = Object.values(useSelector(getCardSetsById));
+  const boosters = useSelector(getBoosters)
+  const boosterIds = useSelector(getBoosterIds)
 
-function BoosterChooserArea(props: ParentProps) {
-  const {boosters, cardSets, setBoosters} = props;
-
-  function boosterChanged(boosterNum: number, val: string) {
-    const newBoosters = [...boosters];
-    newBoosters[boosterNum].cardSetCode = val;
-    setBoosters(newBoosters);
+  function boosterChanged(id: string, val: string) {
+    dispatch(changeBooster(id, {cardSetCode: val}))
   }
 
-  function addBooster() {
-    const newBoosters = [...boosters, {cardSetCode: boosters[boosters.length -1].cardSetCode}];
-    setBoosters(newBoosters);
+  function addBoosterButtonClick() {
+    dispatch(addBooster({cardSetCode: cardSets[0].set_name, id: _.uniqueId("booster-")}))
   }
 
   return (
     <div className={"ChooserArea"}>
       {
-        boosters.map((booster, idx) => {
+        boosterIds.map((boosterId, idx) => {
           return (
             <BoosterSelect 
               cardSets={cardSets}
               boosterNum={idx}
               boosterChanged={boosterChanged}
-              booster={booster}
+              booster={boosters[boosterId]}
               key={idx}
             />
           )
         })
       }
-      <button className="AddBoosterButton" onClick={addBooster}>Add Booster</button>
+      <button className="AddBoosterButton" onClick={addBoosterButtonClick}>Add Booster</button>
   </div>
   );
 }
