@@ -41,6 +41,16 @@ export default function boostersReducer(state = boostersInitialState, action: Bo
             byId,
         }
       }
+      case 'boosters/resetBoosterCards': {
+        const byId: {[key: string]: Booster} = {}
+        Object.values(state.byId).forEach((booster) => {
+          byId[booster.id] = {...booster, cardIds: undefined}
+        })
+        return {
+            ...state,
+            byId,
+        }
+      }
       default:
         return state
     }

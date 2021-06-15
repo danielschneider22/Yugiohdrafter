@@ -25,7 +25,17 @@ export function removeBooster(id: string) {
     }
 }
 
-export interface updateBooster {
+interface ResetBoosterCards {
+    type: 'boosters/resetBoosterCards',
+}
+
+export function resetBoosterCards() {
+    return {
+        type: 'boosters/resetBoosterCards',
+    }
+}
+
+export interface UpdateBooster {
     type: 'boosters/updateBooster',
     booster: Partial<Booster>,
     id: string
@@ -39,4 +49,4 @@ export function updateBooster(id: string, booster: Partial<Booster>) {
     }
 }
 
-export type BoosterActions = AddBooster | RemoveBooster | updateBooster;
+export type BoosterActions = AddBooster | RemoveBooster | UpdateBooster | ResetBoosterCards;

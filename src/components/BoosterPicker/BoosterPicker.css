@@ -82,6 +82,27 @@
 .LaunchButton:hover{
     background-color:#0e2c11;
 }
+.BackButton{
+    position: absolute;
+    top: 85%;
+    left: 85%;
+    font-size: 50px;
+    display:inline-block;
+    padding:0.3em 1.2em;
+    margin:0 0.3em 0.3em 0;
+    border-radius:5em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-weight:400;
+    color:#FFFFFF;
+    background-color:#1c5321;
+    text-align:center;
+    transition: all 0.2s;
+}
+.BackButton:hover{
+    background-color:#0e2c11;
+}
 .BoosterText{
     width: 20%;
     float: left;
@@ -89,6 +110,11 @@
 
 .ChooserArea{
     height: 275px;
+    overflow-y: scroll;
+    overflow: auto;
+}
+
+.scrollCards{
     overflow-y: scroll;
     overflow: auto;
 }

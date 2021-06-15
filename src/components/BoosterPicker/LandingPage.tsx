@@ -10,7 +10,7 @@ import { addBooster } from '../../data/boosters/actions';
 import * as _ from "lodash"
 
 interface ParentProps{
-  launch: () => void
+  changePage: React.Dispatch<React.SetStateAction<string>>
 }
 
 function LandingPage(props: ParentProps) {
@@ -52,7 +52,7 @@ function LandingPage(props: ParentProps) {
           <label htmlFor="draft">Draft</label>
         </div>
         {boosterArea}
-        <button className="LaunchButton" onClick={props.launch}>Launch</button>
+        <button className="LaunchButton" onClick={() => props.changePage("SealedBooster")}>Launch</button>
       </div>
     </div>
     

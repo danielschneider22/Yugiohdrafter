@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card } from '../../constants/Card';
-import { updateBooster } from '../../data/boosters/actions';
+import { resetBoosterCards, updateBooster } from '../../data/boosters/actions';
 import { getBoosters } from '../../data/boosters/selectors';
 import { addCards } from '../../data/cards/actions';
 import { fetchCards } from '../../data/cards/operations';
@@ -11,7 +11,11 @@ import { getCardSetsById } from '../../data/cardSets/selectors';
 import { createBooster } from './BoosterCreatorHelper';
 import './SealedBoosterOpener.css';
 
-function SealedBoosterOpener() {
+interface ParentProps{
+  changePage: React.Dispatch<React.SetStateAction<string>>
+}
+
+function SealedBoosterOpener(props: ParentProps) {
   const dispatch = useDispatch();
 
   const cardsById = useSelector(getCardsById)
@@ -22,7 +26,7 @@ function SealedBoosterOpener() {
 
   Object.values(boosters).forEach((booster) => {
     if(booster.cardIds)
-      cards.push(...booster.cardIds.map((card_id) => cardsById[card_id])!)
+      cards.push(...booster.cardIds.map((card_id) => cardsById[card_id])!.filter((card) => !!card))
   })
 
   useEffect(() => {
@@ -45,19 +49,31 @@ function SealedBoosterOpener() {
     Object.values(boosters).forEach((booster) => {
       if(!booster.cardIds && cardSets[booster.cardSetName].card_ids) {
         const cardSetIds = cardSets[booster.cardSetName].card_ids!
-        const cardSetCards = cardSetIds.map((card_id) => cardsById[card_id])
+        const cardSetCards = cardSetIds.map((card_id) => cardsById[card_id]).filter((card) => !!card)
         const randomCards = createBooster(cardSetCards, booster.cardSetName);
         dispatch(updateBooster(booster.id, {cardIds: randomCards.map((card) => card.id)} ))
       }
     })
   }, [cardSets, boosters]);
+console.log('eh')
+  function back() {
+    dispatch(resetBoosterCards())
+    props.changePage("LandingPage")
+  }
 
   return (
-    <div>
+    <div className={"maxProportions"}>
+      <div className={"maxProportions scrollCards"}>
         {cards && cards.map((card) => {
-          return <img alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"}/>
+          return <img alt={card.name || "cardName"} src={card.card_images[0].image_url} width={"300"} height={"438"}/>
         })}
+        {!cards || cards.length === 0 &&
+          <div>Loading cards...</div>
+        }
+      </div>
+      <button className="BackButton" onClick={back}>Back</button>
     </div>
+      
     
   );
 }

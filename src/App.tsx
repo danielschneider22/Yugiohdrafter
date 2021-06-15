@@ -16,19 +16,17 @@ const store = createStore(
 function App() {
   const [page, changePage] = useState("LandingPage")
 
-  function launch() {
-    changePage("SealedBooster")
-  }
-
   return (
     <Provider store={store}>
       { page === "LandingPage" && 
         <LandingPage 
-          launch={launch}
+          changePage={changePage}
         />
       }
       { page === "SealedBooster" && 
-        <SealedBoosterOpener />
+        <SealedBoosterOpener 
+          changePage={changePage}
+        />
       }
       
     </Provider>
