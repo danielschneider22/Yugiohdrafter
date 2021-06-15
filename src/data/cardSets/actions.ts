@@ -1,6 +1,5 @@
 import { Card } from "../../constants/Card";
 import { CardSet } from "../../constants/CardSet";
-import { CardSetTypes } from "./types";
 
 
 interface AddSets {
@@ -10,7 +9,7 @@ interface AddSets {
 
 export function addSets(cardSets: CardSet[]) {
     return {
-        type: CardSetTypes.AddSets,
+        type: 'cardSets/addSets',
         cardSets,
     }
 }
@@ -23,7 +22,7 @@ interface UpdateCardIds {
 
 export function updateCardIds(cards: Card[], set_name: string) {
     return {
-        type: CardSetTypes.UpdateCardIds,
+        type: 'cardSets/updateCardIds',
         cards,
         set_name
     }

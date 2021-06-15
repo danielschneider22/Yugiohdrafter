@@ -1,13 +1,11 @@
-// import { Dispatch } from "react";
-// import { CardSet } from "../../constants/CardSet";
+import { Dispatch } from "react";
+import { Card } from "../../constants/Card";
+import { addCards } from "../cards/actions";
+import { updateBooster } from "./actions";
 
-
-// export async function fetchCardSets(dispatch: Dispatch<any>) {
-//     const response = await fetch('https://db.ygoprodeck.com/api/v7/cardsets.php');
-//     let sets: CardSet[] = await response.json();
-//     sets = sets.filter((set) => {
-//         return set.num_of_cards > 50;
-//     });
-//     dispatch(addSets(sets))
-// }
-export const llama = ""
+export async function fetchCardsForBooster(dispatch: Dispatch<any>, set_name: string, boosterId: string) {
+    const response = await fetch('https://db.ygoprodeck.com/queries/pack-opener/pack-open.php?format=' + set_name);
+    let cards = await response.json();
+    dispatch(addCards(cards.data as Card[]))
+    dispatch(updateBooster(boosterId, {cardIds: cards.data.map((card: Card) => card.id)} ))
+}

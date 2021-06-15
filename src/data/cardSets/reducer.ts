@@ -1,6 +1,5 @@
 import { CardSet } from "../../constants/CardSet"
 import { CardSetsActions } from "./actions"
-import { CardSetTypes } from "./types"
 
 export const cardSetsInitialState = {
     allIds: [] as string[],
@@ -9,15 +8,13 @@ export const cardSetsInitialState = {
 
 export default function cardSetsReducer(state = cardSetsInitialState, action: CardSetsActions) {
     switch (action.type) {
-      case CardSetTypes.AddSets: {
+      case 'cardSets/addSets': {
         const allIds = [] as string[]
         const byId = {} as {[key: string]: CardSet}
-        // @ts-ignore
         action.cardSets.forEach((set) => {
             allIds.push(set.set_name)
             byId[set.set_name] = set
         })
-        // @ts-ignore
         localStorage.setItem("cardSets", JSON.stringify(action.cardSets));
         return {
             ...state,
@@ -25,11 +22,12 @@ export default function cardSetsReducer(state = cardSetsInitialState, action: Ca
             byId,
         }
       }
-      case CardSetTypes.UpdateCardIds: {
-        const newState = {...state}
-        // @ts-ignore
-        newState.byId[action.set_name].card_ids = action.cards.map((card) => card.id)
-        return {...state, ...newState}
+      case 'cardSets/updateCardIds': {
+        const byId = {} as {[key: string]: CardSet}
+        Object.values(state.byId).forEach((cardSet) => {
+          byId[cardSet.set_name] = cardSet.set_name !== action.set_name ? state.byId[cardSet.set_name] : {...state.byId[cardSet.set_name], card_ids: action.cards.map((card) => card.id)}
+        })
+        return {...state, byId}
       }
       default:
         return state

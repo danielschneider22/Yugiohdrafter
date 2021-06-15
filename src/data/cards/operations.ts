@@ -8,4 +8,5 @@ export async function fetchCards(dispatch: Dispatch<any>, set_name: string) {
     let cards = await response.json();
     dispatch(addCards(cards.data as Card[]))
     dispatch(updateCardIds(cards.data as Card[], set_name))
+    localStorage.setItem(set_name, JSON.stringify(cards.data));
 }

@@ -31,7 +31,7 @@ export default function boostersReducer(state = boostersInitialState, action: Bo
             byId,
         }
       }
-      case 'boosters/changeBooster': {
+      case 'boosters/updateBooster': {
         const byId: {[key: string]: Booster} = {}
         Object.values(state.byId).forEach((booster) => {
           byId[booster.id] = booster.id === action.id ? {...booster, ...action.booster} : booster

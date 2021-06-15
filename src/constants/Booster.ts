@@ -1,7 +1,7 @@
 import { Card } from "./Card";
 
 export interface Booster{
-    cardSetCode: string
-    cards?: Card[]
+    cardSetName: string
+    cardIds?: string[]
     id: string
 }

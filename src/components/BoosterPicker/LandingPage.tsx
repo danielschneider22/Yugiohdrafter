@@ -31,7 +31,7 @@ function LandingPage(props: ParentProps) {
 
   useEffect(() => {
     if(boosterIds.length === 0 && cardSets.length > 0) {
-        dispatch(addBooster({cardSetCode: cardSets[0].set_name, id: _.uniqueId("booster-")}))
+        dispatch(addBooster({cardSetName: cardSets[0].set_name, id: _.uniqueId("booster-")}))
     }
   }, [cardSets, boosters]);
 

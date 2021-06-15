@@ -25,18 +25,18 @@ export function removeBooster(id: string) {
     }
 }
 
-export interface ChangeBooster {
-    type: 'boosters/changeBooster',
+export interface updateBooster {
+    type: 'boosters/updateBooster',
     booster: Partial<Booster>,
     id: string
 }
 
-export function changeBooster(id: string, booster: Partial<Booster>) {
+export function updateBooster(id: string, booster: Partial<Booster>) {
     return {
-        type: 'boosters/changeBooster',
+        type: 'boosters/updateBooster',
         booster,
         id
     }
 }
 
-export type BoosterActions = AddBooster | RemoveBooster | ChangeBooster;
+export type BoosterActions = AddBooster | RemoveBooster | updateBooster;

@@ -21,7 +21,6 @@ export default function cardsReducer(state = cardsInitialState, action: CardActi
           allIds,
           byId,
         }
-        localStorage.setItem("cards", JSON.stringify(newState));
         return newState
       }
       default:
