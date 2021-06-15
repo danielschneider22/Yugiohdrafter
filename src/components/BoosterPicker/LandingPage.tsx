@@ -22,9 +22,9 @@ function LandingPage(props: ParentProps) {
 
   useEffect(() => {
     const sets = localStorage.getItem("cardSets");
-    if(sets) {
+    if(cardSets.length === 0 && sets) {
         dispatch(addSets(JSON.parse(sets)))
-    } else {
+    } else if (cardSets.length === 0) {
         fetchCardSets(dispatch);
     }
   }, [dispatch]);
