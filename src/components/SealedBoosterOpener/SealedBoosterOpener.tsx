@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card } from '../../constants/Card';
 import { updateBooster } from '../../data/boosters/actions';
-import { fetchCardsForBooster } from '../../data/boosters/operations';
 import { getBoosters } from '../../data/boosters/selectors';
 import { addCards } from '../../data/cards/actions';
 import { fetchCards } from '../../data/cards/operations';
 import { getCardsById } from '../../data/cards/selectors';
 import { updateCardIds } from '../../data/cardSets/actions';
 import { getCardSetsById } from '../../data/cardSets/selectors';
+import { createBooster } from './BoosterCreatorHelper';
 import './SealedBoosterOpener.css';
 
 function SealedBoosterOpener() {
@@ -45,12 +45,9 @@ function SealedBoosterOpener() {
     Object.values(boosters).forEach((booster) => {
       if(!booster.cardIds && cardSets[booster.cardSetName].card_ids) {
         const cardSetIds = cardSets[booster.cardSetName].card_ids!
-        const randomCards = []
-        for(let i = 0; i < 15; i++){
-          const random = Math.floor(Math.random() * cardSetIds.length);
-          randomCards.push(cardSetIds[random]);
-        }
-        dispatch(updateBooster(booster.id, {cardIds: randomCards} ))
+        const cardSetCards = cardSetIds.map((card_id) => cardsById[card_id])
+        const randomCards = createBooster(cardSetCards, booster.cardSetName);
+        dispatch(updateBooster(booster.id, {cardIds: randomCards.map((card) => card.id)} ))
       }
     })
   }, [cardSets, boosters]);
