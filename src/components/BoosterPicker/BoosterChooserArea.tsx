@@ -21,6 +21,7 @@ function BoosterChooserArea() {
 
   return (
     <div className={"ChooserArea"}>
+      <div className="AddBoosterButton btn btn-info d-flex justify-content-center" onClick={addBoosterButtonClick} >Add Booster</div>
       <div className={"BoostersWrapper"}>
         {
           boosterIds.map((boosterId, idx) => {
@@ -36,7 +37,6 @@ function BoosterChooserArea() {
           })
         }
       </div>
-      <button className="AddBoosterButton btn btn-info" onClick={addBoosterButtonClick} >Add Booster</button>
   </div>
   );
 }
