@@ -30,7 +30,6 @@
 }
 .BoosterSelect > select{
     font-size: 16px;
-    margin-left:40px;
     background: rgba(0,0,0,0.75);
     color:#fff;
     text-shadow:0 1px 0 rgba(0,0,0,0.4);
@@ -104,4 +103,10 @@
 
 .Card{
     padding: 5px;
+}
+
+.DeleteButton.btn-danger{
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: .8rem;
 }
