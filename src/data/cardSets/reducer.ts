@@ -4,7 +4,7 @@ import { CardSetsActions } from "./actions"
 export const cardSetsInitialState = {
     allIds: [] as string[],
     byId: {} as {[key: string]: CardSet}
-}
+} || undefined
 
 export default function cardSetsReducer(state = cardSetsInitialState, action: CardSetsActions) {
     switch (action.type) {

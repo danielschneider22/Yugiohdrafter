@@ -27,13 +27,13 @@ function LandingPage(props: ParentProps) {
     } else if (cardSets.length === 0) {
         fetchCardSets(dispatch);
     }
-  }, [dispatch]);
+  }, [dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if(boosterIds.length === 0 && cardSets.length > 0) {
         dispatch(addBooster({cardSetName: cardSets[0].set_name, id: _.uniqueId("booster-")}))
     }
-  }, [cardSets, boosters]);
+  }, [cardSets, boosters, boosterIds.length, dispatch]);
 
   const loadingBoosters = <div>Loading boosters...</div>
   const boosterChooserArea = <BoosterChooserArea />

@@ -9,7 +9,7 @@ import { useState } from 'react';
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 const store = createStore(
   rootReducer,
-  initState,
+  initState as any,
   composeEnhancers(),
 );
 

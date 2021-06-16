@@ -5,7 +5,7 @@ import { BoosterActions } from "./actions"
 export const boostersInitialState = {
     allIds: [] as string[],
     byId: {} as {[key: string]: Booster}
-}
+} || undefined
 
 export default function boostersReducer(state = boostersInitialState, action: BoosterActions) {
     switch (action.type) {
