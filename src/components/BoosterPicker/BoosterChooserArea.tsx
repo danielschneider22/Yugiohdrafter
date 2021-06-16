@@ -18,7 +18,6 @@ function BoosterChooserArea() {
   function addBoosterButtonClick() {
     dispatch(addBooster({cardSetName: boosters[boosterIds[boosterIds.length - 1]].cardSetName, id: _.uniqueId("booster-")}))
   }
-  console.log("hello")
 
   return (
     <div className={"ChooserArea"}>

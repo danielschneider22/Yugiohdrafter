@@ -43,7 +43,7 @@ function SealedBoosterOpener(props: ParentProps) {
         fetchedSets[booster.cardSetName] = booster.cardSetName
       }
     })
-  }, [dispatch]);
+  }, [dispatch, boosters]);
 
   useEffect(() => {
     Object.values(boosters).forEach((booster) => {
@@ -54,8 +54,8 @@ function SealedBoosterOpener(props: ParentProps) {
         dispatch(updateBooster(booster.id, {cardIds: randomCards.map((card) => card.id)} ))
       }
     })
-  }, [cardSets, boosters]);
-console.log('eh')
+  }, [cardSets, boosters, cardsById, dispatch]);
+
   function back() {
     dispatch(resetBoosterCards())
     props.changePage("LandingPage")
@@ -65,9 +65,9 @@ console.log('eh')
     <div className={"maxProportions"}>
       <div className={"maxProportions scrollCards"}>
         {cards && cards.map((card) => {
-          return <img alt={card.name || "cardName"} src={card.card_images[0].image_url} width={"300"} height={"438"}/>
+          return <img key={card.name} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"}/>
         })}
-        {!cards || cards.length === 0 &&
+        {(!cards || cards.length === 0) &&
           <div>Loading cards...</div>
         }
       </div>

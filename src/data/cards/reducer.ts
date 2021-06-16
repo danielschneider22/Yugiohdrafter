@@ -18,8 +18,8 @@ export default function cardsReducer(state = cardsInitialState, action: CardActi
         })
         const newState = {
           ...state,
-          allIds,
-          byId,
+          allIds: [...new Set([state.allIds, ...allIds])],
+          byId: {...state.byId, ...byId},
         }
         return newState
       }
