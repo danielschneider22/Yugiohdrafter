@@ -8,6 +8,7 @@ import { fetchCards } from '../../data/cards/operations';
 import { getCardsById } from '../../data/cards/selectors';
 import { updateCardIds } from '../../data/cardSets/actions';
 import { getCardSetsById } from '../../data/cardSets/selectors';
+import NavBar from '../NavBar/NavBar';
 import { createBooster } from './BoosterCreatorHelper';
 import './SealedBoosterOpener.css';
 
@@ -63,9 +64,10 @@ function SealedBoosterOpener(props: ParentProps) {
 
   return (
     <div className={"maxProportions"}>
+      <NavBar changePage={props.changePage}/>
       <div className={"maxProportions scrollCards"}>
         {cards && cards.map((card) => {
-          return <img key={card.name} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"}/>
+          return <img className="Card" key={card.name} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"}/>
         })}
         {(!cards || cards.length === 0) &&
           <div>Loading cards...</div>

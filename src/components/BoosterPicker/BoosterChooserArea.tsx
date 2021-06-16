@@ -20,7 +20,7 @@ function BoosterChooserArea() {
   }
 
   return (
-    <div className={"ChooserArea"}>
+    <div>
       <div className="AddBoosterButton btn btn-info d-flex justify-content-center" onClick={addBoosterButtonClick} >Add Booster</div>
       <div className={"BoostersWrapper"}>
         {

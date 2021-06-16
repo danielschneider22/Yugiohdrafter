@@ -54,7 +54,9 @@ function LandingPage(props: ParentProps) {
             <label htmlFor="draft">Draft</label>
           </div>
           {boosterArea}
-          <div className="LaunchButton d-flex justify-content-center w-50" onClick={() => props.changePage("SealedBooster")}>Launch</div>
+          <div className="d-flex justify-content-center">
+            <div className="LaunchButton w-50 btn-lg btn-success" onClick={() => props.changePage("SealedBooster")}>Launch</div>
+          </div>
         </div>
       </div>
     </div>
