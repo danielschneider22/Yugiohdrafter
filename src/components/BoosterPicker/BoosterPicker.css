@@ -1,10 +1,13 @@
 .BoosterPickerWrapper{
-    position: fixed;
-    top: 40%;
-    left: 50%;
-    /* bring your own prefixes */
-    transform: translate(-50%, -50%);
+    height: 100%;
 }
+
+.BoosterPickerWrapper > * {
+    color: white;
+    --font-family-sans-serif: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    --font-family-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+}
+
 .InfoBlurb{
     font-size: 30px;
     text-align: center;
@@ -20,12 +23,10 @@
 
 .FormatType > label{
     margin-right: 20px;
+    margin-left: 2px;
 }
 .BoosterSelect{
     font-size: 18px;
-    height: 20px;
-    margin-bottom: 5px;
-    width: 100%;
 }
 .BoosterSelect > select{
     font-size: 16px;
@@ -35,36 +36,8 @@
     text-shadow:0 1px 0 rgba(0,0,0,0.4);
     width: 70%;
 }
-.BoosterWindowedArea{
-    height: 500px;
-}
-
-.AddBoosterButton{
-    position: absolute;
-    top: 90%;
-    left: 35%;
-    font-size: 30px;
-    display:inline-block;
-    padding:0.3em 1.2em;
-    margin:0 0.3em 0.3em 0;
-    border-radius:2em;
-    box-sizing: border-box;
-    text-decoration:none;
-    font-family:'Roboto',sans-serif;
-    font-weight:300;
-    color:#FFFFFF;
-    background-color:#25526d;
-    text-align:center;
-    transition: all 0.2s;
-}
-.AddBoosterButton:hover{
-    background-color:#0e202b;
-}
 
 .LaunchButton{
-    position: absolute;
-    top: 110%;
-    left: 31%;
     font-size: 50px;
     display:inline-block;
     padding:0.3em 1.2em;
@@ -109,9 +82,7 @@
 }
 
 .ChooserArea{
-    height: 275px;
-    overflow-y: scroll;
-    overflow: auto;
+    height: 75%;
 }
 
 .scrollCards{
@@ -137,3 +108,7 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #555; 
   }
+.BoostersWrapper{
+    overflow-y: auto;
+    height: 50%;
+}

@@ -12,7 +12,7 @@ function BoosterSelect(props: ParentProps) {
   const {cardSets, boosterNum, boosterChanged, booster} = props;
 
   return (
-      <div className="BoosterSelect">
+      <div className="BoosterSelect d-flex m-1 p-0">
           <div className={"BoosterText"}>Booster #{(boosterNum + 1) + ": "}</div>
           <select value={booster.cardSetName} onChange={(event) => boosterChanged(booster.id, event.target.value)}>
             {cardSets.map((set) => {

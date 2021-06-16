@@ -8,13 +8,13 @@ import { getCardSetsById } from '../../data/cardSets/selectors';
 import { getBoosterIds, getBoosters } from '../../data/boosters/selectors';
 import { addBooster } from '../../data/boosters/actions';
 import * as _ from "lodash"
+import NavBar from '../NavBar/NavBar';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
 }
 
 function LandingPage(props: ParentProps) {
-
   const dispatch = useDispatch();
   const cardSets = Object.values(useSelector(getCardSetsById));
   const boosters = useSelector(getBoosters)
@@ -40,21 +40,25 @@ function LandingPage(props: ParentProps) {
   const boosterArea = cardSets.length === 0 ? loadingBoosters : boosterChooserArea
 
   return (
-    <div className="BoosterPickerWrapper">
-      <div className="BoosterWindowedArea">
-        <div className="InfoBlurb">
-            Pick the Format and booster pack sets.
+    <div>
+      <NavBar changePage={props.changePage}/>
+      <div className="BoosterPickerWrapper d-flex justify-content-center mt-5">
+        <div className="BoosterWindowedArea p-2 bd-highlight">
+          <div className="InfoBlurb">
+              Pick the Format and booster pack sets.
+          </div>
+          <div className="FormatType">
+            <input type="radio" id="sealed" name="format" value="sealed" checked/>
+            <label htmlFor="sealed">Sealed</label>
+            <input type="radio" id="draft" name="format" value="draft" />
+            <label htmlFor="draft">Draft</label>
+          </div>
+          {boosterArea}
+          <button className="LaunchButton" onClick={() => props.changePage("SealedBooster")}>Launch</button>
         </div>
-        <div className="FormatType">
-          <input type="radio" id="sealed" name="format" value="sealed" checked/>
-          <label htmlFor="sealed">Sealed</label>
-          <input type="radio" id="draft" name="format" value="draft" />
-          <label htmlFor="draft">Draft</label>
-        </div>
-        {boosterArea}
-        <button className="LaunchButton" onClick={() => props.changePage("SealedBooster")}>Launch</button>
       </div>
     </div>
+    
     
   );
 }

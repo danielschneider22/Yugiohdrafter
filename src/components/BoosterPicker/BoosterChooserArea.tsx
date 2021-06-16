@@ -21,20 +21,22 @@ function BoosterChooserArea() {
 
   return (
     <div className={"ChooserArea"}>
-      {
-        boosterIds.map((boosterId, idx) => {
-          return (
-            <BoosterSelect 
-              cardSets={cardSets}
-              boosterNum={idx}
-              boosterChanged={boosterChanged}
-              booster={boosters[boosterId]}
-              key={idx}
-            />
-          )
-        })
-      }
-      <button className="AddBoosterButton" onClick={addBoosterButtonClick}>Add Booster</button>
+      <div className={"BoostersWrapper"}>
+        {
+          boosterIds.map((boosterId, idx) => {
+            return (
+              <BoosterSelect 
+                cardSets={cardSets}
+                boosterNum={idx}
+                boosterChanged={boosterChanged}
+                booster={boosters[boosterId]}
+                key={idx}
+              />
+            )
+          })
+        }
+      </div>
+      <button className="AddBoosterButton btn btn-info" onClick={addBoosterButtonClick} >Add Booster</button>
   </div>
   );
 }
