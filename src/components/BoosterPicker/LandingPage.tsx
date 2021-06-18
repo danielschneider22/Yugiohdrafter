@@ -64,13 +64,12 @@ function LandingPage(props: ParentProps) {
   }
 
   function launch() {
-    sealedLaunch()
+    if(format === "sealed") 
+      sealedLaunch()
   }
 
   function formatChanged(event: React.ChangeEvent<HTMLInputElement>) {
-    if(format === "sealed") {
-      setFormat(event.currentTarget.value as "sealed" | "draft")
-    }
+    setFormat(event.currentTarget.value as "sealed" | "draft")
   }
 
   return (
@@ -84,7 +83,7 @@ function LandingPage(props: ParentProps) {
           <div className="FormatType">
             <input type="radio" id="sealed" name="format" value="sealed" onChange={formatChanged} checked={format === "sealed"}/>
             <label htmlFor="sealed">Sealed</label>
-            <input type="radio" id="draft" name="format" value="draft" checked={format === "draft"} />
+            <input type="radio" id="draft" name="format" value="draft" onChange={formatChanged} checked={format === "draft"} />
             <label htmlFor="draft">Draft</label>
           </div>
           {boosterArea}
