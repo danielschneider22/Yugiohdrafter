@@ -1,14 +1,19 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addSets } from '../../data/cardSets/actions';
-import { fetchCardSets } from '../../data/cardSets/operations';
 import './BoosterPicker.css';
-import BoosterChooserArea from './BoosterChooserArea';
-import { getCardSetsById } from '../../data/cardSets/selectors';
-import { getBoosterIds, getBoosters } from '../../data/boosters/selectors';
+
+import * as _ from 'lodash';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { Card } from '../../constants/Card';
 import { addBooster } from '../../data/boosters/actions';
-import * as _ from "lodash"
+import { getBoosterIds, getBoosters } from '../../data/boosters/selectors';
+import { addCards } from '../../data/cards/actions';
+import { fetchCards } from '../../data/cards/operations';
+import { addSets, updateCardIds } from '../../data/cardSets/actions';
+import { fetchCardSets } from '../../data/cardSets/operations';
+import { getCardSetsById } from '../../data/cardSets/selectors';
 import NavBar from '../NavBar/NavBar';
+import BoosterChooserArea from './BoosterChooserArea';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
@@ -19,6 +24,7 @@ function LandingPage(props: ParentProps) {
   const cardSets = Object.values(useSelector(getCardSetsById));
   const boosters = useSelector(getBoosters)
   const boosterIds = useSelector(getBoosterIds)
+  const [format, setFormat] = useState("sealed" as "sealed" | "draft")
 
   useEffect(() => {
     const sets = localStorage.getItem("cardSets");
@@ -39,6 +45,34 @@ function LandingPage(props: ParentProps) {
   const boosterChooserArea = <BoosterChooserArea />
   const boosterArea = cardSets.length === 0 ? loadingBoosters : boosterChooserArea
 
+  function sealedLaunch() {
+    const fetchedSets = {} as {[key: string]: string}
+    Object.values(boosters).forEach((booster) => {
+      if(!fetchedSets[booster.cardSetName]) {
+        const cardsOfSet = localStorage.getItem(booster.cardSetName);
+        if(cardsOfSet) {
+          dispatch(addCards(JSON.parse(cardsOfSet) as Card[]))
+          dispatch(updateCardIds(JSON.parse(cardsOfSet) as Card[], booster.cardSetName))
+        } else {
+          fetchCards(dispatch, booster.cardSetName);
+        }
+        fetchedSets[booster.cardSetName] = booster.cardSetName
+      }
+    })
+    
+    props.changePage("SealedBooster")
+  }
+
+  function launch() {
+    sealedLaunch()
+  }
+
+  function formatChanged(event: React.ChangeEvent<HTMLInputElement>) {
+    if(format === "sealed") {
+      setFormat(event.currentTarget.value as "sealed" | "draft")
+    }
+  }
+
   return (
     <div>
       <NavBar changePage={props.changePage}/>
@@ -48,14 +82,14 @@ function LandingPage(props: ParentProps) {
               Pick the Format and booster pack sets.
           </div>
           <div className="FormatType">
-            <input type="radio" id="sealed" name="format" value="sealed" checked/>
+            <input type="radio" id="sealed" name="format" value="sealed" onChange={formatChanged} checked={format === "sealed"}/>
             <label htmlFor="sealed">Sealed</label>
-            <input type="radio" id="draft" name="format" value="draft" />
+            <input type="radio" id="draft" name="format" value="draft" checked={format === "draft"} />
             <label htmlFor="draft">Draft</label>
           </div>
           {boosterArea}
           <div className="d-flex justify-content-center">
-            <div className="LaunchButton w-50 btn-lg btn-success" onClick={() => props.changePage("SealedBooster")}>Launch</div>
+            <div className="LaunchButton w-50 btn-lg btn-success" onClick={launch}>Launch</div>
           </div>
         </div>
       </div>
