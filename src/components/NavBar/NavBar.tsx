@@ -16,10 +16,10 @@ function NavBar(props: ParentProps) {
                     <span className="navbar-toggler-icon"></span>
                 </button> */}
                 <div className="collapse navbar-collapse" style={{marginLeft: "5px"}} id="navbarTogglerDemo01">
-                    <a className="navbar-brand" href="#">Yugioh Drafter</a>
+                    <a className="navbar-brand" href="#" onClick={() => props.changePage("LandingPage")}>Yugioh Drafter</a>
                     <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li className="nav-item active">
-                        <a className="nav-link" href="#">Home</a>
+                        <a className="nav-link" href="#" onClick={() => props.changePage("LandingPage")}>Home</a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="#">Join Draft Room</a>
@@ -33,4 +33,8 @@ function NavBar(props: ParentProps) {
 }
 
 export default NavBar;
+
+function changePage(arg0: string): import("react").MouseEventHandler<HTMLAnchorElement> | undefined {
+    throw new Error("Function not implemented.");
+}
 
