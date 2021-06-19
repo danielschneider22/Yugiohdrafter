@@ -80,11 +80,19 @@ function LandingPage(props: ParentProps) {
           <div className="InfoBlurb">
               Pick the Format and booster pack sets.
           </div>
-          <div className="FormatType">
+          {/* <div className="FormatType">
             <input type="radio" id="sealed" name="format" value="sealed" onChange={formatChanged} checked={format === "sealed"}/>
             <label htmlFor="sealed">Sealed</label>
             <input type="radio" id="draft" name="format" value="draft" onChange={formatChanged} checked={format === "draft"} />
             <label htmlFor="draft">Draft</label>
+          </div> */}
+          <div className="btn-group btn-group-toggle FormatType justify-content-center" data-toggle="buttons">
+            <label className="btn btn-secondary active">
+              <input type="radio" id="sealed" name="format" value="sealed" onChange={formatChanged} autoComplete="off" checked={format === "sealed"} /> Sealed
+            </label>
+            <label className="btn btn-secondary">
+              <input type="radio" id="draft" name="format" value="draft" onChange={formatChanged} checked={format === "draft"} autoComplete="off" /> Draft
+            </label>
           </div>
           {boosterArea}
           <div className="d-flex justify-content-center">

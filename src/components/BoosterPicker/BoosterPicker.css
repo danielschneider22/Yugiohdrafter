@@ -18,13 +18,13 @@
     font-size: 18px;
     text-align: center;
     padding-bottom: 40px;
-    margin-left: 30px;
+    width: 100%;
 }
 
-.FormatType > label{
-    margin-right: 20px;
-    margin-left: 2px;
+.FormatType > label > input {
+    visibility:hidden;
 }
+
 .BoosterSelect{
     font-size: 18px;
 }
