@@ -1,5 +1,5 @@
 import { Card } from '../../constants/Card';
-import './CardPickerLeftArea.css';
+import './Sidebar.css';
 
 interface ParentProps{
   activeAreas: ("Deck" | "Sideboard" | "Draft")[]
@@ -11,14 +11,14 @@ interface ParentProps{
 
 let parentMaxWidth = 0
 
-function CardPickerLeftArea(props: ParentProps) {
+function Sidebar(props: ParentProps) {
   const {cards, showSidebar, toggleSidebar, activeAreas, parentWidth} = props
   if(parentWidth !== 0) {
     parentMaxWidth = parentWidth
   }
   const tabsStyle = showSidebar ? {left: parentMaxWidth - 86} : {left: "-35px"}
   return (
-    <div className={"CardPickerLeftArea active clearfix"}>
+    <div className={"Sidebar active clearfix"}>
       {parentMaxWidth && <div className="CardPickerButtonContainer">
         <div onClick={toggleSidebar} className={"CardPickerTab MainDeck"} style={tabsStyle}>Main Deck</div>
         <div onClick={toggleSidebar} className={"CardPickerTab ExtraDeck"} style={tabsStyle}>Extra Deck</div>
@@ -35,4 +35,4 @@ function CardPickerLeftArea(props: ParentProps) {
   );
 }
 
-export default CardPickerLeftArea;
+export default Sidebar;

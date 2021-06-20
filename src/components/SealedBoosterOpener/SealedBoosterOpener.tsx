@@ -12,7 +12,7 @@ import NavBar from '../NavBar/NavBar';
 import { createBooster } from './BoosterCreatorHelper';
 import { getSideboard } from '../../data/deck/selectors';
 import { addCardsToSideboard } from '../../data/deck/actions';
-import CardPickerLeftArea from './CardPickerLeftArea';
+import Sidebar from './Sidebar';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
@@ -78,11 +78,11 @@ function SealedBoosterOpener(props: ParentProps) {
   return (
     <div className="maxProportions">
       <NavBar changePage={props.changePage}/>
-      <div className="row maxProportions">
-        <div ref={sidebarRef} className={`col-2 ExpandContract maxHeight ${!showSidebar && "HideSidebar"}`}>
-          <CardPickerLeftArea activeAreas={["Sideboard", "Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} cards={deckCards} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />
+      <div className="maxProportions">
+        <div ref={sidebarRef} className={`ExpandContract maxHeight ${showSidebar ? "ShowSidebar" : "HideSidebar"}`}>
+          <Sidebar activeAreas={["Sideboard", "Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} cards={deckCards} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />
         </div>
-        <div className={`justify-content-center maxHeight ExpandContract ${showSidebar ? "col-10" : "col-12"}`}>
+        <div className={`justify-content-center maxHeight ExpandContract`} style={{width: showSidebar ? "calc(100% - 300px)" : "100%"}}>
             <div className={"ScrollCards"}>
               <div className="CardDisplayAreaTitle">S I D E B O A R D</div>
               {cards && cards.map((card, idx) => {

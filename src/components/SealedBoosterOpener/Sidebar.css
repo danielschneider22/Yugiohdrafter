@@ -1,4 +1,4 @@
-.CardPickerLeftArea{
+.Sidebar{
     color: #ffffff75;
     overflow: auto;
     top: 0;
@@ -55,6 +55,10 @@
 
 .HideSidebar{
     width: 0px !important;
+}
+
+.ShowSidebar{
+    width: 300px;
 }
 
 .CardsWrapper{
