@@ -94,7 +94,7 @@ function SealedBoosterOpener(props: ParentProps) {
         <div ref={sidebarRef} className={`ExpandContract maxHeight ${showSidebar ? "ShowSidebar" : "HideSidebar"}`}>
           <Sidebar activeAreas={["Sideboard", "Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />
         </div>
-        <div className={`justify-content-center maxHeight ExpandContract`} style={{width: showSidebar ? "calc(100% - 300px)" : "100%"}}>
+        <div className={`justify-content-center maxHeight ExpandContract`} style={{position: "relative", width: showSidebar ? "calc(100% - 300px)" : "100%"}}>
             <div className={"ScrollCards"}>
               <div className="CardDisplayAreaTitle">S I D E B O A R D</div>
               {cards && cards.map((card, idx) => {
@@ -104,8 +104,10 @@ function SealedBoosterOpener(props: ParentProps) {
                 <div>Loading cards...</div>
               }
           </div>
-          <div className="BottomBar col-12 justify-content-center">
-            <div className="btn-sm btn-success col-1 justify-content-center" onClick={exportToYDK}>Export</div>
+          <div className="BottomBar row">
+            <div className="col-10"/>
+            <div className="col-1 justify-content-center DeckCount">Deck Count: {deck.length}</div>
+            <div className="btn-sm btn-success col-1 justify-content-center ExportButton" onClick={exportToYDK}>Export</div>
           </div>
         </div>
       </div>

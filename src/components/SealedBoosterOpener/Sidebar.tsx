@@ -45,7 +45,7 @@ function Sidebar(props: ParentProps) {
       
       <div className="CardsWrapper">
         {deckCards && deckCards.map((card, idx) => {
-          return <img className="CardLeftArea" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"250"} height={"320"} onClick={() => addCardToSideboard(card, idx)}/>
+          return <img className="CardLeftArea" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"200"} height={"290"} onClick={() => addCardToSideboard(card, idx)}/>
         })}
       </div>
     </div> 

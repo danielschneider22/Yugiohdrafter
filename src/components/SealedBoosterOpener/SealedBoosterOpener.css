@@ -42,8 +42,21 @@
 .BottomBar{
     position: absolute;
     height: 50px;
-    bottom: 0;
+    bottom: 70px;
     background-color: #121512;
     float: right;
     text-align: center;
+    width: 100%;
+}
+
+.ExportButton.btn-success{
+    background-color: #008c68;
+    border-color: #008c68;
+    text-align: center;
+    cursor: pointer;
+}
+
+.DeckCount{
+    font-size: 1vw;
+    margin-top: 10px !important;
 }
