@@ -10,7 +10,7 @@ import { getCardsById } from '../../data/cards/selectors';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import NavBar from '../NavBar/NavBar';
 import { createBooster } from './BoosterCreatorHelper';
-import { getSideboard } from '../../data/deck/selectors';
+import { getDeck, getSideboard } from '../../data/deck/selectors';
 import { addCardsToSideboard, sideboardToDeck } from '../../data/deck/actions';
 import Sidebar from './Sidebar';
 
@@ -25,6 +25,7 @@ function SealedBoosterOpener(props: ParentProps) {
   const cardSets = useSelector(getCardSetsById)
   const boosters = useSelector(getBoosters)
   const sideboard = useSelector(getSideboard)
+  const deck = useSelector(getDeck)
 
   const [showSidebar, toggleShowSidebar] = useState(true)
 
@@ -73,6 +74,19 @@ function SealedBoosterOpener(props: ParentProps) {
     dispatch(sideboardToDeck(card.id, idx))
   }
 
+  function exportToYDK() {
+    const element = document.createElement("a");
+    let exportString = "#main\n"
+    deck.forEach((cardId) => exportString += cardId + "\n")
+    exportString+= "#extra\n!side\n"
+    sideboard.forEach((cardId) => exportString += cardId + "\n")
+    const file = new Blob([exportString], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = "YugiohDeck.ydk";
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+  }
+
   return (
     <div className="maxProportions">
       <NavBar changePage={props.changePage}/>
@@ -89,6 +103,9 @@ function SealedBoosterOpener(props: ParentProps) {
               {(!cards || cards.length === 0) &&
                 <div>Loading cards...</div>
               }
+          </div>
+          <div className="BottomBar col-12 justify-content-center">
+            <div className="btn-sm btn-success col-1 justify-content-center" onClick={exportToYDK}>Export</div>
           </div>
         </div>
       </div>
