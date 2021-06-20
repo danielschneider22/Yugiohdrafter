@@ -14,12 +14,14 @@ export default function deckReducer(state = deckInitialState, action: DeckAction
         return {...state, sideboardIds: [...state.deckIds, ...action.cardIds]}
       }
       case 'deck/deckToSideboard': {
-        const deckIds = action.arrayNum ? state.deckIds.splice(action.arrayNum) : state.deckIds.splice(state.deckIds.findIndex((id) => id === action.cardId))
+        const deckIds= [...state.deckIds]
+        action.arrayNum !== undefined ? deckIds.splice(action.arrayNum, 1) : deckIds.splice(state.deckIds.findIndex((id) => id === action.cardId), 1)
         const sideboardIds = [...state.sideboardIds, action.cardId]
         return {...state, deckIds, sideboardIds}
       }
       case 'deck/sideboardToDeck': {
-        const sideboardIds = action.arrayNum ? state.sideboardIds.splice(action.arrayNum) : state.deckIds.splice(state.deckIds.findIndex((id) => id === action.cardId))
+        const sideboardIds = [...state.sideboardIds]
+        action.arrayNum !== undefined ? sideboardIds.splice(action.arrayNum, 1) : sideboardIds.splice(state.deckIds.findIndex((id) => id === action.cardId), 1)
         const deckIds = [...state.deckIds, action.cardId]
         return {...state, deckIds, sideboardIds}
       }

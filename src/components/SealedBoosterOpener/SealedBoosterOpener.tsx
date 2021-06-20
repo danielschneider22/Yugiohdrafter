@@ -11,7 +11,7 @@ import { getCardSetsById } from '../../data/cardSets/selectors';
 import NavBar from '../NavBar/NavBar';
 import { createBooster } from './BoosterCreatorHelper';
 import { getSideboard } from '../../data/deck/selectors';
-import { addCardsToSideboard } from '../../data/deck/actions';
+import { addCardsToSideboard, sideboardToDeck } from '../../data/deck/actions';
 import Sidebar from './Sidebar';
 
 interface ParentProps{
@@ -25,21 +25,15 @@ function SealedBoosterOpener(props: ParentProps) {
   const cardSets = useSelector(getCardSetsById)
   const boosters = useSelector(getBoosters)
   const sideboard = useSelector(getSideboard)
-  const deck = useSelector(getSideboard)
 
   const [showSidebar, toggleShowSidebar] = useState(true)
 
   const sidebarRef = useRef(null as unknown as HTMLDivElement)
 
   let cards: Card[] = []
-  let deckCards: Card[] = []
 
   sideboard.forEach((cardId) => {
     cards.push(cardsById[cardId])
-  })
-
-  deck.forEach((cardId) => {
-    deckCards.push(cardsById[cardId])
   })
 
   function createBoostersForFetchedSets() {
@@ -75,18 +69,22 @@ function SealedBoosterOpener(props: ParentProps) {
     toggleShowSidebar(!showSidebar)
   }
 
+  function addCardToDeck(card: Card, idx: number) {
+    dispatch(sideboardToDeck(card.id, idx))
+  }
+
   return (
     <div className="maxProportions">
       <NavBar changePage={props.changePage}/>
       <div className="maxProportions">
         <div ref={sidebarRef} className={`ExpandContract maxHeight ${showSidebar ? "ShowSidebar" : "HideSidebar"}`}>
-          <Sidebar activeAreas={["Sideboard", "Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} cards={deckCards} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />
+          <Sidebar activeAreas={["Sideboard", "Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />
         </div>
         <div className={`justify-content-center maxHeight ExpandContract`} style={{width: showSidebar ? "calc(100% - 300px)" : "100%"}}>
             <div className={"ScrollCards"}>
               <div className="CardDisplayAreaTitle">S I D E B O A R D</div>
               {cards && cards.map((card, idx) => {
-                return <img className="Card" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"}/>
+                return <img className="Card" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"} onClick={() => addCardToDeck(card, idx)}/>
               })}
               {(!cards || cards.length === 0) &&
                 <div>Loading cards...</div>
