@@ -74,7 +74,7 @@ function SealedBoosterOpener(props: ParentProps) {
         <div className={`col-2 ExpandContract maxHeight ${!showSidebar && "HideSidebar"}`}>
           <CardPickerRightArea activeAreas={["Sideboard", "Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} />
         </div>
-        <div className={`justify-content-center maxHeight ${showSidebar ? "col-10" : "col-12"}`}>
+        <div className={`justify-content-center maxHeight ExpandContract ${showSidebar ? "col-10" : "col-12"}`}>
             <div className={"ScrollCards"}>
               <div className="CardDisplayAreaTitle">S I D E B O A R D</div>
               {cards && cards.map((card, idx) => {
