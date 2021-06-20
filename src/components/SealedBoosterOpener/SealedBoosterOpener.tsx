@@ -12,6 +12,7 @@ import NavBar from '../NavBar/NavBar';
 import { createBooster } from './BoosterCreatorHelper';
 import { getSideboard } from '../../data/deck/selectors';
 import { addCardsToSideboard } from '../../data/deck/actions';
+import CardPickerRightArea from './CardPickerRightArea';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
@@ -62,16 +63,25 @@ function SealedBoosterOpener(props: ParentProps) {
   }, [cardSets, boosters, cardsById, dispatch]);
 
   return (
-    <div className={"maxProportions"}>
+    <div className="maxProportions">
       <NavBar changePage={props.changePage}/>
-      <div className={"maxProportions scrollCards"}>
-        {cards && cards.map((card, idx) => {
-          return <img className="Card" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"}/>
-        })}
-        {(!cards || cards.length === 0) &&
-          <div>Loading cards...</div>
-        }
+      <div className="row maxProportions">
+        <div className="col-10 justify-content-center maxHeight">
+            <div className={"scrollCards"}>
+              <div className="CardDisplayAreaTitle">SIDEBOARD</div>
+              {cards && cards.map((card, idx) => {
+                return <img className="Card" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"}/>
+              })}
+              {(!cards || cards.length === 0) &&
+                <div>Loading cards...</div>
+              }
+          </div>
+        </div>
+        <div className="col-2">
+          <CardPickerRightArea activeAreas={["Sideboard", "Deck"]} />
+        </div>
       </div>
+      
     </div>
       
     

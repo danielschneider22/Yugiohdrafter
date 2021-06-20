@@ -1,0 +1,36 @@
+.CardPickerRightArea{
+    color: #ffffff75;
+    overflow: auto;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #434648;
+    transition: all 0.5s cubic-bezier(0.6, 0.05, 0.28, 0.91);
+    box-shadow: rgb(0 0 0 / 40%) 0 2px 5px;
+    padding: 3px 24px 3px 24px;
+    z-index: 999;
+    overflow-x: hidden;
+    float: right;
+}
+
+.sideboard-button {
+    cursor: pointer;
+    text-align: center;
+    transform: rotate(
+-270deg
+);
+z-index: 999;
+background-color: #434648 !important;
+    color: white;
+    display: block;
+    width: 10rem;
+    height: 2.3rem;
+    background-color: rgb(37, 39, 39);
+    border-bottom-right-radius: 9px;
+    border-bottom-left-radius: 9px;
+    box-shadow: rgb(0 0 0 / 40%) 0 4px 5px;
+    -webkit-transition: background-color 0.4s ease-out;
+    -moz-transition: background-color 0.4s ease-out;
+    -o-transition: background-color 0.4s ease-out;
+    transition: background-color 0.4s ease-out;
+}
