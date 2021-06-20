@@ -1,6 +1,6 @@
 import './SealedBoosterOpener.css';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Card } from '../../constants/Card';
@@ -25,6 +25,8 @@ function SealedBoosterOpener(props: ParentProps) {
   const cardSets = useSelector(getCardSetsById)
   const boosters = useSelector(getBoosters)
   const sideboard = useSelector(getSideboard)
+
+  const [showSidebar, toggleShowSidebar] = useState(true)
 
   let cards: Card[] = []
 
@@ -53,7 +55,6 @@ function SealedBoosterOpener(props: ParentProps) {
 
   useEffect(() => {
     const isEmptyBooster = Object.values(boosters).some((booster) => !booster.cardIds || booster.cardIds.length === 0)
-
     if(isEmptyBooster) {
       createBoostersForFetchedSets()
     } else if (sideboard.length === 0) {
@@ -62,11 +63,18 @@ function SealedBoosterOpener(props: ParentProps) {
     
   }, [cardSets, boosters, cardsById, dispatch]);
 
+  function toggleSidebar() {
+    toggleShowSidebar(!showSidebar)
+  }
+
   return (
     <div className="maxProportions">
       <NavBar changePage={props.changePage}/>
       <div className="row maxProportions">
-        <div className="col-10 justify-content-center maxHeight">
+        <div className={`col-2 ExpandContract maxHeight ${!showSidebar && "HideSidebar"}`}>
+          <CardPickerRightArea activeAreas={["Sideboard", "Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} />
+        </div>
+        <div className={`justify-content-center maxHeight ${showSidebar ? "col-10" : "col-12"}`}>
             <div className={"ScrollCards"}>
               <div className="CardDisplayAreaTitle">S I D E B O A R D</div>
               {cards && cards.map((card, idx) => {
@@ -76,9 +84,6 @@ function SealedBoosterOpener(props: ParentProps) {
                 <div>Loading cards...</div>
               }
           </div>
-        </div>
-        <div className="col-2">
-          <CardPickerRightArea activeAreas={["Sideboard", "Deck"]} />
         </div>
       </div>
       

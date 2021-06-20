@@ -33,3 +33,8 @@
 .ScrollCards::-webkit-scrollbar-thumb {
     background: #FF0000;
 }
+
+.ExpandContract{
+    transition: all 0.5s cubic-bezier(0.6, 0.05, 0.28, 0.91);
+    background-color: #434648;
+}
