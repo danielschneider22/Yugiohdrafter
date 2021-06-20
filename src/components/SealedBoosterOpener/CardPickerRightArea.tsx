@@ -6,8 +6,8 @@ interface ParentProps{
 
 function CardPickerRightArea(props: ParentProps) {
   return (
-    <div className={"CardPickerRightArea active"}>
-      {/* <div className={"sideboard-button"}>Sideboard</div> */}
+    <div className={"CardPickerRightArea active clearfix"}>
+      <div className={"sideboard-button"}>Sideboard</div>
     </div> 
     
   );

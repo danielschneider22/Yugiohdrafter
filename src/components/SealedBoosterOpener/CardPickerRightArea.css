@@ -11,16 +11,15 @@
     z-index: 999;
     overflow-x: hidden;
     float: right;
+    overflow:visible
 }
 
 .sideboard-button {
     cursor: pointer;
     text-align: center;
-    transform: rotate(
--270deg
-);
-z-index: 999;
-background-color: #434648 !important;
+    transform: rotate(-270deg);
+    z-index: 999;
+    background-color: #434648 !important;
     color: white;
     display: block;
     width: 10rem;
@@ -33,4 +32,18 @@ background-color: #434648 !important;
     -moz-transition: background-color 0.4s ease-out;
     -o-transition: background-color 0.4s ease-out;
     transition: background-color 0.4s ease-out;
+    position: relative;
+    left: -120px;
+    bottom: -100px;
+    
 }
+
+.clearfix:before,
+.clearfix:after {
+    content: ".";    
+    display: block;    
+    height: 0;    
+    overflow: hidden; 
+}
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; } /* IE < 8 */
