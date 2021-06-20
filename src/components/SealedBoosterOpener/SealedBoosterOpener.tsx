@@ -68,7 +68,7 @@ function SealedBoosterOpener(props: ParentProps) {
       <div className="row maxProportions">
         <div className="col-10 justify-content-center maxHeight">
             <div className={"ScrollCards"}>
-              <div className="CardDisplayAreaTitle">SIDEBOARD</div>
+              <div className="CardDisplayAreaTitle">S I D E B O A R D</div>
               {cards && cards.map((card, idx) => {
                 return <img className="Card" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"}/>
               })}

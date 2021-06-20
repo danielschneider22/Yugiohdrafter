@@ -7,10 +7,11 @@
 }
 
 .CardDisplayAreaTitle{
-    font-size: 24px;
+    font-size: 40px;
     margin-bottom: 20px;
     margin-top: 10px;
-    font-family: var(--bs-font-sans-serif);
+    font-family: 'Alegreya', serif;
+    font-family: 'B612', sans-serif;
 }
 
 .Card{
