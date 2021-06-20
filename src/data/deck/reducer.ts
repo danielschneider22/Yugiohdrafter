@@ -10,6 +10,9 @@ export default function deckReducer(state = deckInitialState, action: DeckAction
       case 'deck/addCardToDeck': {
         return {...state, deckIds: [...state.deckIds, action.cardId]}
       }
+      case 'deck/addCardsToSideboard': {
+        return {...state, sideboardIds: [...state.deckIds, ...action.cardIds]}
+      }
       case 'deck/deckToSideboard': {
         const deckIds = action.arrayNum ? state.deckIds.splice(action.arrayNum) : state.deckIds.splice(state.deckIds.findIndex((id) => id === action.cardId))
         const sideboardIds = [...state.sideboardIds, action.cardId]

@@ -10,6 +10,8 @@ import { getCardsById } from '../../data/cards/selectors';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import NavBar from '../NavBar/NavBar';
 import { createBooster } from './BoosterCreatorHelper';
+import { getSideboard } from '../../data/deck/selectors';
+import { addCardsToSideboard } from '../../data/deck/actions';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
@@ -21,15 +23,15 @@ function SealedBoosterOpener(props: ParentProps) {
   const cardsById = useSelector(getCardsById)
   const cardSets = useSelector(getCardSetsById)
   const boosters = useSelector(getBoosters)
+  const sideboard = useSelector(getSideboard)
 
   let cards: Card[] = []
 
-  Object.values(boosters).forEach((booster) => {
-    if(booster.cardIds)
-      cards.push(...booster.cardIds.map((card_id) => cardsById[card_id])!.filter((card) => !!card))
+  sideboard.forEach((cardId) => {
+    cards.push(cardsById[cardId])
   })
 
-  useEffect(() => {
+  function createBoostersForFetchedSets() {
     Object.values(boosters).forEach((booster) => {
       if(!booster.cardIds && cardSets[booster.cardSetName].card_ids) {
         const cardSetIds = cardSets[booster.cardSetName].card_ids!
@@ -38,25 +40,38 @@ function SealedBoosterOpener(props: ParentProps) {
         dispatch(updateBooster(booster.id, {cardIds: randomCards.map((card) => card.id)} ))
       }
     })
-  }, [cardSets, boosters, cardsById, dispatch]);
-
-  function back() {
-    dispatch(resetBoosterCards())
-    props.changePage("LandingPage")
   }
+
+  function populateSideboardWithBoosters() {
+    const sideboardCards: string[] = []
+    Object.values(boosters).forEach((booster) => {
+      sideboardCards.push(...booster.cardIds!)
+    })
+    dispatch(addCardsToSideboard(sideboardCards))
+  }
+
+  useEffect(() => {
+    const isEmptyBooster = Object.values(boosters).some((booster) => !booster.cardIds || booster.cardIds.length === 0)
+
+    if(isEmptyBooster) {
+      createBoostersForFetchedSets()
+    } else if (sideboard.length === 0) {
+      populateSideboardWithBoosters()
+    }
+    
+  }, [cardSets, boosters, cardsById, dispatch]);
 
   return (
     <div className={"maxProportions"}>
       <NavBar changePage={props.changePage}/>
       <div className={"maxProportions scrollCards"}>
-        {cards && cards.map((card) => {
-          return <img className="Card" key={card.name} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"}/>
+        {cards && cards.map((card, idx) => {
+          return <img className="Card" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"}/>
         })}
         {(!cards || cards.length === 0) &&
           <div>Loading cards...</div>
         }
       </div>
-      <button className="BackButton" onClick={back}>Back</button>
     </div>
       
     
