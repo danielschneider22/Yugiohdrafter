@@ -95,10 +95,6 @@
     margin-bottom: 15px;
 }
 
-.Card{
-    padding: 5px;
-}
-
 .DeleteButton.btn-danger{
     cursor: pointer;
     margin-right: 10px;
