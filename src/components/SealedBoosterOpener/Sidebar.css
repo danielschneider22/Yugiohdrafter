@@ -18,12 +18,11 @@
     text-align: center;
     transform: rotate(90deg);
     z-index: 999;
-    background-color: #434648 !important;
+    background-color: #434648;
     color: white;
     display: block;
     width: 10rem;
     height: 2.3rem;
-    background-color: rgb(37, 39, 39);
     border-top-right-radius: 9px;
     border-top-left-radius: 9px;
     box-shadow: rgb(0 0 0 / 40%) 2px -5px 5px;
@@ -41,6 +40,7 @@
 }
 .CardPickerTab.ExtraDeck{
     bottom: -230px;
+    background-color: rgb(37, 39, 39);
 }
 
 .clearfix:before,
