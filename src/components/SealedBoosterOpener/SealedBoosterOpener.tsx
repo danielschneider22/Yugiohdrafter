@@ -1,10 +1,10 @@
 import './SealedBoosterOpener.css';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Card } from '../../constants/Card';
-import { resetBoosterCards, updateBooster } from '../../data/boosters/actions';
+import { updateBooster } from '../../data/boosters/actions';
 import { getBoosters } from '../../data/boosters/selectors';
 import { getCardsById } from '../../data/cards/selectors';
 import { getCardSetsById } from '../../data/cardSets/selectors';
@@ -12,7 +12,7 @@ import NavBar from '../NavBar/NavBar';
 import { createBooster } from './BoosterCreatorHelper';
 import { getSideboard } from '../../data/deck/selectors';
 import { addCardsToSideboard } from '../../data/deck/actions';
-import CardPickerRightArea from './CardPickerRightArea';
+import CardPickerLeftArea from './CardPickerLeftArea';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
@@ -25,13 +25,21 @@ function SealedBoosterOpener(props: ParentProps) {
   const cardSets = useSelector(getCardSetsById)
   const boosters = useSelector(getBoosters)
   const sideboard = useSelector(getSideboard)
+  const deck = useSelector(getSideboard)
 
   const [showSidebar, toggleShowSidebar] = useState(true)
 
+  const sidebarRef = useRef(null as unknown as HTMLDivElement)
+
   let cards: Card[] = []
+  let deckCards: Card[] = []
 
   sideboard.forEach((cardId) => {
     cards.push(cardsById[cardId])
+  })
+
+  deck.forEach((cardId) => {
+    deckCards.push(cardsById[cardId])
   })
 
   function createBoostersForFetchedSets() {
@@ -71,8 +79,8 @@ function SealedBoosterOpener(props: ParentProps) {
     <div className="maxProportions">
       <NavBar changePage={props.changePage}/>
       <div className="row maxProportions">
-        <div className={`col-2 ExpandContract maxHeight ${!showSidebar && "HideSidebar"}`}>
-          <CardPickerRightArea activeAreas={["Sideboard", "Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} />
+        <div ref={sidebarRef} className={`col-2 ExpandContract maxHeight ${!showSidebar && "HideSidebar"}`}>
+          <CardPickerLeftArea activeAreas={["Sideboard", "Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} cards={deckCards} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />
         </div>
         <div className={`justify-content-center maxHeight ExpandContract ${showSidebar ? "col-10" : "col-12"}`}>
             <div className={"ScrollCards"}>
