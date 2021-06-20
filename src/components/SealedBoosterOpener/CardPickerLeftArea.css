@@ -13,7 +13,7 @@
     overflow:visible
 }
 
-.sideboard-button {
+.CardPickerTab {
     cursor: pointer;
     text-align: center;
     transform: rotate(90deg);
@@ -36,6 +36,13 @@
     transition: all 0.5s cubic-bezier(0.6, 0.05, 0.28, 0.91);
 }
 
+.CardPickerTab.MainDeck{
+    bottom: -100px;
+}
+.CardPickerTab.ExtraDeck{
+    bottom: -230px;
+}
+
 .clearfix:before,
 .clearfix:after {
     content: ".";    
@@ -52,6 +59,15 @@
 
 .CardsWrapper{
     position: relative;
+    overflow: hidden;
+    overflow-y: scroll;
+    height: 100%;
+    text-align: center;
+}
+
+.CardsWrapper::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
 }
 
 .CardLeftArea{
@@ -62,4 +78,8 @@
     box-shadow: rgb(0 0 0 / 60%) 0 2px 5px;
     transition: all 0.3s ease-out;
     transform: scale(1.04);
+}
+
+.CardPickerButtonContainer{
+    position: absolute;
 }
