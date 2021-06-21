@@ -29,6 +29,7 @@
     font-size: 18px;
     border: .5px solid #8888885c;
     border-left: 0px;
+    height: 52px;
 }
 .BoosterSelect > select{
     font-size: 16px;
@@ -70,10 +71,9 @@
 .BoosterText{
     width: 25%;
     float: left;
-    line-height: 50px;
     font-size: 1.5vh;
-    overflow: hidden;
-    white-space: nowrap;
+    text-align: center;
+    margin: auto;
 }
 
 ::-webkit-scrollbar {
