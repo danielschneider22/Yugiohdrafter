@@ -61,7 +61,7 @@ const sortCards = (sortType: SortType) => function(a: VisibleCard, b: VisibleCar
       // this is actually wrong. should probably look up the set it's talking about to be accurate but skipping for now
       const aHighestRarity = findHighestRarity(a)
       const bHighestRarity = findHighestRarity(b)
-      return aHighestRarity - bHighestRarity;
+      return bHighestRarity - aHighestRarity;
   }
 }
 
