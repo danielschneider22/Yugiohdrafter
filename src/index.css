@@ -29,3 +29,9 @@ code {
 .row>* {
   padding-left: 0px;
 }
+
+.navbar{
+  padding-top: .25rem !important;
+  padding-bottom: .25rem !important;
+  ;
+}
