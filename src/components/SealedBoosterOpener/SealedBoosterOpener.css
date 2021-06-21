@@ -63,11 +63,24 @@
     border-color: #008c68;
     text-align: center;
     cursor: pointer;
+    line-height: 40px;
+}
+
+.SortButton.btn-secondary{
+    text-align: center;
+    cursor: pointer;
+    line-height: 40px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.SortButton:active{
+    background-color: #353535 !important;
 }
 
 .DeckCount{
     font-size: 1vw;
-    margin-top: 10px !important;
+    line-height: 50px;
+    /* margin-top: 10px !important; */
 }
 
 @media only screen and (max-width: 768px) {

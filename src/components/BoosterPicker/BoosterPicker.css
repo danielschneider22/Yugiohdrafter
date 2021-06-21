@@ -67,8 +67,10 @@
 .BoosterText{
     width: 25%;
     float: left;
-    line-height: 40px;
+    line-height: 50px;
     font-size: 1.5vh;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 ::-webkit-scrollbar {

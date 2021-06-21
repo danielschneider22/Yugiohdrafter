@@ -3,7 +3,7 @@ import './SealedBoosterOpener.css';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Card } from '../../constants/Card';
+import { Card, RarityDict, VisibleCard } from '../../constants/Card';
 import { updateBooster } from '../../data/boosters/actions';
 import { getBoosters } from '../../data/boosters/selectors';
 import { getCardsById } from '../../data/cards/selectors';
@@ -18,6 +18,53 @@ interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
 }
 
+type SortType = "Name" | "Type" | "Rarity";
+
+function findHighestRarity(card: VisibleCard) {
+  let highestRarity = 0
+  card.card_sets.forEach((set) => {
+    const rarityVal = RarityDict[set.set_rarity]
+    if(rarityVal > highestRarity) {
+      highestRarity = rarityVal
+    }
+  })
+  return highestRarity
+}
+
+const sortCards = (sortType: SortType) => function(a: VisibleCard, b: VisibleCard){
+  switch(sortType){
+    case "Name":
+      const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+      const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+
+      // names must be equal
+      return 0;
+    case "Type":
+      const typeA = a.type.toUpperCase(); // ignore upper and lowercase
+      const typeB = b.type.toUpperCase(); // ignore upper and lowercase
+      if (typeA < typeB) {
+        return -1;
+      }
+      if (typeA > typeB) {
+        return 1;
+      }
+
+      // names must be equal
+      return 0;
+    case "Rarity":
+      // this is actually wrong. should probably look up the set it's talking about to be accurate but skipping for now
+      const aHighestRarity = findHighestRarity(a)
+      const bHighestRarity = findHighestRarity(b)
+      return aHighestRarity - bHighestRarity;
+  }
+}
+
 function SealedBoosterOpener(props: ParentProps) {
   const dispatch = useDispatch();
 
@@ -27,15 +74,18 @@ function SealedBoosterOpener(props: ParentProps) {
   const sideboard = useSelector(getSideboard)
   const deck = useSelector(getDeck)
 
-  const [showSidebar, toggleShowSidebar] = useState(true)
+  const [showSidebar, toggleShowSidebar] = useState(false)
+  const [sortType, toggleSortType] = useState("Name" as SortType)
 
   const sidebarRef = useRef(null as unknown as HTMLDivElement)
 
-  let cards: Card[] = []
+  let cards: VisibleCard[] = []
 
-  sideboard.forEach((cardId) => {
-    cards.push(cardsById[cardId])
+  sideboard.forEach((cardId, idx) => {
+    cards.push({...cardsById[cardId], origIdx: idx})
   })
+
+  cards = cards.sort(sortCards(sortType))
 
   function createBoostersForFetchedSets() {
     Object.values(boosters).forEach((booster) => {
@@ -70,8 +120,8 @@ function SealedBoosterOpener(props: ParentProps) {
     toggleShowSidebar(!showSidebar)
   }
 
-  function addCardToDeck(card: Card, idx: number) {
-    dispatch(sideboardToDeck(card.id, idx))
+  function addCardToDeck(card: VisibleCard) {
+    dispatch(sideboardToDeck(card.id, card.origIdx))
   }
 
   function exportToYDK() {
@@ -87,6 +137,20 @@ function SealedBoosterOpener(props: ParentProps) {
     element.click();
   }
 
+  function changeSort() {
+    switch (sortType){
+      case "Name":
+        toggleSortType("Type")
+        break;
+      case "Type":
+        toggleSortType("Rarity")
+        break;
+      case "Rarity":
+        toggleSortType("Name")
+        break;
+    }
+  }
+
   return (
     <div className="maxProportions">
       <NavBar changePage={props.changePage}/>
@@ -98,15 +162,18 @@ function SealedBoosterOpener(props: ParentProps) {
             <div className={"ScrollCards"}>
               <div className="CardDisplayAreaTitle">S I D E B O A R D</div>
               {cards && cards.map((card, idx) => {
-                return <img className="Card" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"} onClick={() => addCardToDeck(card, idx)}/>
+                return <img className="Card" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"} onClick={() => addCardToDeck(card)}/>
               })}
               {(!cards || cards.length === 0) &&
                 <div>Loading cards...</div>
               }
           </div>
           <div className="BottomBar row">
-            <div className="col-4 justify-content-center DeckCount">Deck Count: {deck.length}</div>
-            <div className="col-4"/>
+            <div className="col-6 justify-content-center DeckCount row">
+              <div className="col-4">Sort: </div>
+              <div className="SortButton btn-secondary col-8" onClick={changeSort}>{sortType}</div>
+            </div>
+            <div className="col-2"/>
             <div className="btn-sm btn-success col-4 justify-content-center ExportButton" onClick={exportToYDK}>Export</div>
           </div>
         </div>

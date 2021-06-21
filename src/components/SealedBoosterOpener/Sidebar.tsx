@@ -12,7 +12,7 @@ interface ParentProps{
   parentWidth: number
 }
 
-let parentMaxWidth = 0
+let parentMaxWidth = 250
 
 function Sidebar(props: ParentProps) {
   const {showSidebar, toggleSidebar, activeAreas, parentWidth} = props
@@ -26,10 +26,10 @@ function Sidebar(props: ParentProps) {
     deckCards.push(cardsById[cardId])
   })
   
-  if(parentWidth !== 0) {
+  if(parentWidth) {
     parentMaxWidth = parentWidth
   }
-  const tabsStyle = showSidebar ? {left: parentMaxWidth - 86} : {left: "-35px"}
+  const tabsStyle = showSidebar ? {left: parentMaxWidth - 86} : {left: "-40px"}
 
   function addCardToSideboard(card: Card, idx: number) {
     dispatch(deckToSideboard(card.id, idx))
@@ -38,8 +38,8 @@ function Sidebar(props: ParentProps) {
   return (
     <div className={"Sidebar active clearfix"}>
       {parentMaxWidth && <div className="CardPickerButtonContainer">
-        <div onClick={toggleSidebar} className={"CardPickerTab MainDeck"} style={tabsStyle}>Main Deck</div>
-        <div onClick={toggleSidebar} className={"CardPickerTab ExtraDeck"} style={tabsStyle}>Extra Deck</div>
+        <div onClick={toggleSidebar} className={"CardPickerTab MainDeck"} style={tabsStyle}>Main Deck ({deck.length})</div>
+        <div onClick={toggleSidebar} className={"CardPickerTab ExtraDeck"} style={tabsStyle}>Extra Deck (0)</div>
       </div>
       }
       
