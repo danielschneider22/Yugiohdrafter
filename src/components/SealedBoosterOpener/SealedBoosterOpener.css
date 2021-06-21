@@ -46,8 +46,17 @@
     background-color: #121512;
     float: right;
     text-align: center;
-    width: 100%;
+    width: 25%;
+    border-top-right-radius: 9px;
+    box-shadow: rgb(0 0 0 / 40%) 2px -5px 5px;
 }
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    [class*="BottomBar"] {
+      width: 100%;
+    }
+  }
 
 .ExportButton.btn-success{
     background-color: #008c68;
@@ -60,3 +69,10 @@
     font-size: 1vw;
     margin-top: 10px !important;
 }
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    [class*="DeckCount"] {
+        font-size: 18px;
+    }
+  }

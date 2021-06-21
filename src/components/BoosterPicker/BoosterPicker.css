@@ -67,6 +67,8 @@
 .BoosterText{
     width: 25%;
     float: left;
+    line-height: 40px;
+    font-size: 1.5vh;
 }
 
 ::-webkit-scrollbar {
@@ -97,6 +99,8 @@
 
 .DeleteButton.btn-danger{
     cursor: pointer;
-    margin-right: 10px;
+    margin-right: 5px;
     font-size: .8rem;
+    height: 50px;
+    line-height: 40px;
 }

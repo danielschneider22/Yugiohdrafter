@@ -36,10 +36,10 @@
 }
 
 .CardPickerTab.MainDeck{
-    bottom: -100px;
+    bottom: -140px;
 }
 .CardPickerTab.ExtraDeck{
-    bottom: -230px;
+    bottom: -270px;
     background-color: rgb(37, 39, 39);
 }
 
