@@ -13,56 +13,11 @@ import { createBooster } from './BoosterCreatorHelper';
 import { getDeck, getSideboard } from '../../data/deck/selectors';
 import { addCardsToSideboard, sideboardToDeck } from '../../data/deck/actions';
 import Sidebar from './Sidebar';
+import { sortCards, SortType } from '../../data/cards/utils';
+import BottomBar from '../BottomBar/BottomBar';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
-}
-
-type SortType = "Name" | "Type" | "Rarity";
-
-function findHighestRarity(card: VisibleCard) {
-  let highestRarity = 0
-  card.card_sets.forEach((set) => {
-    const rarityVal = RarityDict[set.set_rarity]
-    if(rarityVal > highestRarity) {
-      highestRarity = rarityVal
-    }
-  })
-  return highestRarity
-}
-
-const sortCards = (sortType: SortType) => function(a: VisibleCard, b: VisibleCard){
-  switch(sortType){
-    case "Name":
-      const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-      const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-      if (nameA < nameB) {
-        return -1;
-      }
-      if (nameA > nameB) {
-        return 1;
-      }
-
-      // names must be equal
-      return 0;
-    case "Type":
-      const typeA = a.type.toUpperCase(); // ignore upper and lowercase
-      const typeB = b.type.toUpperCase(); // ignore upper and lowercase
-      if (typeA < typeB) {
-        return -1;
-      }
-      if (typeA > typeB) {
-        return 1;
-      }
-
-      // names must be equal
-      return 0;
-    case "Rarity":
-      // this is actually wrong. should probably look up the set it's talking about to be accurate but skipping for now
-      const aHighestRarity = findHighestRarity(a)
-      const bHighestRarity = findHighestRarity(b)
-      return bHighestRarity - aHighestRarity;
-  }
 }
 
 function SealedBoosterOpener(props: ParentProps) {
@@ -72,7 +27,6 @@ function SealedBoosterOpener(props: ParentProps) {
   const cardSets = useSelector(getCardSetsById)
   const boosters = useSelector(getBoosters)
   const sideboard = useSelector(getSideboard)
-  const deck = useSelector(getDeck)
 
   const [showSidebar, toggleShowSidebar] = useState(false)
   const [sortType, toggleSortType] = useState("Name" as SortType)
@@ -124,33 +78,6 @@ function SealedBoosterOpener(props: ParentProps) {
     dispatch(sideboardToDeck(card.id, card.origIdx))
   }
 
-  function exportToYDK() {
-    const element = document.createElement("a");
-    let exportString = "#main\n"
-    deck.forEach((cardId) => exportString += cardId + "\n")
-    exportString+= "#extra\n!side\n"
-    sideboard.forEach((cardId) => exportString += cardId + "\n")
-    const file = new Blob([exportString], {type: 'text/plain'});
-    element.href = URL.createObjectURL(file);
-    element.download = "YugiohDeck.ydk";
-    document.body.appendChild(element); // Required for this to work in FireFox
-    element.click();
-  }
-
-  function changeSort() {
-    switch (sortType){
-      case "Name":
-        toggleSortType("Type")
-        break;
-      case "Type":
-        toggleSortType("Rarity")
-        break;
-      case "Rarity":
-        toggleSortType("Name")
-        break;
-    }
-  }
-
   return (
     <div className="maxProportions">
       <NavBar changePage={props.changePage}/>
@@ -168,17 +95,12 @@ function SealedBoosterOpener(props: ParentProps) {
                 <div>Loading cards...</div>
               }
           </div>
-          <div className="BottomBar row">
-            <div className="col-6 justify-content-center DeckCount row">
-              <div className="col-4">Sort: </div>
-              <div className="SortButton btn-secondary col-8" onClick={changeSort}>{sortType}</div>
-            </div>
-            <div className="col-2"/>
-            <div className="btn-sm btn-success col-4 justify-content-center ExportButton" onClick={exportToYDK}>Export</div>
-          </div>
+          <BottomBar 
+            sortType={sortType}
+            toggleSortType={toggleSortType}
+          />
         </div>
       </div>
-      
     </div>
       
     

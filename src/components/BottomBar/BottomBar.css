@@ -1,0 +1,50 @@
+.BottomBar{
+    position: absolute;
+    height: 50px;
+    bottom: 68px;
+    background-color: #121512;
+    float: right;
+    text-align: center;
+    width: 25%;
+    border-top-right-radius: 9px;
+    box-shadow: rgb(0 0 0 / 40%) 2px -5px 5px;
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    [class*="BottomBar"] {
+      width: 100%;
+    }
+  }
+
+.DeckCount{
+    font-size: 1vw;
+    line-height: 50px;
+    /* margin-top: 10px !important; */
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    [class*="DeckCount"] {
+        font-size: 18px;
+    }
+}
+
+.SortButton.btn-secondary{
+    text-align: center;
+    cursor: pointer;
+    line-height: 40px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.SortButton:active{
+    background-color: #353535 !important;
+}
+
+.ExportButton.btn-success{
+    background-color: #008c68;
+    border-color: #008c68;
+    text-align: center;
+    cursor: pointer;
+    line-height: 40px;
+}
