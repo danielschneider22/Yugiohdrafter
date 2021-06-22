@@ -3,18 +3,19 @@ import './SealedBoosterOpener.css';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Card, RarityDict, VisibleCard } from '../../constants/Card';
+import { VisibleCard } from '../../constants/Card';
 import { updateBooster } from '../../data/boosters/actions';
 import { getBoosters } from '../../data/boosters/selectors';
 import { getCardsById } from '../../data/cards/selectors';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import NavBar from '../NavBar/NavBar';
 import { createBooster } from './BoosterCreatorHelper';
-import { getDeck, getSideboard } from '../../data/deck/selectors';
+import { getSideboard } from '../../data/deck/selectors';
 import { addCardsToSideboard, sideboardToDeck } from '../../data/deck/actions';
 import Sidebar from './Sidebar';
 import { sortCards, SortType } from '../../data/cards/utils';
 import BottomBar from '../BottomBar/BottomBar';
+import { createBoostersForFetchedSets, populateSideboardWithBoosters } from '../../data/boosters/operations';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
@@ -41,31 +42,12 @@ function SealedBoosterOpener(props: ParentProps) {
 
   cards = cards.sort(sortCards(sortType))
 
-  function createBoostersForFetchedSets() {
-    Object.values(boosters).forEach((booster) => {
-      if(!booster.cardIds && cardSets[booster.cardSetName].card_ids) {
-        const cardSetIds = cardSets[booster.cardSetName].card_ids!
-        const cardSetCards = cardSetIds.map((card_id) => cardsById[card_id]).filter((card) => !!card)
-        const randomCards = createBooster(cardSetCards, booster.cardSetName);
-        dispatch(updateBooster(booster.id, {cardIds: randomCards.map((card) => card.id)} ))
-      }
-    })
-  }
-
-  function populateSideboardWithBoosters() {
-    const sideboardCards: string[] = []
-    Object.values(boosters).forEach((booster) => {
-      sideboardCards.push(...booster.cardIds!)
-    })
-    dispatch(addCardsToSideboard(sideboardCards))
-  }
-
+  //create boosters when all sets for boosters are fetched
   useEffect(() => {
-    const isEmptyBooster = Object.values(boosters).some((booster) => !booster.cardIds || booster.cardIds.length === 0)
-    if(isEmptyBooster) {
-      createBoostersForFetchedSets()
-    } else if (sideboard.length === 0) {
-      populateSideboardWithBoosters()
+    const allCardSetCardsFetched = Object.values(boosters).every((booster) => cardSets[booster.cardSetName].card_ids && cardSets[booster.cardSetName].card_ids!.length > 0)
+    if(allCardSetCardsFetched && sideboard.length === 0) {
+      const sideboardCards = createBoostersForFetchedSets(boosters, cardSets, cardsById, dispatch)
+      dispatch(addCardsToSideboard(sideboardCards))
     }
     
   }, [cardSets, boosters, cardsById, dispatch]);
