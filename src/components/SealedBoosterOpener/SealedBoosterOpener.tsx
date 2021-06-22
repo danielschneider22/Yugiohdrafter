@@ -4,18 +4,17 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { VisibleCard } from '../../constants/Card';
-import { updateBooster } from '../../data/boosters/actions';
 import { getBoosters } from '../../data/boosters/selectors';
 import { getCardsById } from '../../data/cards/selectors';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import NavBar from '../NavBar/NavBar';
-import { createBooster } from './BoosterCreatorHelper';
 import { getSideboard } from '../../data/deck/selectors';
 import { addCardsToSideboard, sideboardToDeck } from '../../data/deck/actions';
-import Sidebar from './Sidebar';
 import { sortCards, SortType } from '../../data/cards/utils';
 import BottomBar from '../BottomBar/BottomBar';
 import { createBoostersForFetchedSets } from '../../data/boosters/operations';
+import Sidebar from '../Sidebar/Sidebar';
+import MainCardArea from '../MainCardArea/MainCardArea';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
@@ -30,8 +29,7 @@ function SealedBoosterOpener(props: ParentProps) {
   const sideboard = useSelector(getSideboard)
 
   const [showSidebar, toggleShowSidebar] = useState(false)
-  const [sortType, toggleSortType] = useState("Name" as SortType)
-
+  
   const sidebarRef = useRef(null as unknown as HTMLDivElement)
 
   let cards: VisibleCard[] = []
@@ -39,8 +37,6 @@ function SealedBoosterOpener(props: ParentProps) {
   sideboard.forEach((cardId, idx) => {
     cards.push({...cardsById[cardId], origIdx: idx})
   })
-
-  cards = cards.sort(sortCards(sortType))
 
   //create boosters when all sets for boosters are fetched
   useEffect(() => {
@@ -61,26 +57,18 @@ function SealedBoosterOpener(props: ParentProps) {
   }
 
   return (
-    <div className="maxProportions">
+    <div className="maxWH">
       <NavBar changePage={props.changePage}/>
-      <div className="maxProportions">
+      <div className="maxWH">
         <div ref={sidebarRef} className={`ExpandContract maxHeight ${showSidebar ? "ShowSidebar" : "HideSidebar"}`}>
           <Sidebar activeAreas={["Sideboard", "Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />
         </div>
         <div className={`justify-content-center maxHeight ExpandContract`} style={{position: "relative", width: showSidebar ? "calc(100% - 250px)" : "100%"}}>
-            <div className={"ScrollCards"}>
-              <div className="CardDisplayAreaTitle">S I D E B O A R D</div>
-              {cards && cards.map((card, idx) => {
-                return <img className="Card" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"} onClick={() => addCardToDeck(card)}/>
-              })}
-              {(!cards || cards.length === 0) &&
-                <div>Loading cards...</div>
-              }
-          </div>
-          <BottomBar 
-            sortType={sortType}
-            toggleSortType={toggleSortType}
-          />
+            <MainCardArea 
+              unsortedCards={cards}
+              title={"S I D E B O A R D"}
+              cardClicked={addCardToDeck}
+            />
         </div>
       </div>
     </div>

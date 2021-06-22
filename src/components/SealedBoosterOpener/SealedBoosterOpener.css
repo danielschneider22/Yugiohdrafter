@@ -6,34 +6,6 @@
     height: 100%;
 }
 
-.CardDisplayAreaTitle{
-    font-size: 40px;
-    margin-bottom: 20px;
-    margin-top: 10px;
-    font-family: 'Alegreya', serif;
-    font-family: 'B612', sans-serif;
-}
-
-.Card{
-    padding: 5px;
-    cursor: pointer;
-}
-
-.Card:hover{
-    box-shadow: rgb(0 0 0 / 60%) 0 2px 5px;
-    transition: all 0.3s ease-out;
-    transform: scale(1.04);
-}
-
-.ScrollCards::-webkit-scrollbar {
-    width: 0;  /* Remove scrollbar space */
-    background: transparent;  /* Optional: just make scrollbar invisible */
-}
-/* Optional: show position indicator in red */
-.ScrollCards::-webkit-scrollbar-thumb {
-    background: #FF0000;
-}
-
 .ExpandContract{
     transition: all 0.5s cubic-bezier(0.6, 0.05, 0.28, 0.91);
     display: inline-block;
