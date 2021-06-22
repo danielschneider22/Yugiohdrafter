@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Card } from '../../constants/Card';
 import { getCardsById } from '../../data/cards/selectors';
 import { deckToSideboard } from '../../data/deck/actions';
-import { getDeck, getSideboard } from '../../data/deck/selectors';
+import { getDeck } from '../../data/deck/selectors';
 import './Sidebar.css';
 
 interface ParentProps{
@@ -15,7 +15,7 @@ interface ParentProps{
 let parentMaxWidth = 250
 
 function Sidebar(props: ParentProps) {
-  const {showSidebar, toggleSidebar, activeAreas, parentWidth} = props
+  const {showSidebar, toggleSidebar, parentWidth} = props
   const cardsById = useSelector(getCardsById)
   const dispatch = useDispatch();
   const deck = useSelector(getDeck)

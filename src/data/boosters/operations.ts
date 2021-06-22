@@ -4,7 +4,6 @@ import { Booster } from "../../constants/Booster";
 import { Card } from "../../constants/Card";
 import { CardSet } from "../../constants/CardSet";
 import { addCards } from "../cards/actions";
-import { addCardsToSideboard } from "../deck/actions";
 import { updateBooster } from "./actions";
 
 export async function fetchCardsForBooster(dispatch: Dispatch<any>, set_name: string, boosterId: string) {

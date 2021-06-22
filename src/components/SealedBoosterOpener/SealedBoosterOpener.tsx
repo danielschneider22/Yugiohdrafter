@@ -10,8 +10,6 @@ import { getCardSetsById } from '../../data/cardSets/selectors';
 import NavBar from '../NavBar/NavBar';
 import { getSideboard } from '../../data/deck/selectors';
 import { addCardsToSideboard, sideboardToDeck } from '../../data/deck/actions';
-import { sortCards, SortType } from '../../data/cards/utils';
-import BottomBar from '../BottomBar/BottomBar';
 import { createBoostersForFetchedSets } from '../../data/boosters/operations';
 import Sidebar from '../Sidebar/Sidebar';
 import MainCardArea from '../MainCardArea/MainCardArea';
@@ -46,7 +44,7 @@ function SealedBoosterOpener(props: ParentProps) {
       dispatch(addCardsToSideboard(sideboardCards))
     }
     
-  }, [cardSets, boosters, cardsById, dispatch]);
+  }, [cardSets, boosters, cardsById, dispatch, sideboard]);
 
   function toggleSidebar() {
     toggleShowSidebar(!showSidebar)
