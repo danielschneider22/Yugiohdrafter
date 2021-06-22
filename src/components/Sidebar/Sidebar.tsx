@@ -39,10 +39,10 @@ function Sidebar(props: ParentProps) {
     <div className={"Sidebar active clearfix"}>
       {parentMaxWidth && <div className="CardPickerButtonContainer">
         <div onClick={toggleSidebar} className={"CardPickerTab MainDeck"} style={tabsStyle}>
-          Main Deck ({deck.length})
+          Main Deck: {deck.length}
           <span className="TabArrow">{showSidebar ? "▼" :"▲"}</span>
         </div>
-        <div onClick={toggleSidebar} className={"CardPickerTab ExtraDeck"} style={tabsStyle}>Extra Deck (0)</div>
+        <div onClick={toggleSidebar} className={"CardPickerTab ExtraDeck"} style={tabsStyle}>Extra Deck: 0</div>
       </div>
       }
       

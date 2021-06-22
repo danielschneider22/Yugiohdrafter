@@ -34,6 +34,8 @@
     bottom: -100px;
     transition: all 0.5s cubic-bezier(0.6, 0.05, 0.28, 0.91);
     padding-top: 3px;
+    -webkit-transform-origin: 50% 51%;
+    transform-origin: 50% 51%;
 }
 
 .CardPickerTab.MainDeck{
