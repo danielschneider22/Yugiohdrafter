@@ -15,7 +15,7 @@ import { addCardsToSideboard, sideboardToDeck } from '../../data/deck/actions';
 import Sidebar from './Sidebar';
 import { sortCards, SortType } from '../../data/cards/utils';
 import BottomBar from '../BottomBar/BottomBar';
-import { createBoostersForFetchedSets, populateSideboardWithBoosters } from '../../data/boosters/operations';
+import { createBoostersForFetchedSets } from '../../data/boosters/operations';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
