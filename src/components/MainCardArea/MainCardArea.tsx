@@ -8,11 +8,12 @@ import { sortCards, SortType } from '../../data/cards/utils';
 interface ParentProps{
     unsortedCards: VisibleCard[],
     title: string,
-    cardClicked: (card: VisibleCard) => void
+    cardClicked: (card: VisibleCard) => void,
+    loadedCards: boolean
 }
 
 function MainCardArea(props: ParentProps) {
-  const { unsortedCards, cardClicked } = props
+  const { unsortedCards, cardClicked, loadedCards } = props
   const [sortType, toggleSortType] = useState("Name" as SortType)
 
   const cards = unsortedCards.sort(sortCards(sortType))
@@ -23,7 +24,7 @@ function MainCardArea(props: ParentProps) {
         {cards && cards.map((card, idx) => {
             return <img className="Card" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"} onClick={() => cardClicked(card)}/>
         })}
-        {(!cards || cards.length === 0) &&
+        {(!cards || cards.length === 0) && !loadedCards &&
             <div>Loading cards...</div>
         }
         <BottomBar 

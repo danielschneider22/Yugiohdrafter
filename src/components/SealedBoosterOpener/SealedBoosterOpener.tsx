@@ -78,6 +78,7 @@ function SealedBoosterOpener(props: ParentProps) {
               unsortedCards={cards}
               title={"S I D E B O A R D"}
               cardClicked={addCardToDeck}
+              loadedCards={populatedSideboard}
             />
         </div>
       </div>

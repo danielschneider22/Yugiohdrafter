@@ -18,6 +18,7 @@ function NavBar(props: ParentProps) {
                 <ul>
                 <li><a className="nav-link scrollto active" href="#hero">Home</a></li>
                 <li><a className="nav-link scrollto" href="#about">Join Draft</a></li>
+                <li><a className="nav-link scrollto" href="#about">Create Custom Booster</a></li>
                 <li className="dropdown"><a href="#"><span>Quick Draft</span> <i className="bi bi-chevron-down"></i></a>
                     <ul className="">
                     <li><a href="#">Retro Draft</a></li>
