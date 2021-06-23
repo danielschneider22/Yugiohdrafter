@@ -18,7 +18,7 @@
     text-align: center;
     transform: rotate(90deg);
     z-index: 999;
-    background-color: #434648;
+    background-color: #151515;
     color: white;
     display: block;
     width: 10rem;
@@ -38,12 +38,13 @@
     transform-origin: 50% 51%;
 }
 
-.CardPickerTab.MainDeck{
-    bottom: -140px;
+
+.CardPickerTab.ActiveTab{
+    background-color: rgb(67 70 72);
 }
-.CardPickerTab.ExtraDeck{
-    bottom: -270px;
-    background-color: rgb(37, 39, 39);
+
+.CardPickerTab.InactiveTab:hover{
+    background-color: #6d4e15;
 }
 
 .clearfix:before,

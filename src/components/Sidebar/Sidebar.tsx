@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card } from '../../constants/Card';
 import { getCardsById } from '../../data/cards/selectors';
@@ -6,8 +7,10 @@ import { getDeck } from '../../data/deck/selectors';
 import './Sidebar.css';
 import Tab from './Tab';
 
+export type TabType = "Main Deck" | "Sideboard" | "Extra Deck"
+
 interface ParentProps{
-  activeAreas: ("Main Deck" | "Sideboard" | "Extra Deck")[]
+  shownTabs: (TabType)[]
   toggleSidebar: () => void
   showSidebar: boolean
   parentWidth: number
@@ -16,10 +19,11 @@ interface ParentProps{
 let parentMaxWidth = 250
 
 function Sidebar(props: ParentProps) {
-  const {showSidebar, toggleSidebar, parentWidth, activeAreas} = props
+  const {showSidebar, toggleSidebar, parentWidth, shownTabs} = props
   const cardsById = useSelector(getCardsById)
   const dispatch = useDispatch();
   const deck = useSelector(getDeck)
+  const [activeTab, setActiveTab] = useState(shownTabs[0])
 
   let deckCards: Card[] = []
 
@@ -39,13 +43,16 @@ function Sidebar(props: ParentProps) {
   return (
     <div className={"Sidebar active clearfix"}>
       {parentMaxWidth && <div className="CardPickerButtonContainer">
-        {activeAreas.map((areaName, idx) => {
+        {shownTabs.map((tabName, idx) => {
           return(
             <Tab 
+              tabName={tabName}
               tabClicked={toggleSidebar}
               tabsStyle={{...tabsStyle, bottom: -140 + (-130 * idx)}}
-              text={areaName + ":" + deck.length}
+              text={tabName + ":" + deck.length}
               showSidebar={showSidebar}
+              isActive={activeTab === tabName}
+              setActiveTab={setActiveTab}
             />
           )
         })}
