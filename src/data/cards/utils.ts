@@ -51,5 +51,5 @@ export const sortCards = (sortType: SortType) => function(a: VisibleCard, b: Vis
   }
 
 export const isExtraDeckCard = (card: Card | VisibleCard) => {
-  return card.type.includes("XYZ Monster") || card.type.includes("Fusion Monster") || card.type.includes("Synchro Monster")
+  return card.type.includes("XYZ Monster") || card.type.includes("Fusion Monster") || card.type.includes("Synchro Monster")|| card.type.includes("Link Monster")
 }
