@@ -83,9 +83,9 @@ function LandingPage(props: ParentProps) {
               Pick the Format and booster pack sets.
           </div>
           <div className="btn-group btn-group-toggle FormatType justify-content-center" data-toggle="buttons">
-            {/* <label className="btn btn-secondary" onClick={() => setFormat("draft")}>
+            <label className="btn btn-secondary" onClick={() => setFormat("draft")}>
               <input type="radio" id="draft" name="format" value="draft"  checked={format === "draft"} autoComplete="off" onClick={() => setFormat("draft")} /> Draft
-            </label> */}
+            </label>
             <label className="btn btn-secondary active" onClick={() => setFormat("sealed")}>
               <input type="radio" id="sealed" name="format" value="sealed" autoComplete="off" checked={format === "sealed"} onClick={() => setFormat("sealed")}/> Sealed
             </label>
