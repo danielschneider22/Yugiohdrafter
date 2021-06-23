@@ -21,16 +21,18 @@ function App() {
 
   return (
     <Provider store={store}>
-      { page === "LandingPage" && 
-        <LandingPage 
-          changePage={changePage}
-        />
-      }
-      { page === "SealedBooster" && 
-        <SealedBoosterOpener 
-          changePage={changePage}
-        />
-      }
+      <div className={"AppWrapper maxWH"}>
+        { page === "LandingPage" && 
+          <LandingPage 
+            changePage={changePage}
+          />
+        }
+        { page === "SealedBooster" && 
+          <SealedBoosterOpener 
+            changePage={changePage}
+          />
+        }
+      </div>
       
     </Provider>
   );

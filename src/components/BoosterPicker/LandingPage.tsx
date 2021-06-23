@@ -77,7 +77,7 @@ function LandingPage(props: ParentProps) {
   return (
     <div>
       <NavBar changePage={props.changePage}/>
-      <div className="BoosterPickerWrapper d-flex justify-content-center mt-5">
+      <div className="BoosterPickerWrapper d-flex justify-content-center">
         <div className="BoosterWindowedArea p-2 bd-highlight">
           <div className="InfoBlurb">
               Pick the Format and booster pack sets.

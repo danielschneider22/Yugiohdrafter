@@ -15,6 +15,10 @@ code {
     monospace;
 }
 
+.AppWrapper{
+  background: url(./assets/yugiohbg.png) top center no-repeat;
+}
+
 .maxWH{
   height: 100%;
   width: 100%;
