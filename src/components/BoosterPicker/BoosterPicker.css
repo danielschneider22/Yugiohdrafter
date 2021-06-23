@@ -105,6 +105,12 @@
     overflow-y: auto;
     height: 300px;
 }
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    [class*="BoostersWrapper"] {
+        height: 200px;
+    }
+  }
 .AddBoosterButton{
     margin-bottom: 15px;
 }
