@@ -50,6 +50,35 @@ export function sideboardToDeck(cardId: string, arrayNum?: number) {
     }
 }
 
+export interface SideboardToExtraDeck {
+    type: 'deck/sideboardToExtraDeck',
+    cardId: string
+    arrayNum?: number
+}
+
+export function sideboardToExtraDeck(cardId: string, arrayNum?: number) {
+    return {
+        type: 'deck/sideboardToExtraDeck',
+        cardId,
+        arrayNum
+    }
+}
+
+export interface ExtraDeckToSideboard {
+    type: 'deck/extraDeckToSideboard',
+    cardId: string,
+    arrayNum?: number
+}
+
+export function extraDeckToSideboard(cardId: string, arrayNum?: number) {
+    return {
+        type: 'deck/extraDeckToSideboard',
+        cardId,
+        arrayNum
+    }
+}
+
+
 export interface ResetDeckAndSideboard {
     type: 'deck/resetDeckAndSideboard',
 }
@@ -60,4 +89,4 @@ export function resetDeckAndSideboard() {
     }
 }
 
-export type DeckActions = AddCardToDeck | DeckToSideboard | SideboardToDeck | ResetDeckAndSideboard | AddCardsToSideboard;
+export type DeckActions = AddCardToDeck | DeckToSideboard | SideboardToDeck | ResetDeckAndSideboard | AddCardsToSideboard | ExtraDeckToSideboard | SideboardToExtraDeck;

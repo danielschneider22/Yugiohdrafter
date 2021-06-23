@@ -84,10 +84,10 @@ function LandingPage(props: ParentProps) {
           </div>
           <div className="btn-group btn-group-toggle FormatType justify-content-center" data-toggle="buttons">
             <label className="btn btn-secondary" onClick={() => setFormat("draft")}>
-              <input type="radio" id="draft" name="format" value="draft"  checked={format === "draft"} autoComplete="off" /> Draft
+              <input type="radio" id="draft" name="format" value="draft"  checked={format === "draft"} autoComplete="off" onClick={() => setFormat("draft")} /> Draft
             </label>
             <label className="btn btn-secondary active" onClick={() => setFormat("sealed")}>
-              <input type="radio" id="sealed" name="format" value="sealed" autoComplete="off" checked={format === "sealed"} /> Sealed
+              <input type="radio" id="sealed" name="format" value="sealed" autoComplete="off" checked={format === "sealed"} onClick={() => setFormat("sealed")}/> Sealed
             </label>
           </div>
           {boosterArea}

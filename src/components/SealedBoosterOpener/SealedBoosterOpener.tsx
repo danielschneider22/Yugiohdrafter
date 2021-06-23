@@ -9,14 +9,17 @@ import { getCardsById } from '../../data/cards/selectors';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import NavBar from '../NavBar/NavBar';
 import { getSideboard } from '../../data/deck/selectors';
-import { addCardsToSideboard, sideboardToDeck } from '../../data/deck/actions';
+import { addCardsToSideboard, sideboardToDeck, sideboardToExtraDeck } from '../../data/deck/actions';
 import { createBoostersForFetchedSets } from '../../data/boosters/operations';
 import Sidebar from '../Sidebar/Sidebar';
 import MainCardArea from '../MainCardArea/MainCardArea';
+import { isExtraDeckCard } from '../../data/cards/utils';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
 }
+
+let populatedSideboard = false
 
 function SealedBoosterOpener(props: ParentProps) {
   const dispatch = useDispatch();
@@ -36,12 +39,17 @@ function SealedBoosterOpener(props: ParentProps) {
     cards.push({...cardsById[cardId], origIdx: idx})
   })
 
+  useEffect(() => {
+    populatedSideboard = false
+  }, []);
+
   //create boosters when all sets for boosters are fetched
   useEffect(() => {
     const allCardSetCardsFetched = Object.values(boosters).every((booster) => cardSets[booster.cardSetName].card_ids && cardSets[booster.cardSetName].card_ids!.length > 0)
-    if(allCardSetCardsFetched && sideboard.length === 0) {
+    if(allCardSetCardsFetched && sideboard.length === 0 && !populatedSideboard) {
       const sideboardCards = createBoostersForFetchedSets(boosters, cardSets, cardsById, dispatch)
       dispatch(addCardsToSideboard(sideboardCards))
+      populatedSideboard = true
     }
     
   }, [cardSets, boosters, cardsById, dispatch, sideboard]);
@@ -51,7 +59,11 @@ function SealedBoosterOpener(props: ParentProps) {
   }
 
   function addCardToDeck(card: VisibleCard) {
-    dispatch(sideboardToDeck(card.id, card.origIdx))
+    if(isExtraDeckCard(card)) {
+      dispatch(sideboardToExtraDeck(card.id, card.origIdx))
+    } else {
+      dispatch(sideboardToDeck(card.id, card.origIdx))
+    }
   }
 
   return (

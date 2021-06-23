@@ -1,4 +1,4 @@
-import { RarityDict, VisibleCard } from "../../constants/Card";
+import { Card, RarityDict, VisibleCard } from "../../constants/Card";
 
 export type SortType = "Name" | "Type" | "Rarity";
 
@@ -49,3 +49,7 @@ export const sortCards = (sortType: SortType) => function(a: VisibleCard, b: Vis
         return diff !== 0 ? diff : sortByName(a, b)
     }
   }
+
+export const isExtraDeckCard = (card: Card | VisibleCard) => {
+  return card.type.includes("XYZ Monster") || card.type.includes("Fusion Monster") || card.type.includes("Synchro Monster")
+}

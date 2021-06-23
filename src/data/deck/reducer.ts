@@ -3,6 +3,14 @@ import { DeckActions } from './actions';
 export const deckInitialState = {
     deckIds: [],
     sideboardIds: [],
+    extraDeckIds: []
+}
+
+function spliceAToArrayB(a: string[], b: string[], cardId: string, arrayNum?: number) {
+  const newA = [...a]
+  arrayNum !== undefined ? newA.splice(arrayNum, 1) : newA.splice(a.findIndex((id) => id === cardId), 1)
+  const newB = [...b, cardId]
+  return { newA, newB }
 }
 
 export default function deckReducer(state = deckInitialState, action: DeckActions) {
@@ -14,16 +22,20 @@ export default function deckReducer(state = deckInitialState, action: DeckAction
         return {...state, sideboardIds: [...state.deckIds, ...action.cardIds]}
       }
       case 'deck/deckToSideboard': {
-        const deckIds= [...state.deckIds]
-        action.arrayNum !== undefined ? deckIds.splice(action.arrayNum, 1) : deckIds.splice(state.deckIds.findIndex((id) => id === action.cardId), 1)
-        const sideboardIds = [...state.sideboardIds, action.cardId]
-        return {...state, deckIds, sideboardIds}
+        const newVals = spliceAToArrayB(state.deckIds, state.sideboardIds, action.cardId, action.arrayNum)
+        return {...state, deckIds: newVals.newA, sideboardIds: newVals.newB}
       }
       case 'deck/sideboardToDeck': {
-        const sideboardIds = [...state.sideboardIds]
-        action.arrayNum !== undefined ? sideboardIds.splice(action.arrayNum, 1) : sideboardIds.splice(state.deckIds.findIndex((id) => id === action.cardId), 1)
-        const deckIds = [...state.deckIds, action.cardId]
-        return {...state, deckIds, sideboardIds}
+        const newVals = spliceAToArrayB(state.sideboardIds, state.deckIds, action.cardId, action.arrayNum)
+        return {...state, sideboardIds: newVals.newA, deckIds: newVals.newB}
+      }
+      case 'deck/sideboardToExtraDeck': {
+        const newVals = spliceAToArrayB(state.sideboardIds, state.extraDeckIds, action.cardId, action.arrayNum)
+        return {...state, sideboardIds: newVals.newA, extraDeckIds: newVals.newB}
+      }
+      case 'deck/extraDeckToSideboard': {
+        const newVals = spliceAToArrayB(state.extraDeckIds, state.sideboardIds, action.cardId, action.arrayNum)
+        return {...state, extraDeckIds: newVals.newA, sideboardIds: newVals.newB}
       }
       case 'deck/resetDeckAndSideboard': {
         return {
