@@ -7,11 +7,13 @@ import LandingPage from './components/BoosterPicker/LandingPage';
 import { useState } from 'react';
 import './bootstrap.min.css';
 
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+// undefined if browser does not have redux devtools installed
+const reduxDevtoolsCompose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+
 const store = createStore(
   rootReducer,
   initState as any,
-  composeEnhancers(),
+  ...reduxDevtoolsCompose ? [reduxDevtoolsCompose()] : [],
 );
 
 function App() {
