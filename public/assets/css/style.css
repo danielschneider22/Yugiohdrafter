@@ -374,12 +374,12 @@ section {
 
 .navbar-mobile a {
   padding: 10px 20px;
-  font-size: 15px;
-  color: white;
+  font-size: 18px;
+  color: rgb(63, 63, 63);
 }
 
 .navbar-mobile a:hover, .navbar-mobile .active, .navbar-mobile li:hover > a {
-  color: white;
+  color: rgb(78, 78, 78);
 }
 
 .navbar-mobile .getstarted {

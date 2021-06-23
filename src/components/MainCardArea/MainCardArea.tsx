@@ -22,7 +22,7 @@ function MainCardArea(props: ParentProps) {
     <div className={"ScrollCards"}>
         <div className="CardDisplayAreaTitle">S I D E B O A R D</div>
         {cards && cards.map((card, idx) => {
-            return <img className="Card" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"} onClick={() => cardClicked(card)}/>
+            return <img className="VisibleCard" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"} onClick={() => cardClicked(card)}/>
         })}
         {(!cards || cards.length === 0) && !loadedCards &&
             <div>Loading cards...</div>
