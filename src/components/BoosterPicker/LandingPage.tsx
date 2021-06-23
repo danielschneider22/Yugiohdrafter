@@ -75,10 +75,10 @@ function LandingPage(props: ParentProps) {
   const boosterArea = cardSets.length === 0 ? loadingBoosters : boosterChooserArea
 
   return (
-    <div>
+    <div className="maxWH">
       <NavBar changePage={props.changePage}/>
-      <div className="BoosterPickerWrapper d-flex justify-content-center">
-        <div className="BoosterWindowedArea p-2 bd-highlight">
+      <div className="BoosterPickerWrapper d-flex justify-content-center row h-100">
+        <div className="BoosterWindowedArea p-2 bd-highlight col-sm-6 my-auto">
           <div className="InfoBlurb">
               Pick the Format and booster pack sets.
           </div>
