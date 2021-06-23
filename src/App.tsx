@@ -5,7 +5,7 @@ import { initState, rootReducer } from './data/reducers';
 import SealedBoosterOpener from './components/SealedBoosterOpener/SealedBoosterOpener';
 import LandingPage from './components/BoosterPicker/LandingPage';
 import { useState } from 'react';
-import './bootstrap.min.css';
+// import './bootstrap.min.css';
 
 // undefined if browser does not have redux devtools installed
 const reduxDevtoolsCompose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
