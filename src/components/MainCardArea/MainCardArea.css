@@ -12,6 +12,7 @@
     margin-top: 10px;
     font-family: 'Alegreya', serif;
     font-family: 'B612', sans-serif;
+    white-space: nowrap;
 }
 
 .VisibleCard{
