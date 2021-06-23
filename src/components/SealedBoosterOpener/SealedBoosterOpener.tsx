@@ -73,7 +73,7 @@ function SealedBoosterOpener(props: ParentProps) {
         <div ref={sidebarRef} className={`ExpandContract maxHeight ${showSidebar ? "ShowSidebar" : "HideSidebar"}`}>
           <Sidebar shownTabs={["Main Deck", "Extra Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />
         </div>
-        <div className={`justify-content-center maxHeight ExpandContract`} style={{position: "relative", width: showSidebar ? "calc(100% - 250px)" : "100%"}}>
+        <div className={`justify-content-center maxHeight ExpandContract MainCardAreaWrapper`} style={{ width: showSidebar ? "calc(100% - 250px)" : "100%" }}>
             <MainCardArea 
               unsortedCards={cards}
               title={"S I D E B O A R D"}

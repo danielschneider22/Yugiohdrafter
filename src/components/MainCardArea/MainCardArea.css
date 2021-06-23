@@ -24,3 +24,8 @@
     transition: all 0.3s ease-out;
     transform: scale(1.04);
 }
+
+.MainCardAreaWrapper{
+    height: calc(100% - 80px);
+    position: relative;
+}

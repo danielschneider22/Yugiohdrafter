@@ -1,7 +1,7 @@
 .BottomBar{
     position: absolute;
     height: 50px;
-    bottom: 68px;
+    bottom: 0px;
     background-color: #121512;
     float: right;
     text-align: center;
