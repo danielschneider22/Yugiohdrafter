@@ -25,7 +25,7 @@ function LandingPage(props: ParentProps) {
   const cardSets = Object.values(useSelector(getCardSetsById));
   const boosters = useSelector(getBoosters)
   const boosterIds = useSelector(getBoosterIds)
-  const [format, setFormat] = useState("sealed" as "sealed" | "draft")
+  const [format, setFormat] = useState("draft" as "sealed" | "draft")
 
   // initialization
   useEffect(() => {
@@ -70,10 +70,6 @@ function LandingPage(props: ParentProps) {
       sealedLaunch()
   }
 
-  function formatChanged(event: React.ChangeEvent<HTMLInputElement>) {
-    setFormat(event.currentTarget.value as "sealed" | "draft")
-  }
-
   const loadingBoosters = <div>Loading boosters...</div>
   const boosterChooserArea = <BoosterChooserArea />
   const boosterArea = cardSets.length === 0 ? loadingBoosters : boosterChooserArea
@@ -87,11 +83,11 @@ function LandingPage(props: ParentProps) {
               Pick the Format and booster pack sets.
           </div>
           <div className="btn-group btn-group-toggle FormatType justify-content-center" data-toggle="buttons">
-            <label className="btn btn-secondary active">
-              <input type="radio" id="sealed" name="format" value="sealed" onChange={formatChanged} autoComplete="off" checked={format === "sealed"} /> Sealed
+            <label className="btn btn-secondary" onClick={() => setFormat("draft")}>
+              <input type="radio" id="draft" name="format" value="draft"  checked={format === "draft"} autoComplete="off" /> Draft
             </label>
-            <label className="btn btn-secondary">
-              <input type="radio" id="draft" name="format" value="draft" onChange={formatChanged} checked={format === "draft"} autoComplete="off" /> Draft
+            <label className="btn btn-secondary active" onClick={() => setFormat("sealed")}>
+              <input type="radio" id="sealed" name="format" value="sealed" autoComplete="off" checked={format === "sealed"} /> Sealed
             </label>
           </div>
           {boosterArea}

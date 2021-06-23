@@ -4,9 +4,10 @@ import { getCardsById } from '../../data/cards/selectors';
 import { deckToSideboard } from '../../data/deck/actions';
 import { getDeck } from '../../data/deck/selectors';
 import './Sidebar.css';
+import Tab from './Tab';
 
 interface ParentProps{
-  activeAreas: ("Deck" | "Sideboard" | "Draft")[]
+  activeAreas: ("Main Deck" | "Sideboard" | "Extra Deck")[]
   toggleSidebar: () => void
   showSidebar: boolean
   parentWidth: number
@@ -15,7 +16,7 @@ interface ParentProps{
 let parentMaxWidth = 250
 
 function Sidebar(props: ParentProps) {
-  const {showSidebar, toggleSidebar, parentWidth} = props
+  const {showSidebar, toggleSidebar, parentWidth, activeAreas} = props
   const cardsById = useSelector(getCardsById)
   const dispatch = useDispatch();
   const deck = useSelector(getDeck)
@@ -38,11 +39,16 @@ function Sidebar(props: ParentProps) {
   return (
     <div className={"Sidebar active clearfix"}>
       {parentMaxWidth && <div className="CardPickerButtonContainer">
-        <div onClick={toggleSidebar} className={"CardPickerTab MainDeck"} style={tabsStyle}>
-          Main Deck: {deck.length}
-          <span className="TabArrow">{showSidebar ? "▼" :"▲"}</span>
-        </div>
-        <div onClick={toggleSidebar} className={"CardPickerTab ExtraDeck"} style={tabsStyle}>Extra Deck: 0</div>
+        {activeAreas.map((areaName, idx) => {
+          return(
+            <Tab 
+              tabClicked={toggleSidebar}
+              tabsStyle={{...tabsStyle, bottom: -140 + (-130 * idx)}}
+              text={areaName + ":" + deck.length}
+              showSidebar={showSidebar}
+            />
+          )
+        })}
       </div>
       }
       
