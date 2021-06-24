@@ -71,6 +71,7 @@ function Sidebar(props: ParentProps) {
               showSidebar={showSidebar}
               isActive={activeTab === tabName}
               setActiveTab={setActiveTab}
+              key={tabName}
             />
           )
         })}

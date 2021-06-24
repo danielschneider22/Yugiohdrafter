@@ -166,9 +166,13 @@ section {
 # Header
 --------------------------------------------------------------*/
 .header {
-  transition: all 0.5s;
+  /* transition: all 0.5s; */
   z-index: 10;
   padding: 20px 0;
+}
+
+.forceNavToFront.header {
+  z-index: 1000;
 }
 
 .header.header-scrolled {
@@ -325,7 +329,7 @@ section {
   cursor: pointer;
   display: none;
   line-height: 0;
-  transition: 0.5s;
+  /* transition: 0.5s; */
 }
 
 .mobile-nav-toggle.bi-x {
@@ -349,7 +353,7 @@ section {
   left: 0;
   bottom: 0;
   background: rgba(1, 22, 61, 0.9);
-  transition: 0.3s;
+  transition: .5s;
 }
 
 .navbar-mobile .mobile-nav-toggle {
@@ -369,7 +373,7 @@ section {
   border-radius: 10px;
   background-color: #fff;
   overflow-y: auto;
-  transition: 0.3s;
+  transition: 1s;
 }
 
 .navbar-mobile a {

@@ -20,6 +20,7 @@
 .DeckCount{
     font-size: 1vw;
     line-height: 50px;
+    overflow: hidden;
     /* margin-top: 10px !important; */
 }
 
