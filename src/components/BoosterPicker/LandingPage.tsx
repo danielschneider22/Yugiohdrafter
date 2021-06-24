@@ -82,7 +82,6 @@ function LandingPage(props: ParentProps) {
           <div className="InfoBlurb">
               Pick the Format and Booster Pack Sets
           </div>
-          <div style={{textAlign: "center", marginBottom: 10}}>(Sealed only. Draft coming soon)</div>
           <div className="btn-group btn-group-toggle FormatType justify-content-center" data-toggle="buttons">
             <label className={"btn btn-secondary col-6 disabled" + (format === "draft" ? " active" : "")} onClick={() => setFormat("draft")}>
               <input type="radio" id="draft" name="format" value="draft" checked={format === "draft"} autoComplete="off" onClick={() => setFormat("draft")} /> Draft

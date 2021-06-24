@@ -108,7 +108,7 @@
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
     [class*="BoostersWrapper"] {
-        height: 200px;
+        height: 150px;
     }
   }
 .AddBoosterButton{
