@@ -5,7 +5,6 @@ interface ParentProps {
     changePage: React.Dispatch<React.SetStateAction<string>>
 }
 
-
 function NavBar(props: ParentProps) {
 
     const [mobileMenuShown, setMobileMenuShown] = useState(false)
@@ -23,14 +22,14 @@ function NavBar(props: ParentProps) {
         <header id="header" className={"header fixed-top" + (mobileMenuShown ? " forceNavToFront" : "")}>
             <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-            <a href="index.html" className="logo d-flex align-items-center">
+            <div className="logo d-flex align-items-center" onClick={() => props.changePage("LandingPage")}>
                 <img src="assets/img/logo.png" alt="" />
                 <span>YugiohDrafter</span>
-            </a>
+            </div>
 
             <nav id="navbar" className={"navbar" + (mobileMenuShown ? " navbar-mobile" : "")}>
                 <ul>
-                <li><a className="nav-link scrollto active" href="#hero">Home</a></li>
+                <li><a className="nav-link scrollto active" href="" onClick={() => props.changePage("LandingPage")}>Home</a></li>
                 <li><a className="nav-link scrollto" href="#about">Join Draft</a></li>
                 <li><a className="nav-link scrollto" href="#about">Create Custom Booster</a></li>
                 <li className="dropdown" onClick={showQuickDraftDropdown}><a href="#"><span>Quick Draft</span> <i className="bi bi-chevron-down"></i></a>
