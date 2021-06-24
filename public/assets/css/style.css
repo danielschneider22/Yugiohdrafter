@@ -2275,6 +2275,10 @@ section {
   margin-bottom: 15px;
 }
 
+.logo{
+  cursor: pointer;
+}
+
 .footer .footer-top .footer-info .logo img {
   max-height: 40px;
   margin-right: 6px;
