@@ -58,4 +58,20 @@ export function updateBooster(id: string, booster: Partial<Booster>, boosterType
     }
 }
 
-export type BoosterActions = AddBooster | RemoveBooster | UpdateBooster | ResetBoosterCards;
+interface RemoveCardFromBooster {
+    type: 'boosters/removeCardFromBooster',
+    id: string,
+    cardId: string,
+    boosterType: BoosterType,
+}
+
+export function removeCardFromBooster(id: string, cardId: string, boosterType: BoosterType) {
+    return {
+        type: 'boosters/removeCardFromBooster',
+        id,
+        boosterType,
+        cardId
+    }
+}
+
+export type BoosterActions = AddBooster | RemoveBooster | UpdateBooster | ResetBoosterCards | RemoveCardFromBooster;

@@ -13,7 +13,8 @@ import { createDraftBoostersForRound } from '../../data/boosters/operations';
 import Sidebar from '../Sidebar/Sidebar';
 import MainCardArea from '../MainCardArea/MainCardArea';
 import { isExtraDeckCard } from '../../data/cards/utils';
-import { getCardsForPositionInDraft, getCurrBooster, getNumPlayers } from '../../data/draftPod/selectors';
+import { getCardsForPositionInDraft, getCurrLPBooster, getNumPlayers } from '../../data/draftPod/selectors';
+import { removeCardFromBooster } from '../../data/boosters/actions';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
@@ -24,11 +25,10 @@ function Draft(props: ParentProps) {
 
   const cardsById = useSelector(getCardsById)
   const cardSets = useSelector(getCardSetsById)
-  const landingPageBoosters = useSelector(getLandingPageBoosters)
   const landingPageBoosterIds = useSelector(getLandingPageBoosterIds)
   const packComplete = useSelector(getPackComplete)
   const numPlayers = useSelector(getNumPlayers)
-  const currBooster = useSelector(getCurrBooster)
+  const currLPBooster = useSelector(getCurrLPBooster)
   const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
   const cards = useSelector(getCardsForPositionInDraft) as VisibleCard[]
 
@@ -39,11 +39,10 @@ function Draft(props: ParentProps) {
   //create boosters when all sets are fetched and starting new pack
   useEffect(() => {
     if(allCardSetCardsFetched && packComplete) {
-      const currBoosterId = landingPageBoosterIds[currBooster]
-      createDraftBoostersForRound(landingPageBoosters[currBoosterId], cardSets, cardsById, numPlayers, dispatch)
+      createDraftBoostersForRound(currLPBooster, cardSets, cardsById, numPlayers, dispatch)
     }
     
-  }, [cardSets, landingPageBoosters, cardsById, dispatch, packComplete, allCardSetCardsFetched]);
+  }, [cardSets, currLPBooster, cardsById, dispatch, packComplete, allCardSetCardsFetched]);
 
   function toggleSidebar() {
     toggleShowSidebar(!showSidebar)

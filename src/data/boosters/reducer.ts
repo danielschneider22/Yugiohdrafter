@@ -44,6 +44,14 @@ export default function getBoostersReducer(boosterType: BoosterType) {
             byId,
         }
       }
+      case 'boosters/removeCardFromBooster': {
+        const byId: {[key: string]: Booster} = {...state.byId}
+        byId[action.id].cardIds = byId[action.id].cardIds?.filter((id) => id !== action.cardId)
+        return {
+            ...state,
+            byId,
+        }
+      }
       case 'boosters/resetBoosterCards': {
         const byId: {[key: string]: Booster} = {}
         Object.values(state.byId).forEach((booster) => {

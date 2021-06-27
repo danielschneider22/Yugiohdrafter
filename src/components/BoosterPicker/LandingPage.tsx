@@ -15,6 +15,7 @@ import NavBar from '../NavBar/NavBar';
 import BoosterChooserArea from './BoosterChooserArea';
 import { resetDeckAndSideboard } from '../../data/deck/actions';
 import { getLandingPageBoosterIds, getLandingPageBoosters } from '../../data/boosters/selectors';
+import { initialiazeDraftPod } from '../../data/draftPod/actions';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
@@ -66,8 +67,11 @@ function LandingPage(props: ParentProps) {
   function launch() {
     if(format === "sealed" || format === "draft") {
       getSetsForBoosters()
-      props.changePage(format === "sealed" ? "SealedBooster" : "Draft")
     }
+    if(format === "draft") {
+      dispatch(initialiazeDraftPod(8, 5, 9, boosterIds[0]))
+    }
+    props.changePage(format === "sealed" ? "SealedBooster" : "Draft")
       
   }
 
