@@ -6,11 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { VisibleCard } from '../../constants/Card';
 import { getCardsById } from '../../data/cards/selectors';
 import NavBar from '../NavBar/NavBar';
-import { getDeck, getSideboard } from '../../data/deck/selectors';
-import { deckToSideboard, sideboardToDeck, sideboardToExtraDeck } from '../../data/deck/actions';
+import { getDeck } from '../../data/deck/selectors';
+import { deckToSideboard } from '../../data/deck/actions';
 import Sidebar from '../Sidebar/Sidebar';
 import MainCardArea from '../MainCardArea/MainCardArea';
-import { isExtraDeckCard } from '../../data/cards/utils';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>

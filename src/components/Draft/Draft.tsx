@@ -8,7 +8,7 @@ import { getAllCardSetCardsFetched, getLandingPageBoosters, getDraftBoosters, ge
 import { getCardsById } from '../../data/cards/selectors';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import NavBar from '../NavBar/NavBar';
-import { addCardToDeck, addCardToExtraDeck, sideboardToDeck, sideboardToExtraDeck } from '../../data/deck/actions';
+import { addCardToDeck, addCardToExtraDeck } from '../../data/deck/actions';
 import { createDraftBoostersForRound } from '../../data/boosters/operations';
 import Sidebar from '../Sidebar/Sidebar';
 import MainCardArea from '../MainCardArea/MainCardArea';
@@ -44,11 +44,13 @@ function Draft(props: ParentProps) {
   
   const sidebarRef = useRef(null as unknown as HTMLDivElement)
 
+  const changePage = props.changePage
+
   //create boosters when all sets are fetched and starting new pack
   useEffect(() => {
     if(allCardSetCardsFetched && packComplete) {
       if (currLPBooster && currLPBooster.id === landingPageBoosters[landingPageBoosterIds[landingPageBoosterIds.length - 1]].id) { // completed last booster
-        props.changePage("DraftComplete")
+        changePage("DraftComplete")
       } else {
         let nextBooster: Booster
         if(!currLPBooster) { // first booster opened
@@ -63,7 +65,7 @@ function Draft(props: ParentProps) {
       
     }
     
-  }, [cardSets, currLPBooster, cardsById, dispatch, packComplete, allCardSetCardsFetched]);
+  }, [cardSets, currLPBooster, cardsById, dispatch, packComplete, allCardSetCardsFetched, landingPageBoosters, landingPageBoosterIds, numPlayers, changePage]);
 
   function toggleSidebar() {
     toggleShowSidebar(!showSidebar)
