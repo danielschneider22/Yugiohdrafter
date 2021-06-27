@@ -5,6 +5,7 @@ import { initState, rootReducer } from './data/reducers';
 import SealedBoosterOpener from './components/SealedBoosterOpener/SealedBoosterOpener';
 import LandingPage from './components/BoosterPicker/LandingPage';
 import { useState } from 'react';
+import Draft from './components/Draft/Draft';
 // import './bootstrap.min.css';
 
 // undefined if browser does not have redux devtools installed
@@ -29,6 +30,11 @@ function App() {
         }
         { page === "SealedBooster" && 
           <SealedBoosterOpener 
+            changePage={changePage}
+          />
+        }
+        { page === "Draft" && 
+          <Draft 
             changePage={changePage}
           />
         }

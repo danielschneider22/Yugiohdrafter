@@ -15,7 +15,7 @@ function BoosterSelect(props: ParentProps) {
   const dispatch = useDispatch();
 
   function dispatchRemoveBooster() {
-    dispatch(removeBooster(booster.id))
+    dispatch(removeBooster(booster.id, "landingPageBooster"))
   }
 
   return (

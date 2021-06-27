@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { VisibleCard } from '../../constants/Card';
-import { getAllCardSetCardsFetched, getLandingPageBoosters } from '../../data/boosters/selectors';
 import { getCardsById } from '../../data/cards/selectors';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import NavBar from '../NavBar/NavBar';
@@ -14,6 +13,7 @@ import { createBoostersForFetchedSets } from '../../data/boosters/operations';
 import Sidebar from '../Sidebar/Sidebar';
 import MainCardArea from '../MainCardArea/MainCardArea';
 import { isExtraDeckCard } from '../../data/cards/utils';
+import { getLandingPageBoosters } from '../../data/boosters/selectors';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
@@ -28,7 +28,6 @@ function SealedBoosterOpener(props: ParentProps) {
   const cardSets = useSelector(getCardSetsById)
   const boosters = useSelector(getLandingPageBoosters)
   const sideboard = useSelector(getSideboard)
-  const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
 
   const [showSidebar, toggleShowSidebar] = useState(false)
   
@@ -46,13 +45,14 @@ function SealedBoosterOpener(props: ParentProps) {
 
   //create boosters when all sets for boosters are fetched
   useEffect(() => {
+    const allCardSetCardsFetched = Object.values(boosters).every((booster) => cardSets[booster.cardSetName].card_ids && cardSets[booster.cardSetName].card_ids!.length > 0)
     if(allCardSetCardsFetched && sideboard.length === 0 && !populatedSideboard) {
       const sideboardCards = createBoostersForFetchedSets(boosters, cardSets, cardsById, dispatch)
       dispatch(addCardsToSideboard(sideboardCards))
       populatedSideboard = true
     }
     
-  }, [cardSets, boosters, cardsById, dispatch, sideboard, allCardSetCardsFetched]);
+  }, [cardSets, boosters, cardsById, dispatch, sideboard]);
 
   function toggleSidebar() {
     toggleShowSidebar(!showSidebar)
@@ -87,5 +87,3 @@ function SealedBoosterOpener(props: ParentProps) {
     
   );
 }
-
-export default SealedBoosterOpener;

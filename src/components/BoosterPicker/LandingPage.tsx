@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Card } from '../../constants/Card';
 import { addBooster, resetBoosterCards } from '../../data/boosters/actions';
-import { getBoosterIds, getBoosters } from '../../data/boosters/selectors';
 import { addCards } from '../../data/cards/actions';
 import { fetchCards } from '../../data/cards/operations';
 import { addSets, updateCardIds } from '../../data/cardSets/actions';
@@ -15,6 +14,7 @@ import { getCardSetsById } from '../../data/cardSets/selectors';
 import NavBar from '../NavBar/NavBar';
 import BoosterChooserArea from './BoosterChooserArea';
 import { resetDeckAndSideboard } from '../../data/deck/actions';
+import { getLandingPageBoosterIds, getLandingPageBoosters } from '../../data/boosters/selectors';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
@@ -23,9 +23,9 @@ interface ParentProps{
 function LandingPage(props: ParentProps) {
   const dispatch = useDispatch();
   const cardSets = Object.values(useSelector(getCardSetsById));
-  const boosters = useSelector(getBoosters)
-  const boosterIds = useSelector(getBoosterIds)
-  const [format, setFormat] = useState("sealed" as "sealed" | "draft")
+  const boosters = useSelector(getLandingPageBoosters)
+  const boosterIds = useSelector(getLandingPageBoosterIds)
+  const [format, setFormat] = useState("draft" as "sealed" | "draft")
 
   // initialization
   useEffect(() => {
@@ -36,18 +36,18 @@ function LandingPage(props: ParentProps) {
         fetchCardSets(dispatch);
     }
 
-    dispatch(resetBoosterCards())
+    dispatch(resetBoosterCards("landingPageBooster"))
     dispatch(resetDeckAndSideboard())
   }, [dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // add a booster if booster list is empty
   useEffect(() => {
     if(boosterIds.length === 0 && cardSets.length > 0) {
-        dispatch(addBooster({cardSetName: cardSets[0].set_name, id: _.uniqueId("booster-")}))
+        dispatch(addBooster({cardSetName: cardSets[0].set_name, id: _.uniqueId("booster-")}, "landingPageBooster"))
     }
   }, [cardSets, boosters, boosterIds.length, dispatch]);
 
-  function sealedLaunch() {
+  function getSetsForBoosters() {
     const fetchedSets = {} as {[key: string]: string}
     Object.values(boosters).forEach((booster) => {
       if(!fetchedSets[booster.cardSetName]) {
@@ -61,13 +61,14 @@ function LandingPage(props: ParentProps) {
         fetchedSets[booster.cardSetName] = booster.cardSetName
       }
     })
-    
-    props.changePage("SealedBooster")
   }
 
   function launch() {
-    if(format === "sealed") 
-      sealedLaunch()
+    if(format === "sealed" || format === "draft") {
+      getSetsForBoosters()
+      props.changePage(format === "sealed" ? "SealedBooster" : "Draft")
+    }
+      
   }
 
   const loadingBoosters = <div>Loading boosters...</div>
@@ -83,7 +84,7 @@ function LandingPage(props: ParentProps) {
               Pick Format and Card Sets
           </div>
           <div className="btn-group btn-group-toggle FormatType justify-content-center" data-toggle="buttons">
-            <label className={"btn btn-secondary col-6 disabled" + (format === "draft" ? " active" : "")} onClick={() => setFormat("draft")}>
+            <label className={"btn btn-secondary col-6" + (format === "draft" ? " active" : "")} onClick={() => setFormat("draft")}>
               <input type="radio" id="draft" name="format" value="draft" checked={format === "draft"} autoComplete="off" onClick={() => setFormat("draft")} /> Draft
             </label>
             <label className={"btn btn-secondary col-6" + (format === "sealed" ? " active" : "")} onClick={() => setFormat("sealed")}>
@@ -94,7 +95,7 @@ function LandingPage(props: ParentProps) {
             <label className={"btn btn-secondary col-6 active" + (format === "sealed" ? " disabled" : "")}>
               <input type="radio" id="draft" name="draftFormat" value="draft" autoComplete="off" checked /> Draft with Bots
             </label>
-            <label className={"btn btn-secondary col-6" + (format === "sealed" ? " disabled" : "")}>
+            <label className={"btn btn-secondary col-6 disabled" + (format === "sealed" ? " disabled" : "")}>
               <input type="radio" id="sealed" name="draftFormat" value="sealed" autoComplete="off" /> Host Draft
             </label>
           </div>

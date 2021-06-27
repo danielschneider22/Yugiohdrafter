@@ -1,12 +1,16 @@
 import { Booster } from '../../constants/Booster';
-import { BoosterActions } from './actions';
+import { BoosterActions, BoosterType } from './actions';
 
 export const boostersInitialState = {
     allIds: [] as string[],
     byId: {} as {[key: string]: Booster}
 }
 
-export default function boostersReducer(state = boostersInitialState, action: BoosterActions) {
+export default function getBoostersReducer(boosterType: BoosterType) {
+  return function boostersReducer(state = boostersInitialState, action: BoosterActions) {
+    if(action.boosterType !== boosterType) {
+      return state;
+    }
     switch (action.type) {
       case 'boosters/addBooster': {
         const allIds = [...state.allIds, action.booster.id]
@@ -54,3 +58,4 @@ export default function boostersReducer(state = boostersInitialState, action: Bo
         return state
     }
   }
+} 

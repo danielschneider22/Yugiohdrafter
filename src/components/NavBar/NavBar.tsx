@@ -1,5 +1,4 @@
 import { useState } from "react";
-import logo from "../../images/logo.png";
 
 interface ParentProps {
     changePage: React.Dispatch<React.SetStateAction<string>>

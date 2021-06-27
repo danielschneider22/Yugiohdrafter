@@ -1,58 +1,47 @@
-import './SealedBoosterOpener.css';
+import './Draft.css';
 
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { VisibleCard } from '../../constants/Card';
-import { getAllCardSetCardsFetched, getLandingPageBoosters } from '../../data/boosters/selectors';
+import { getAllCardSetCardsFetched, getLandingPageBoosters, getDraftBoosters, getPackComplete } from '../../data/boosters/selectors';
 import { getCardsById } from '../../data/cards/selectors';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import NavBar from '../NavBar/NavBar';
 import { getSideboard } from '../../data/deck/selectors';
-import { addCardsToSideboard, sideboardToDeck, sideboardToExtraDeck } from '../../data/deck/actions';
-import { createBoostersForFetchedSets } from '../../data/boosters/operations';
+import { sideboardToDeck, sideboardToExtraDeck } from '../../data/deck/actions';
+import { createDraftBoostersForRound } from '../../data/boosters/operations';
 import Sidebar from '../Sidebar/Sidebar';
 import MainCardArea from '../MainCardArea/MainCardArea';
 import { isExtraDeckCard } from '../../data/cards/utils';
+import { getCardsForPositionInDraft, getNumPlayers } from '../../data/draftPod/selectors';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
 }
 
-let populatedSideboard = false
-
-function SealedBoosterOpener(props: ParentProps) {
+function Draft(props: ParentProps) {
   const dispatch = useDispatch();
 
   const cardsById = useSelector(getCardsById)
   const cardSets = useSelector(getCardSetsById)
-  const boosters = useSelector(getLandingPageBoosters)
-  const sideboard = useSelector(getSideboard)
+  const landingPageBoosters = useSelector(getLandingPageBoosters)
+  const packComplete = useSelector(getPackComplete)
+  const numPlayers = useSelector(getNumPlayers)
   const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
+  const cards = useSelector(getCardsForPositionInDraft) as VisibleCard[]
 
   const [showSidebar, toggleShowSidebar] = useState(false)
   
   const sidebarRef = useRef(null as unknown as HTMLDivElement)
 
-  let cards: VisibleCard[] = []
-
-  sideboard.forEach((cardId, idx) => {
-    cards.push({...cardsById[cardId], origIdx: idx})
-  })
-
+  //create boosters when all sets are fetched and starting new pack
   useEffect(() => {
-    populatedSideboard = false
-  }, []);
-
-  //create boosters when all sets for boosters are fetched
-  useEffect(() => {
-    if(allCardSetCardsFetched && sideboard.length === 0 && !populatedSideboard) {
-      const sideboardCards = createBoostersForFetchedSets(boosters, cardSets, cardsById, dispatch)
-      dispatch(addCardsToSideboard(sideboardCards))
-      populatedSideboard = true
+    if(allCardSetCardsFetched && packComplete) {
+      createDraftBoostersForRound(landingPageBoosters[0], cardSets, cardsById, numPlayers, dispatch)
     }
     
-  }, [cardSets, boosters, cardsById, dispatch, sideboard, allCardSetCardsFetched]);
+  }, [cardSets, landingPageBoosters, cardsById, dispatch, packComplete, allCardSetCardsFetched]);
 
   function toggleSidebar() {
     toggleShowSidebar(!showSidebar)
@@ -76,9 +65,9 @@ function SealedBoosterOpener(props: ParentProps) {
         <div className={`justify-content-center maxHeight ExpandContract MainCardAreaWrapper`} style={{ width: showSidebar ? "calc(100% - 250px)" : "100%" }}>
             <MainCardArea 
               unsortedCards={cards}
-              title={"S I D E B O A R D"}
+              title={"D R A F T"}
               cardClicked={addCardToDeck}
-              loadedCards={populatedSideboard}
+              loadedCards={allCardSetCardsFetched}
             />
         </div>
       </div>
@@ -88,4 +77,4 @@ function SealedBoosterOpener(props: ParentProps) {
   );
 }
 
-export default SealedBoosterOpener;
+export default Draft;
