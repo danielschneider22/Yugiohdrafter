@@ -19,7 +19,10 @@ export default function deckReducer(state = deckInitialState, action: DeckAction
         return {...state, deckIds: [...state.deckIds, action.cardId]}
       }
       case 'deck/addCardsToSideboard': {
-        return {...state, sideboardIds: [...state.deckIds, ...action.cardIds]}
+        return {...state, sideboardIds: [...state.sideboardIds, ...action.cardIds]}
+      }
+      case 'deck/addCardToExtraDeck': {
+        return {...state, extraDeckIds: [...state.extraDeckIds, action.cardId]}
       }
       case 'deck/deckToSideboard': {
         const newVals = spliceAToArrayB(state.deckIds, state.sideboardIds, action.cardId, action.arrayNum)

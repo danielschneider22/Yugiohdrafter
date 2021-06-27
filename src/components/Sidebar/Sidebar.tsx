@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card } from '../../constants/Card';
 import { getCardsById } from '../../data/cards/selectors';
-import { deckToSideboard, extraDeckToSideboard } from '../../data/deck/actions';
+import { isExtraDeckCard } from '../../data/cards/utils';
+import { deckToSideboard, extraDeckToSideboard, sideboardToDeck, sideboardToExtraDeck } from '../../data/deck/actions';
 import { getDeck, getExtraDeck, getSideboard } from '../../data/deck/selectors';
 import './Sidebar.css';
 import Tab from './Tab';
@@ -49,11 +50,21 @@ function Sidebar(props: ParentProps) {
   }
   const tabsStyle = showSidebar ? {left: parentMaxWidth - 86} : {left: "-40px"}
 
-  function addCardToSideboard(card: Card, idx: number) {
-    if(activeTab === "Main Deck") {
-      dispatch(deckToSideboard(card.id, idx))
-    } else {
-      dispatch(extraDeckToSideboard(card.id, idx))
+  function switchMainDeckSideboard(card: Card, idx: number) {
+    switch(activeTab){
+      case "Main Deck":
+        dispatch(deckToSideboard(card.id, idx))
+        break;
+      case "Extra Deck":
+        dispatch(extraDeckToSideboard(card.id, idx))
+        break;
+      case "Sideboard":
+        if(isExtraDeckCard(card)) {
+          dispatch(sideboardToExtraDeck(card.id, idx))
+        } else {
+          dispatch(sideboardToDeck(card.id, idx))
+        }
+        break;
     }
     
   }
@@ -87,7 +98,7 @@ function Sidebar(props: ParentProps) {
               alt={card.name} 
               src={card.card_images[0].image_url} 
               width={"200"} height={"290"} 
-              onClick={() => addCardToSideboard(card, idx)}/>)
+              onClick={() => switchMainDeckSideboard(card, idx)}/>)
         })}
       </div>
     </div> 

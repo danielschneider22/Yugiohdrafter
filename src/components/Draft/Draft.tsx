@@ -8,7 +8,7 @@ import { getAllCardSetCardsFetched, getLandingPageBoosters, getDraftBoosters, ge
 import { getCardsById } from '../../data/cards/selectors';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import NavBar from '../NavBar/NavBar';
-import { sideboardToDeck, sideboardToExtraDeck } from '../../data/deck/actions';
+import { addCardToDeck, addCardToExtraDeck, sideboardToDeck, sideboardToExtraDeck } from '../../data/deck/actions';
 import { createDraftBoostersForRound } from '../../data/boosters/operations';
 import Sidebar from '../Sidebar/Sidebar';
 import MainCardArea from '../MainCardArea/MainCardArea';
@@ -49,11 +49,11 @@ function Draft(props: ParentProps) {
     toggleShowSidebar(!showSidebar)
   }
 
-  function addCardToDeck(card: VisibleCard) {
+  function draftCard(card: VisibleCard) {
     if(isExtraDeckCard(card)) {
-      dispatch(sideboardToExtraDeck(card.id, card.origIdx))
+      dispatch(addCardToExtraDeck(card.id))
     } else {
-      dispatch(sideboardToDeck(card.id, card.origIdx))
+      dispatch(addCardToDeck(card.id))
     }
   }
 
@@ -68,7 +68,7 @@ function Draft(props: ParentProps) {
             <MainCardArea 
               unsortedCards={cards}
               title={"D R A F T I N G"}
-              cardClicked={addCardToDeck}
+              cardClicked={draftCard}
               loadedCards={allCardSetCardsFetched}
             />
         </div>

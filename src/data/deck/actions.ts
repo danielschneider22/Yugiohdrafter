@@ -10,6 +10,17 @@ export function addCardToDeck(cardId: string) {
     }
 }
 
+export interface AddCardToExtraDeck {
+    type: 'deck/addCardToExtraDeck',
+    cardId: string
+}
+
+export function addCardToExtraDeck(cardId: string) {
+    return {
+        type: 'deck/addCardToExtraDeck',
+        cardId,
+    }
+}
 export interface AddCardsToSideboard {
     type: 'deck/addCardsToSideboard',
     cardIds: string[]
@@ -89,4 +100,4 @@ export function resetDeckAndSideboard() {
     }
 }
 
-export type DeckActions = AddCardToDeck | DeckToSideboard | SideboardToDeck | ResetDeckAndSideboard | AddCardsToSideboard | ExtraDeckToSideboard | SideboardToExtraDeck;
+export type DeckActions = AddCardToDeck | DeckToSideboard | SideboardToDeck | ResetDeckAndSideboard | AddCardsToSideboard | ExtraDeckToSideboard | SideboardToExtraDeck | AddCardToExtraDeck;
