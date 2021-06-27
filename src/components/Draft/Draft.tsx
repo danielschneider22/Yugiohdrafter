@@ -48,7 +48,7 @@ function Draft(props: ParentProps) {
   useEffect(() => {
     if(allCardSetCardsFetched && packComplete) {
       if (currLPBooster && currLPBooster.id === landingPageBoosters[landingPageBoosterIds[landingPageBoosterIds.length - 1]].id) { // completed last booster
-        alert("Draft Complete")
+        props.changePage("DraftComplete")
       } else {
         let nextBooster: Booster
         if(!currLPBooster) { // first booster opened

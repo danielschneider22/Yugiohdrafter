@@ -6,6 +6,7 @@ import SealedBoosterOpener from './components/SealedBoosterOpener/SealedBoosterO
 import LandingPage from './components/BoosterPicker/LandingPage';
 import { useState } from 'react';
 import Draft from './components/Draft/Draft';
+import DraftComplete from './components/DraftComplete/DraftComplete';
 // import './bootstrap.min.css';
 
 // undefined if browser does not have redux devtools installed
@@ -35,6 +36,11 @@ function App() {
         }
         { page === "Draft" && 
           <Draft 
+            changePage={changePage}
+          />
+        }
+        { page === "DraftComplete" && 
+          <DraftComplete
             changePage={changePage}
           />
         }
