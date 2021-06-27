@@ -13,7 +13,7 @@ import { createDraftBoostersForRound } from '../../data/boosters/operations';
 import Sidebar from '../Sidebar/Sidebar';
 import MainCardArea from '../MainCardArea/MainCardArea';
 import { isExtraDeckCard } from '../../data/cards/utils';
-import { getCardsForPositionInDraft, getCurrLPBooster, getNumPlayers } from '../../data/draftPod/selectors';
+import { getCardsForPositionInDraft, getCurrLPBooster, getNumPlayers, getPositionBooster } from '../../data/draftPod/selectors';
 import { removeCardFromBooster } from '../../data/boosters/actions';
 
 interface ParentProps{
@@ -25,12 +25,12 @@ function Draft(props: ParentProps) {
 
   const cardsById = useSelector(getCardsById)
   const cardSets = useSelector(getCardSetsById)
-  const landingPageBoosterIds = useSelector(getLandingPageBoosterIds)
   const packComplete = useSelector(getPackComplete)
   const numPlayers = useSelector(getNumPlayers)
   const currLPBooster = useSelector(getCurrLPBooster)
   const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
   const cards = useSelector(getCardsForPositionInDraft) as VisibleCard[]
+  const positionBooster = useSelector(getPositionBooster)
 
   const [showSidebar, toggleShowSidebar] = useState(false)
   
@@ -54,6 +54,7 @@ function Draft(props: ParentProps) {
     } else {
       dispatch(addCardToDeck(card.id))
     }
+    dispatch(removeCardFromBooster(positionBooster!.id, card.id, "draftBooster"))
   }
 
   return (

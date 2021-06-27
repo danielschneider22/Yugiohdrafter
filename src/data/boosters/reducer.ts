@@ -46,7 +46,13 @@ export default function getBoostersReducer(boosterType: BoosterType) {
       }
       case 'boosters/removeCardFromBooster': {
         const byId: {[key: string]: Booster} = {...state.byId}
-        byId[action.id].cardIds = byId[action.id].cardIds?.filter((id) => id !== action.cardId)
+        const cardIds = [...byId[action.id].cardIds!]
+        cardIds.splice(cardIds.findIndex((id) => id === action.cardId), 1)
+        byId[action.id] = 
+          {
+            ...byId[action.id],
+            cardIds
+          }
         return {
             ...state,
             byId,

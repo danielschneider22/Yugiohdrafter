@@ -7,13 +7,18 @@ export const getNumPlayers = (state: typeof initState) => state.draftPod.numPlay
 export const currLPBoosterId = (state: typeof initState) => state.draftPod.currLPBoosterId;
 export const getPlayerPosition = (state: typeof initState) => state.draftPod.playerPosition;
 
-export const getCardsForPositionInDraft = createSelector([getPlayerPosition, getDraftBoosterIds, getDraftBoosters, getCardsById], (playerPosition, draftBoosterIds, draftBoosters, cardsById) => {
+export const getPositionBooster = createSelector([getPlayerPosition, getDraftBoosterIds, getDraftBoosters], (playerPosition, draftBoosterIds, draftBoosters) => {
     if(draftBoosterIds[playerPosition] === undefined || draftBoosters[draftBoosterIds[playerPosition]] === undefined || !draftBoosters[draftBoosterIds[playerPosition]].cardIds) {
-        return []
+        return undefined
     }
-    const positionBooster = draftBoosters[draftBoosterIds[playerPosition]]
-    return positionBooster.cardIds!.map((cardId) => cardsById[cardId])
+    return draftBoosters[draftBoosterIds[playerPosition]]
 })
+
+export const getCardsForPositionInDraft = createSelector([getPositionBooster, getCardsById], (positionBooster, cardsById) => {
+    return positionBooster ? positionBooster.cardIds!.map((cardId) => cardsById[cardId]) : []
+})
+
+
 
 export const getCurrLPBooster = createSelector([currLPBoosterId, getLandingPageBoosters], (currLPBoosterId, landingPageBoosters) => {
     return landingPageBoosters[currLPBoosterId]
