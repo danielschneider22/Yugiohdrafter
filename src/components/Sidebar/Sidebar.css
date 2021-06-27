@@ -83,10 +83,12 @@
     cursor: pointer;
 }
 
-.CardLeftArea:hover{
-    box-shadow: rgb(0 0 0 / 60%) 0 2px 5px;
-    transition: all 0.3s ease-out;
-    transform: scale(1.04);
+@media screen and (min-width: 640px) {
+    .CardLeftArea:hover {
+        box-shadow: rgb(0 0 0 / 60%) 0 2px 5px;
+        transition: all 0.3s ease-out;
+        transform: scale(1.04);
+    }
 }
 
 .CardPickerButtonContainer{

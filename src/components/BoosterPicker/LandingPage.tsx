@@ -80,7 +80,7 @@ function LandingPage(props: ParentProps) {
       <div className="BoosterPickerWrapper d-flex justify-content-center row h-100">
         <div className="BoosterWindowedArea p-2 bd-highlight col-sm-6 my-auto">
           <div className="InfoBlurb">
-              Pick the Format and Booster Pack Sets
+              Pick Format and Card Sets
           </div>
           <div className="btn-group btn-group-toggle FormatType justify-content-center" data-toggle="buttons">
             <label className={"btn btn-secondary col-6 disabled" + (format === "draft" ? " active" : "")} onClick={() => setFormat("draft")}>
