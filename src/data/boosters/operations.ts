@@ -4,7 +4,7 @@ import { Booster } from "../../constants/Booster";
 import { Card } from "../../constants/Card";
 import { CardSet } from "../../constants/CardSet";
 import { addCards } from "../cards/actions";
-import { updateBooster } from "./actions";
+import { addBooster, updateBooster } from "./actions";
 
 export async function fetchCardsForBooster(dispatch: Dispatch<any>, set_name: string, boosterId: string) {
     const response = await fetch('https://db.ygoprodeck.com/queries/pack-opener/pack-open.php?format=' + set_name);
@@ -42,13 +42,15 @@ export function createBoostersForFetchedSets(
     numPlayers: number,
     dispatch: Dispatch<any>
 ) {
-    const boosterCardIds: string[] = []
     for(let i = 0; i < numPlayers; i++) {
       if(!booster.cardIds && cardSets[booster.cardSetName].card_ids) {
         const randomCardIds = generateCardsIdsForBooster(booster, cardSets, cardsById)
-        dispatch(updateBooster(booster.id, {cardIds: randomCardIds}, "draftBooster" ))
-        boosterCardIds.push(...randomCardIds)
+        const newBooster: Booster = {
+          cardSetName: booster.cardSetName,
+          id: booster.id + "(Position: " + i + ")",
+          cardIds: randomCardIds
+        }
+        dispatch(addBooster(newBooster, "draftBooster" ))
       }
     }
-    return boosterCardIds
   }

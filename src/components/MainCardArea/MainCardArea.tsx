@@ -13,14 +13,14 @@ interface ParentProps{
 }
 
 function MainCardArea(props: ParentProps) {
-  const { unsortedCards, cardClicked, loadedCards } = props
+  const { unsortedCards, cardClicked, loadedCards, title } = props
   const [sortType, toggleSortType] = useState("Name" as SortType)
 
   const cards = unsortedCards.sort(sortCards(sortType))
 
   return (
     <div className={"ScrollCards"}>
-        <div className="CardDisplayAreaTitle">S I D E B O A R D</div>
+        <div className="CardDisplayAreaTitle">{title}</div>
         {cards && cards.map((card, idx) => {
             return <img className="VisibleCard" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"} onClick={() => cardClicked(card)}/>
         })}
