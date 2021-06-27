@@ -16,4 +16,26 @@ export function initialiazeDraftPod(numPlayers: number, numBoosters: number, car
     }
 }
 
-export type DraftPodActions = InitialiazeDraftPod;
+export interface UpdatePlayerPosition {
+    type: 'draftPod/updatePlayerPosition',
+}
+
+export function updatePlayerPosition() {
+    return {
+        type: 'draftPod/updatePlayerPosition',
+    }
+}
+
+export interface OpenNextPack {
+    type: 'draftPod/openNextPack',
+    currLPBoosterId: string
+}
+
+export function openNextPack(currLPBoosterId: string) {
+    return {
+        type: 'draftPod/openNextPack',
+        currLPBoosterId
+    }
+}
+
+export type DraftPodActions = InitialiazeDraftPod | UpdatePlayerPosition | OpenNextPack;

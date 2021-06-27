@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { VisibleCard } from '../../constants/Card';
-import { getAllCardSetCardsFetched, getLandingPageBoosters, getDraftBoosters, getPackComplete, getLandingPageBoosterIds } from '../../data/boosters/selectors';
+import { getAllCardSetCardsFetched, getLandingPageBoosters, getDraftBoosters, getPackComplete, getLandingPageBoosterIds, getDraftBoosterIds } from '../../data/boosters/selectors';
 import { getCardsById } from '../../data/cards/selectors';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import NavBar from '../NavBar/NavBar';
@@ -13,8 +13,11 @@ import { createDraftBoostersForRound } from '../../data/boosters/operations';
 import Sidebar from '../Sidebar/Sidebar';
 import MainCardArea from '../MainCardArea/MainCardArea';
 import { isExtraDeckCard } from '../../data/cards/utils';
-import { getCardsForPositionInDraft, getCurrLPBooster, getNumPlayers, getPositionBooster } from '../../data/draftPod/selectors';
-import { removeCardFromBooster } from '../../data/boosters/actions';
+import { getCardsForPositionInDraft, getCurrLPBooster, getNumPlayers, getPlayerPosition, getPositionBooster } from '../../data/draftPod/selectors';
+import { removeAllBoosters, removeCardFromBooster } from '../../data/boosters/actions';
+import { makeAIPicks } from './utils';
+import { openNextPack, updatePlayerPosition } from '../../data/draftPod/actions';
+import { Booster } from '../../constants/Booster';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
@@ -28,9 +31,14 @@ function Draft(props: ParentProps) {
   const packComplete = useSelector(getPackComplete)
   const numPlayers = useSelector(getNumPlayers)
   const currLPBooster = useSelector(getCurrLPBooster)
+  const landingPageBoosterIds = useSelector(getLandingPageBoosterIds)
+  const landingPageBoosters = useSelector(getLandingPageBoosters)
   const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
   const cards = useSelector(getCardsForPositionInDraft) as VisibleCard[]
   const positionBooster = useSelector(getPositionBooster)
+  const draftBoosters = useSelector(getDraftBoosters)
+  const draftBoostersIds = useSelector(getDraftBoosterIds)
+  const playerPosition = useSelector(getPlayerPosition)
 
   const [showSidebar, toggleShowSidebar] = useState(false)
   
@@ -39,7 +47,20 @@ function Draft(props: ParentProps) {
   //create boosters when all sets are fetched and starting new pack
   useEffect(() => {
     if(allCardSetCardsFetched && packComplete) {
-      createDraftBoostersForRound(currLPBooster, cardSets, cardsById, numPlayers, dispatch)
+      if (currLPBooster && currLPBooster.id === landingPageBoosters[landingPageBoosterIds[landingPageBoosterIds.length - 1]].id) { // completed last booster
+        alert("Draft Complete")
+      } else {
+        let nextBooster: Booster
+        if(!currLPBooster) { // first booster opened
+          nextBooster = landingPageBoosters[landingPageBoosterIds[0]]
+        } else {
+          nextBooster = landingPageBoosters[landingPageBoosterIds[landingPageBoosterIds.findIndex((id) => id === currLPBooster.id) + 1]]
+        }
+        dispatch(removeAllBoosters("draftBooster"))
+        createDraftBoostersForRound(nextBooster, cardSets, cardsById, numPlayers, dispatch)
+        dispatch(openNextPack(nextBooster.id))
+      }
+      
     }
     
   }, [cardSets, currLPBooster, cardsById, dispatch, packComplete, allCardSetCardsFetched]);
@@ -55,6 +76,8 @@ function Draft(props: ParentProps) {
       dispatch(addCardToDeck(card.id))
     }
     dispatch(removeCardFromBooster(positionBooster!.id, card.id, "draftBooster"))
+    makeAIPicks(playerPosition, draftBoosters, draftBoostersIds, dispatch, cardsById)
+    dispatch(updatePlayerPosition())
   }
 
   return (

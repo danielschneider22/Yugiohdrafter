@@ -74,4 +74,16 @@ export function removeCardFromBooster(id: string, cardId: string, boosterType: B
     }
 }
 
-export type BoosterActions = AddBooster | RemoveBooster | UpdateBooster | ResetBoosterCards | RemoveCardFromBooster;
+interface RemoveAllBoosters {
+    type: 'boosters/removeAllBoosters',
+    boosterType: BoosterType,
+}
+
+export function removeAllBoosters(boosterType: BoosterType) {
+    return {
+        type: 'boosters/removeAllBoosters',
+        boosterType,
+    }
+}
+
+export type BoosterActions = AddBooster | RemoveBooster | UpdateBooster | ResetBoosterCards | RemoveCardFromBooster | RemoveAllBoosters;

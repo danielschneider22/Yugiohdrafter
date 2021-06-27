@@ -20,6 +20,20 @@ export default function draftPodReducer(state = draftPodInitialState, action: Dr
           currLPBoosterId
         }
       }
+      case 'draftPod/updatePlayerPosition': {
+        const playerPosition = state.playerPosition === state.numPlayers - 1 ? 0 : state.playerPosition + 1
+        return {
+          ...state,
+          playerPosition
+        }
+      }
+      case 'draftPod/openNextPack': {
+        return {
+          ...state,
+          playerPosition: 0,
+          currLPBoosterId: action.currLPBoosterId
+        }
+      }
       default:
         return state
     }

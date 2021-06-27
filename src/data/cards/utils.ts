@@ -2,7 +2,7 @@ import { Card, RarityDict, VisibleCard } from "../../constants/Card";
 
 export type SortType = "Name" | "Type" | "Rarity";
 
-function findHighestRarity(card: VisibleCard) {
+export function findHighestRarity(card: VisibleCard | Card) {
     let highestRarity = 0
     card.card_sets.forEach((set) => {
       const rarityVal = RarityDict[set.set_rarity]
@@ -13,7 +13,7 @@ function findHighestRarity(card: VisibleCard) {
     return highestRarity
 }
 
-function sortByName(a: VisibleCard, b: VisibleCard) {
+function sortByName(a: VisibleCard | Card, b: VisibleCard | Card) {
   const nameA = a.name.toUpperCase(); // ignore upper and lowercase
   const nameB = b.name.toUpperCase(); // ignore upper and lowercase
   if (nameA < nameB) {
@@ -25,6 +25,13 @@ function sortByName(a: VisibleCard, b: VisibleCard) {
 
   // names must be equal
   return 0;
+}
+
+export function sortByRarity(a: VisibleCard | Card, b: VisibleCard | Card) {
+  const aHighestRarity = findHighestRarity(a)
+  const bHighestRarity = findHighestRarity(b)
+  const diff = bHighestRarity - aHighestRarity
+  return diff !== 0 ? diff : sortByName(a, b)
 }
 
 export const sortCards = (sortType: SortType) => function(a: VisibleCard, b: VisibleCard){
@@ -43,10 +50,7 @@ export const sortCards = (sortType: SortType) => function(a: VisibleCard, b: Vis
         return sortByName(a, b);
       case "Rarity":
         // this is actually wrong. should probably look up the set it's talking about to be accurate but skipping for now
-        const aHighestRarity = findHighestRarity(a)
-        const bHighestRarity = findHighestRarity(b)
-        const diff = bHighestRarity - aHighestRarity
-        return diff !== 0 ? diff : sortByName(a, b)
+        return sortByRarity(a, b)
     }
   }
 

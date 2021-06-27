@@ -69,7 +69,7 @@ function LandingPage(props: ParentProps) {
       getSetsForBoosters()
     }
     if(format === "draft") {
-      dispatch(initialiazeDraftPod(8, 5, 9, boosterIds[0]))
+      dispatch(initialiazeDraftPod(8, 5, 9, ""))
     }
     props.changePage(format === "sealed" ? "SealedBooster" : "Draft")
       

@@ -68,6 +68,9 @@ export default function getBoostersReducer(boosterType: BoosterType) {
             byId,
         }
       }
+      case 'boosters/removeAllBoosters': {
+        return boostersInitialState
+      }
       default:
         return state
     }

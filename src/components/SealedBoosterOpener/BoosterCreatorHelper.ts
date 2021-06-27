@@ -1,6 +1,6 @@
 import { Card } from "../../constants/Card";
 
-function getRandomCardFromArray(cards: Card[], allCards: Card[]) {
+export function getRandomCardFromArray(cards: Card[], allCards: Card[]) {
     if(cards.length > 0) {
         const random = Math.floor(Math.random() * cards.length);
         return cards[random];
