@@ -79,7 +79,6 @@ function LandingPage() {
 
   return (
     <div className="maxWH">
-      <NavBar />
       <div className="BoosterPickerWrapper d-flex justify-content-center row h-100">
         <div className="BoosterWindowedArea p-2 bd-highlight col-sm-6 my-auto">
           <div className="InfoBlurb">

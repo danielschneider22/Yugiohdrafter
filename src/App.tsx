@@ -8,6 +8,7 @@ import { createStore } from 'redux';
 import LandingPage from './components/BoosterPicker/LandingPage';
 import Draft from './components/Draft/Draft';
 import DraftComplete from './components/DraftComplete/DraftComplete';
+import NavBar from './components/NavBar/NavBar';
 import SealedBoosterOpener from './components/SealedBoosterOpener/SealedBoosterOpener';
 import { initState, rootReducer } from './data/reducers';
 
@@ -25,6 +26,7 @@ function App() {
     <Provider store={store}>
       <div className={"AppWrapper maxWH"}>
         <Router>
+          <NavBar />
           <Route path="/Draft">
             <Draft />
           </Route>
