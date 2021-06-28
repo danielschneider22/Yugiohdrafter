@@ -3,30 +3,28 @@ import './BoosterPicker.css';
 import * as _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { Card } from '../../constants/Card';
 import { addBooster, resetBoosterCards } from '../../data/boosters/actions';
+import { getLandingPageBoosterIds, getLandingPageBoosters } from '../../data/boosters/selectors';
 import { addCards } from '../../data/cards/actions';
 import { fetchCards } from '../../data/cards/operations';
 import { addSets, updateCardIds } from '../../data/cardSets/actions';
 import { fetchCardSets } from '../../data/cardSets/operations';
 import { getCardSetsById } from '../../data/cardSets/selectors';
+import { resetDeckAndSideboard } from '../../data/deck/actions';
+import { initialiazeDraftPod } from '../../data/draftPod/actions';
 import NavBar from '../NavBar/NavBar';
 import BoosterChooserArea from './BoosterChooserArea';
-import { resetDeckAndSideboard } from '../../data/deck/actions';
-import { getLandingPageBoosterIds, getLandingPageBoosters } from '../../data/boosters/selectors';
-import { initialiazeDraftPod } from '../../data/draftPod/actions';
 
-interface ParentProps{
-  changePage: React.Dispatch<React.SetStateAction<string>>
-}
-
-function LandingPage(props: ParentProps) {
+function LandingPage() {
   const dispatch = useDispatch();
   const cardSets = Object.values(useSelector(getCardSetsById));
   const boosters = useSelector(getLandingPageBoosters)
   const boosterIds = useSelector(getLandingPageBoosterIds)
   const [format, setFormat] = useState("draft" as "sealed" | "draft")
+  const history = useHistory();
 
   // initialization
   useEffect(() => {
@@ -71,7 +69,7 @@ function LandingPage(props: ParentProps) {
     if(format === "draft") {
       dispatch(initialiazeDraftPod(8, 5, 9, ""))
     }
-    props.changePage(format === "sealed" ? "SealedBooster" : "Draft")
+    history.push(format === "sealed" ? "/SealedBooster" : "/Draft")
       
   }
 
@@ -81,7 +79,7 @@ function LandingPage(props: ParentProps) {
 
   return (
     <div className="maxWH">
-      <NavBar changePage={props.changePage}/>
+      <NavBar />
       <div className="BoosterPickerWrapper d-flex justify-content-center row h-100">
         <div className="BoosterWindowedArea p-2 bd-highlight col-sm-6 my-auto">
           <div className="InfoBlurb">

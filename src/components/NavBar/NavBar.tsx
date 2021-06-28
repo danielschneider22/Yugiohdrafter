@@ -1,10 +1,7 @@
-import { useState } from "react";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-interface ParentProps {
-    changePage: React.Dispatch<React.SetStateAction<string>>
-}
-
-function NavBar(props: ParentProps) {
+function NavBar() {
 
     const [mobileMenuShown, setMobileMenuShown] = useState(false)
     function toggleMobileMenu() {
@@ -21,14 +18,14 @@ function NavBar(props: ParentProps) {
         <header id="header" className={"header fixed-top" + (mobileMenuShown ? " forceNavToFront" : "")}>
             <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-            <div className="logo d-flex align-items-center" onClick={() => props.changePage("LandingPage")}>
+            <div className="logo d-flex align-items-center">
                 <img src="assets/img/logo.png" alt="" />
                 <span>YugiohDrafter</span>
             </div>
 
             <nav id="navbar" className={"navbar" + (mobileMenuShown ? " navbar-mobile" : "")}>
                 <ul>
-                <li><a className="nav-link scrollto active" href="" onClick={() => props.changePage("LandingPage")}>Home</a></li>
+                <li><Link to="/" className="nav-link scrollto active">Home</Link></li>
                 <li><a className="nav-link scrollto" href="#about">Join Draft</a></li>
                 <li><a className="nav-link scrollto" href="#about">Create Custom Booster</a></li>
                 <li className="dropdown" onClick={showQuickDraftDropdown}><a href="#"><span>Quick Draft</span> <i className="bi bi-chevron-down"></i></a>
