@@ -1,0 +1,17 @@
+export enum RoomsActionTypes 
+{
+  // - room add fetch
+  ROOM_ADD_FETCH = 'rooms/ROOM_ADD_FETCH',
+  ROOM_ADD_FETCH_FAIL = 'rooms/ROOM_ADD_FETCH_FAIL',
+  ROOM_ADD_FETCH_SUCCESS = 'rooms/ROOM_ADD_FETCH_SUCCESS',
+  
+  // - room get fetch
+  ROOM_GET_FETCH = 'rooms/ROOM_GET_FETCH',
+  ROOM_GET_FETCH_FAIL = 'rooms/ROOM_GET_FETCH_FAIL',
+  ROOM_GET_FETCH_SUCCESS = 'rooms/ROOM_GET_FETCH_SUCCESS',
+  
+  // - rooms get fetch
+  ROOMS_GET_FETCH = 'rooms/ROOMS_GET_FETCH',
+  ROOMS_GET_FETCH_FAIL = 'rooms/ROOMS_GET_FETCH_FAIL',
+  ROOMS_GET_FETCH_SUCCESS = 'rooms/ROOMS_GET_FETCH_SUCCESS',
+}

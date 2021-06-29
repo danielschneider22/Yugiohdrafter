@@ -13,7 +13,7 @@
     padding-bottom: 20px;
 }
 
-.FormatType{
+.ToggleButton {
     font-size: 18px;
     text-align: center;
     width: 100%;
@@ -24,11 +24,11 @@
     padding-bottom: 40px;
 }
 
-.FormatType > label > input {
+.ToggleButton > label > input {
     visibility:hidden;
 }
 
-.FormatType > label {
+.ToggleButton > label {
     border: 1px solid #333;
 }
 

@@ -16,6 +16,7 @@ import BoosterChooserArea from './BoosterChooserArea';
 import { resetDeckAndSideboard } from '../../data/deck/actions';
 import { getLandingPageBoosterIds, getLandingPageBoosters } from '../../data/boosters/selectors';
 import { initialiazeDraftPod } from '../../data/draftPod/actions';
+import { addRoomFetchThunk } from '../../data/data/rooms/operations';
 
 interface ParentProps{
   changePage: React.Dispatch<React.SetStateAction<string>>
@@ -27,6 +28,7 @@ function LandingPage(props: ParentProps) {
   const boosters = useSelector(getLandingPageBoosters)
   const boosterIds = useSelector(getLandingPageBoosterIds)
   const [format, setFormat] = useState("draft" as "sealed" | "draft")
+  const [playMode, setPlayMode] = useState("bots" as "bots" | "host")
 
   // initialization
   useEffect(() => {
@@ -65,14 +67,16 @@ function LandingPage(props: ParentProps) {
   }
 
   function launch() {
-    if(format === "sealed" || format === "draft") {
+    if (playMode === "host")  {
+      addRoomFetchThunk()
+    }
+    else if (playMode === "bots") {
       getSetsForBoosters()
-    }
-    if(format === "draft") {
-      dispatch(initialiazeDraftPod(8, 5, 9, ""))
-    }
-    props.changePage(format === "sealed" ? "SealedBooster" : "Draft")
-      
+      if (format === "draft") 
+        dispatch(initialiazeDraftPod(8, 5, 9, ""))
+
+      props.changePage(format === "sealed" ? "SealedBooster" : "Draft")
+    }      
   }
 
   const loadingBoosters = <div>Loading boosters...</div>
@@ -87,20 +91,20 @@ function LandingPage(props: ParentProps) {
           <div className="InfoBlurb">
               Pick Format and Card Sets
           </div>
-          <div className="btn-group btn-group-toggle FormatType justify-content-center" data-toggle="buttons">
-            <label className={"btn btn-secondary col-6" + (format === "draft" ? " active" : "")} onClick={() => setFormat("draft")}>
+          <div className="btn-group btn-group-toggle ToggleButton justify-content-center" data-toggle="buttons">
+            <label className={`btn btn-secondary col-6 ${format === "draft" ? "active" : ""}`} onClick={() => setFormat("draft")}>
               <input type="radio" id="draft" name="format" value="draft" checked={format === "draft"} autoComplete="off" onClick={() => setFormat("draft")} /> Draft
             </label>
-            <label className={"btn btn-secondary col-6" + (format === "sealed" ? " active" : "")} onClick={() => setFormat("sealed")}>
+            <label className={`btn btn-secondary col-6 ${format === "sealed" ? "active" : ""}`} onClick={() => setFormat("sealed")}>
               <input type="radio" id="sealed" name="format" value="sealed" autoComplete="off" checked={format === "sealed"} onClick={() => setFormat("sealed")}/> Sealed
             </label>
           </div>
-          <div className="btn-group btn-group-toggle FormatType FormatTypeBottom justify-content-center" data-toggle="buttons">
-            <label className={"btn btn-secondary col-6 active" + (format === "sealed" ? " disabled" : "")}>
-              <input type="radio" id="draft" name="draftFormat" value="draft" autoComplete="off" checked /> Draft with Bots
+          <div className="btn-group btn-group-toggle ToggleButton justify-content-center" data-toggle="buttons">
+            <label className={`btn btn-secondary col-6 ${playMode === "bots" ? "active" : ""}`} onClick={() => setPlayMode("bots")}>
+              <input type="radio" id="bots" name="playMode" value="bots" checked={playMode === "bots"} autoComplete="off" onClick={() => setPlayMode("bots")} /> Play With Bots
             </label>
-            <label className={"btn btn-secondary col-6 disabled" + (format === "sealed" ? " disabled" : "")}>
-              <input type="radio" id="sealed" name="draftFormat" value="sealed" autoComplete="off" /> Host Draft
+            <label className={`btn btn-secondary col-6 ${playMode === "host" ? "active" : ""}`} onClick={() => setPlayMode("host")}>
+              <input type="radio" id="host" name="playMode" value="host" autoComplete="off" checked={playMode === "host"} onClick={() => setPlayMode("host")}/> Host Draft
             </label>
           </div>
           {boosterArea}
