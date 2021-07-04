@@ -11,6 +11,11 @@
     font-size: 30px;
     text-align: center;
     padding-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: white;
+    font-family: "Nunito", sans-serif;
+    margin-top: 3px;
 }
 
 .FormatType{
@@ -18,6 +23,12 @@
     text-align: center;
     width: 100%;
     padding-bottom: 10px;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: white;
+    font-family: "Nunito", sans-serif;
+    margin-top: 3px;
 }
 
 .FormatTypeBottom{
