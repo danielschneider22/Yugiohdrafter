@@ -5,19 +5,15 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { Card } from '../../constants/Card';
-import { addBooster, removeAllBoosters, resetBoosterCards } from '../../data/boosters/actions';
+import { addBooster } from '../../data/boosters/actions';
 import { getLandingPageBoosterIds, getLandingPageBoosters } from '../../data/boosters/selectors';
-import { addCards } from '../../data/cards/actions';
-import { fetchCards } from '../../data/cards/operations';
-import { addSets, updateCardIds } from '../../data/cardSets/actions';
+import { addSets } from '../../data/cardSets/actions';
 import { fetchCardSets } from '../../data/cardSets/operations';
 import { getCardSetsById } from '../../data/cardSets/selectors';
-import { resetDeckAndSideboard } from '../../data/deck/actions';
-import { initialiazeDraftPod } from '../../data/draftPod/actions';
 import BoosterChooserArea from './BoosterChooserArea';
 import { sortCardSet } from '../../data/cardSets/utils';
-import { getSetsForBoosters } from '../../data/cards/utils';
+import { addToast } from '../../data/toasts/actions';
+import { toastBGColorDict } from '../../constants/Toast';
 
 function LandingPage() {
   const dispatch = useDispatch();
@@ -45,13 +41,14 @@ function LandingPage() {
   }, [cardSets, boosters, boosterIds.length, dispatch]);
 
   function launch() {
-    if(format === "sealed" || format === "draft") {
-      getSetsForBoosters(Object.values(boosters), dispatch)
-    }
-    if(format === "draft") {
-      dispatch(initialiazeDraftPod(8, 5, 9, ""))
-    }
-    history.push(format === "sealed" ? "/SealedBooster" : "/Draft")
+    // if(format === "sealed" || format === "draft") {
+    //   getSetsForBoosters(Object.values(boosters), dispatch)
+    // }
+    // if(format === "draft") {
+    //   dispatch(initialiazeDraftPod(8, 5, 9, ""))
+    // }
+    // history.push(format === "sealed" ? "/SealedBooster" : "/Draft")
+    dispatch(addToast({id: _.uniqueId("success-toast"), type: "Success", description: "Launched", title: "Success", backgroundColor: toastBGColorDict["Success"]}))
       
   }
 

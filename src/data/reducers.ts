@@ -5,6 +5,7 @@ import cardsReducer, { cardsInitialState } from './cards/reducer';
 import cardSetsReducer, { cardSetsInitialState } from './cardSets/reducer';
 import deckReducer, { deckInitialState } from './deck/reducer';
 import draftPodReducer, { draftPodInitialState } from './draftPod/reducer';
+import toastReducer, { toastsInitialState } from './toasts/reducer';
 
 export const initState = {
     cardSets: cardSetsInitialState,
@@ -12,7 +13,8 @@ export const initState = {
     boosters: boostersInitialState,
     deck: deckInitialState,
     draftPod: draftPodInitialState,
-    draftPodBoosters: boostersInitialState
+    draftPodBoosters: boostersInitialState,
+    toasts: toastsInitialState,
 }
 
 export const rootReducer = combineReducers({
@@ -21,5 +23,6 @@ export const rootReducer = combineReducers({
     boosters: boostersReducer("landingPageBooster"),
     deck: deckReducer,
     draftPod: draftPodReducer,
-    draftPodBoosters: boostersReducer("draftBooster")
+    draftPodBoosters: boostersReducer("draftBooster"),
+    toasts: toastReducer,
 })
