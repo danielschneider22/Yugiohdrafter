@@ -23,7 +23,7 @@ export default function cardSetsReducer(state = cardSetsInitialState, action: Ca
         }
       }
       case 'cardSets/addSet': {
-        const allIds = [action.cardSet.set_name, ...state.allIds]
+        const allIds = [...new Set([action.cardSet.set_name, ...state.allIds])]
         const byId = {...state.byId}
         byId[action.cardSet.set_name] = action.cardSet
         localStorage.setItem("cardSets", JSON.stringify(Object.values(byId)));
