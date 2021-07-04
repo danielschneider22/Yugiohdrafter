@@ -12,7 +12,7 @@ export const sortCardSet = (a: CardSet, b: CardSet) => {
       if (nameA < nameB) {
         return -1;
       }
-      if (nameB > nameB) {
+      if (nameA > nameB) {
         return 1;
       }
       return 0;
