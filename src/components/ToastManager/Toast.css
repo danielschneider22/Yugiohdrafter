@@ -90,11 +90,18 @@
 
 .dToast {
     height: 50px;
-    width: 300px;
+    width: 350px;
 	color: #fff;
 	padding: 20px 15px 10px 10px;
 	box-sizing: initial;
 }
+
+@media only screen and (max-width: 768px) {
+	/* For mobile phones: */
+	[class*="dToast"] {
+		width: 75%;
+	}
+  }
 
 .notification-container button {
 	position: relative;

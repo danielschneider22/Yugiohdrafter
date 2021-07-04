@@ -12,8 +12,6 @@ import { fetchCardSets } from '../../data/cardSets/operations';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import BoosterChooserArea from './BoosterChooserArea';
 import { sortCardSet } from '../../data/cardSets/utils';
-import { addToast } from '../../data/toasts/actions';
-import { toastBGColorDict } from '../../constants/Toast';
 import { getSetsForBoosters } from '../../data/cards/utils';
 import { initialiazeDraftPod } from '../../data/draftPod/actions';
 
@@ -49,9 +47,7 @@ function LandingPage() {
     if(format === "draft") {
       dispatch(initialiazeDraftPod(8, 5, 9, ""))
     }
-    history.push(format === "sealed" ? "/SealedBooster" : "/Draft")
-    dispatch(addToast({id: _.uniqueId("success-toast"), type: "Success", description: "Launched", title: "Draft Started", backgroundColor: toastBGColorDict["Success"]}))
-      
+    history.push(format === "sealed" ? "/SealedBooster" : "/Draft")      
   }
 
   const loadingBoosters = <div>Loading boosters...</div>
