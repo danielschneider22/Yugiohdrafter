@@ -243,6 +243,9 @@ section {
 .navbar a:hover, .navbar .active, .navbar .active:focus, .navbar li:hover > a {
   color: white;
 }
+.nav-link{
+  cursor: pointer;
+}
 
 .navbar .getstarted {
   background: white;
@@ -334,6 +337,13 @@ section {
 
 .mobile-nav-toggle.bi-x {
   color: #fff;
+  display: block;
+}
+
+@media (min-width: 800px) {
+  .mobile-nav-toggle {
+    font-size: 120px;
+  }
 }
 
 @media (max-width: 991px) {
@@ -375,6 +385,16 @@ section {
   overflow-y: auto;
   transition: 1s;
 }
+
+@media screen and (min-width: 640px) {
+  .navbar-mobile.customSet ul {
+    top: 10%;
+    right: 30%;
+    bottom: 10%;
+    left: 30%;
+  }
+}
+
 
 .navbar-mobile a {
   padding: 10px 20px;
