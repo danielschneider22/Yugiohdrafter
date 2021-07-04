@@ -44,7 +44,7 @@ function LandingPage() {
 
   function launch() {
     if (playMode === "host")  {
-      dispatch(roomAddFetchThunk())
+      dispatch(roomAddFetchThunk(history))
     }
 
     if(format === "sealed" || format === "draft") {

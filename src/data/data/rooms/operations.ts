@@ -9,18 +9,21 @@ import { Monad } from "../../../utils"
 
 import { tryCatchPromise } from "../../utils"
 import { roomAddFetch, roomAddFetchFail, roomAddFetchSuccess } from "./actions"
+import {History} from 'history'
 
-export const roomAddFetchThunk = (): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
+export const roomAddFetchThunk = (history: History): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
   roomAddFetch()
   const [roomC, error]: Monad<RoomC> = await tryCatchPromise<RoomC>(roomAddFetchOp)
   if (roomC) {
     // TODO: @allenwhitedev example of why we need to handle arguments in tryCatchPromise()
     // const [room, error]: Monad<Room> = await tryCatchPromise<Room>(roomContractToModel)
     const room = await roomContractToModel(roomC)
-    if (room)
-      return dispatch(roomAddFetchSuccess(room))
+    if (room) {
+      await dispatch(roomAddFetchSuccess(room))
+      return history.push(`/room/${room.id}`)
+    }
     else
-    dispatch(roomAddFetchFail(error))  
+      dispatch(roomAddFetchFail(error))  
   } else {
     dispatch(roomAddFetchFail(error))
   }

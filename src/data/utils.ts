@@ -1,9 +1,14 @@
 import { State, StateItem } from "../models/State";
 
 export function stateAddItemWithoutMutation<T extends StateItem>(state: State<T>, item: T): State<T> {
+  const coolState = {
+    allIds: [...state.allIds, item.id],
+    byId: {...state.byId, [item.id]: item}
+  }
+  console.log(coolState)
   return {
     allIds: [...state.allIds, item.id],
-    byId: {...state.byId, item}
+    byId: {...state.byId, [item.id]: item}
   }
 }
 

@@ -32,25 +32,26 @@ function App() {
       />
       <div className={"AppWrapper maxWH"}>
         <Router>
-          <NavBar />
-          <Route path="/Draft">
-            <Draft />
-          </Route>
-          <Route path="/DraftComplete">
-            <DraftComplete />
-          </Route>
-          <Route path="/SealedBooster">
-            <SealedBoosterOpener />
-          </Route>
-          <Route path={`/rooms/:id`}>
-            <RoomPage />
-          </Route>
-          <Route path="/">
-            <LandingPage />
-          </Route>
+            <NavBar />
+            <Switch>
+              <Route path="/Draft">
+                <Draft />
+              </Route>
+              <Route path="/DraftComplete">
+                <DraftComplete />
+              </Route>
+              <Route path="/SealedBooster">
+                <SealedBoosterOpener />
+              </Route>
+              <Route path={`/room/:id`}>
+                <RoomPage />
+              </Route>
+            <Route path="/">
+              <LandingPage />
+            </Route>
+          </Switch>
         </Router>
       </div>
-      
     </Provider>
   );
 }
