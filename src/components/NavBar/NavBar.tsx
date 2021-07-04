@@ -69,17 +69,24 @@ function NavBar() {
                 boosters.push({cardSetName: set_name, id: _.uniqueId("booster-")})
             }
         }
-        dispatch(removeAllBoosters("draftBooster"))
+        
         dispatch(initialiazeDraftPod(8, 5, 9, ""))
+        dispatch(removeAllBoosters("draftBooster"))
         dispatch(setBoosters(boosters, "landingPageBooster"))
         getSetsForBoosters(Object.values(boosters), dispatch)
-        dispatch(resetDeckAndSideboard())
         history.push("/Draft")
         setMobileMenuShown(false)
     }
 
     function goHome() {
         history.push("/")
+        defaultClearAndClose()
+    }
+
+    function defaultClearAndClose() {
+        dispatch(removeAllBoosters("draftBooster"))
+        dispatch(resetDeckAndSideboard())
+        setMobileMenuShown(false)
     }
     
     return (
@@ -95,7 +102,7 @@ function NavBar() {
 
                 <nav id="navbar" className={"navbar" + (mobileMenuShown ? " navbar-mobile" : "")}>
                     <ul>
-                    <li><Link to="/" className="nav-link scrollto active" onClick={() => setMobileMenuShown(false)}>Home</Link></li>
+                    <li><Link to="/" className="nav-link scrollto active" onClick={() => defaultClearAndClose()}>Home</Link></li>
                     <li><a className="nav-link scrollto" href="#about">Join Draft</a></li>
                     <li><a className="nav-link scrollto" onClick={toggleCustomSetPopupVisiblity}>Create Custom Set</a></li>
                     <li className="dropdown" onClick={showQuickDraftDropdown}><a href="#"><span>Quick Draft</span> <i className="bi bi-chevron-down"></i></a>

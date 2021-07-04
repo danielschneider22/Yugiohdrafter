@@ -35,10 +35,6 @@ function LandingPage() {
     } else if (cardSets.length === 0) {
         fetchCardSets(dispatch);
     }
-
-    dispatch(resetBoosterCards("landingPageBooster"))
-    dispatch(removeAllBoosters("draftBooster"))
-    dispatch(resetDeckAndSideboard())
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // add a booster if booster list is empty
