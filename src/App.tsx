@@ -27,8 +27,8 @@ function App() {
     <Provider store={store}>
       <ToastManager
         position="bottom-left"
-        autoDelete={false}
-        dismissTime={0}
+        autoDelete={true}
+        dismissTime={3000}
       />
       <div className={"AppWrapper maxWH"}>
         <Router>
