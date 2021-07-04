@@ -21,6 +21,18 @@ export default function getBoostersReducer(boosterType: BoosterType) {
             byId,
         }
       }
+      case 'boosters/setBoosters': {
+        const allIds = action.boosters.map((booster) => booster.id)
+        const byId: {[key: string]: Booster} = {}
+        action.boosters.forEach((booster) => {
+          byId[booster.id] = booster
+        })
+        return {
+            ...state,
+            allIds,
+            byId,
+        }
+      }
       case 'boosters/removeBooster': {
         const allIds = state.allIds.filter((id) => id !== action.id)
         const byId: {[key: string]: Booster} = {}

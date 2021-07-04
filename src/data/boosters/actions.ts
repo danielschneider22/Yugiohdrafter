@@ -16,6 +16,20 @@ export function addBooster(booster: Booster, boosterType: BoosterType) {
     }
 }
 
+export interface SetBoosters {
+    type: 'boosters/setBoosters',
+    boosters: Booster[],
+    boosterType: BoosterType,
+}
+
+export function setBoosters(boosters: Booster[], boosterType: BoosterType) {
+    return {
+        type: 'boosters/setBoosters',
+        boosters,
+        boosterType
+    }
+}
+
 interface RemoveBooster {
     type: 'boosters/removeBooster',
     id: string,
@@ -86,4 +100,4 @@ export function removeAllBoosters(boosterType: BoosterType) {
     }
 }
 
-export type BoosterActions = AddBooster | RemoveBooster | UpdateBooster | ResetBoosterCards | RemoveCardFromBooster | RemoveAllBoosters;
+export type BoosterActions = AddBooster | RemoveBooster | UpdateBooster | ResetBoosterCards | RemoveCardFromBooster | RemoveAllBoosters | SetBoosters;
