@@ -67,7 +67,7 @@ function LandingPage() {
 
   function launch() {
     if (playMode === "host")  {
-      addRoomFetchThunk()
+      dispatch(addRoomFetchThunk())
     }
     history.push(format === "sealed" ? "/SealedBooster" : "/Draft")
   }

@@ -1,10 +1,8 @@
+import { Provider, RootStateOrAny } from 'react-redux';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Action, applyMiddleware, compose, createStore } from 'redux';
+import thunkMiddleware, { ThunkMiddleware } from 'redux-thunk';
 import './App.css';
-
-import { useState } from 'react';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
-import { createStore } from 'redux';
-
 import LandingPage from './components/BoosterPicker/LandingPage';
 import Draft from './components/Draft/Draft';
 import DraftComplete from './components/DraftComplete/DraftComplete';
@@ -14,11 +12,12 @@ import { initState, rootReducer } from './data/reducers';
 
 // undefined if browser does not have redux devtools installed
 const reduxDevtoolsCompose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+const enhancersThunk = applyMiddleware(thunkMiddleware as ThunkMiddleware<RootStateOrAny, Action>)
 
 const store = createStore(
   rootReducer,
   initState as any,
-  ...reduxDevtoolsCompose ? [reduxDevtoolsCompose()] : [],
+  compose(enhancersThunk, ...reduxDevtoolsCompose ? [reduxDevtoolsCompose()] : [], )
 );
 
 function App() {
