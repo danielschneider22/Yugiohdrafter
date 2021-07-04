@@ -17,6 +17,7 @@ import { resetDeckAndSideboard } from '../../data/deck/actions';
 import { initialiazeDraftPod } from '../../data/draftPod/actions';
 import NavBar from '../NavBar/NavBar';
 import BoosterChooserArea from './BoosterChooserArea';
+import { sortCardSet } from '../../data/cardSets/utils';
 
 function LandingPage() {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ function LandingPage() {
   // add a booster if booster list is empty
   useEffect(() => {
     if(boosterIds.length === 0 && cardSets.length > 0) {
-        dispatch(addBooster({cardSetName: cardSets[0].set_name, id: _.uniqueId("booster-")}, "landingPageBooster"))
+        dispatch(addBooster({cardSetName: cardSets.sort(sortCardSet)[0].set_name, id: _.uniqueId("booster-")}, "landingPageBooster"))
     }
   }, [cardSets, boosters, boosterIds.length, dispatch]);
 
