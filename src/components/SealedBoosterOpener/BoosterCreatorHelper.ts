@@ -1,4 +1,5 @@
 import { Card } from "../../constants/Card";
+import { CardSet } from "../../constants/CardSet";
 
 export function getRandomCardFromArray(cards: Card[], allCards: Card[]) {
     if(cards.length > 0) {
@@ -11,14 +12,25 @@ export function getRandomCardFromArray(cards: Card[], allCards: Card[]) {
     
 }
 
-export function createBooster(cardsOfSet: Card[], set_name: string) {
+export function createBooster(cardsOfSet: Card[], cardSet: CardSet) {
+    const set_name = cardSet.set_name
+    const cards: Card[] = []
+
+    // if it's a custom set don't do rarity logic
+    if(cardSet.custom_set) {
+        for(let i = 0; i < 9; i++){
+            cards.push(getRandomCardFromArray(cardsOfSet, cardsOfSet))
+        }
+        return cards
+    }
+
     const commonCards = cardsOfSet.filter((card) => card.card_sets.find((set) => set.set_name === set_name)?.set_rarity === "Common")
     const rareCards = cardsOfSet.filter((card) => card.card_sets.find((set) => set.set_name === set_name)?.set_rarity === "Rare")
     const ultraRare = cardsOfSet.filter((card) => card.card_sets.find((set) => set.set_name === set_name)?.set_rarity === "Ultra Rare")
     const secretRare = cardsOfSet.filter((card) => card.card_sets.find((set) => set.set_name === set_name)?.set_rarity === "Secret Rare")
     const superRare = cardsOfSet.filter((card) => card.card_sets.find((set) => set.set_name === set_name)?.set_rarity === "Super Rare")
 
-    const cards: Card[] = []
+    
     for(let i = 0; i < 7; i++){
         cards.push(getRandomCardFromArray(commonCards, cardsOfSet))
     }

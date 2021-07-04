@@ -15,7 +15,7 @@ export async function fetchCardsForBooster(dispatch: Dispatch<any>, set_name: st
 function generateCardsIdsForBooster(booster: Booster, cardSets: {[key: string]: CardSet}, cardsById: { [key: string]: Card }) {
   const cardSetIds = cardSets[booster.cardSetName].card_ids!
   const cardSetCards = cardSetIds.map((card_id) => cardsById[card_id]).filter((card) => !!card)
-  return createBooster(cardSetCards, booster.cardSetName).map((card) => card.id)
+  return createBooster(cardSetCards, cardSets[booster.cardSetName]).map((card) => card.id)
 }
 
 export function createBoostersForFetchedSets(

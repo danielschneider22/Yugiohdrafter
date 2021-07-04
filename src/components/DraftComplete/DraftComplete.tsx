@@ -5,17 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { VisibleCard } from '../../constants/Card';
 import { getCardsById } from '../../data/cards/selectors';
-import NavBar from '../NavBar/NavBar';
-import { getDeck } from '../../data/deck/selectors';
 import { deckToSideboard } from '../../data/deck/actions';
-import Sidebar from '../Sidebar/Sidebar';
+import { getDeck } from '../../data/deck/selectors';
 import MainCardArea from '../MainCardArea/MainCardArea';
+import NavBar from '../NavBar/NavBar';
+import Sidebar from '../Sidebar/Sidebar';
 
-interface ParentProps{
-  changePage: React.Dispatch<React.SetStateAction<string>>
-}
-
-function DraftComplete(props: ParentProps) {
+function DraftComplete() {
   const dispatch = useDispatch();
 
   const cardsById = useSelector(getCardsById)
@@ -41,7 +37,6 @@ function DraftComplete(props: ParentProps) {
 
   return (
     <div className="maxWH">
-      <NavBar changePage={props.changePage}/>
       <div className="maxWH">
         <div ref={sidebarRef} className={`ExpandContract maxHeight ${showSidebar ? "ShowSidebar" : "HideSidebar"}`}>
           <Sidebar shownTabs={["Sideboard", "Extra Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />

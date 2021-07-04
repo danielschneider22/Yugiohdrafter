@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { Booster } from "../../constants/Booster";
 import { CardSet } from "../../constants/CardSet";
 import { removeBooster } from "../../data/boosters/actions";
+import { sortCardSet } from "../../data/cardSets/utils";
 
 interface ParentProps {
     cardSets: CardSet[]
@@ -18,12 +19,14 @@ function BoosterSelect(props: ParentProps) {
     dispatch(removeBooster(booster.id, "landingPageBooster"))
   }
 
+  const cardSetsSorted = cardSets.sort(sortCardSet)
+
   return (
       <div className="BoosterSelect d-flex m-1 p-0">
           <div className="DeleteButton btn-sm btn-danger" onClick={dispatchRemoveBooster}><span>x</span></div>
           <div className={"BoosterText"}>Booster <br/>#{(boosterNum + 1)}</div>
           <select value={booster.cardSetName} onChange={(event) => boosterChanged(booster.id, event.target.value)}>
-            {cardSets.map((set) => {
+            {cardSetsSorted.map((set) => {
                 return <option value={set.set_name} key={set.set_name}>{set.set_name}</option>;
             })}
         </select>

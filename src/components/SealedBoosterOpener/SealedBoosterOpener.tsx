@@ -4,24 +4,24 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { VisibleCard } from '../../constants/Card';
+import { createBoostersForFetchedSets } from '../../data/boosters/operations';
 import { getAllCardSetCardsFetched, getLandingPageBoosters } from '../../data/boosters/selectors';
 import { getCardsById } from '../../data/cards/selectors';
-import { getCardSetsById } from '../../data/cardSets/selectors';
-import NavBar from '../NavBar/NavBar';
-import { getSideboard } from '../../data/deck/selectors';
-import { addCardsToSideboard, sideboardToDeck, sideboardToExtraDeck } from '../../data/deck/actions';
-import { createBoostersForFetchedSets } from '../../data/boosters/operations';
-import Sidebar from '../Sidebar/Sidebar';
-import MainCardArea from '../MainCardArea/MainCardArea';
 import { isExtraDeckCard } from '../../data/cards/utils';
-
-interface ParentProps{
-  changePage: React.Dispatch<React.SetStateAction<string>>
-}
+import { getCardSetsById } from '../../data/cardSets/selectors';
+import {
+    addCardsToSideboard,
+    sideboardToDeck,
+    sideboardToExtraDeck,
+} from '../../data/deck/actions';
+import { getSideboard } from '../../data/deck/selectors';
+import MainCardArea from '../MainCardArea/MainCardArea';
+import NavBar from '../NavBar/NavBar';
+import Sidebar from '../Sidebar/Sidebar';
 
 let populatedSideboard = false
 
-function SealedBoosterOpener(props: ParentProps) {
+function SealedBoosterOpener() {
   const dispatch = useDispatch();
 
   const cardsById = useSelector(getCardsById)
@@ -68,7 +68,6 @@ function SealedBoosterOpener(props: ParentProps) {
 
   return (
     <div className="maxWH">
-      <NavBar changePage={props.changePage}/>
       <div className="maxWH">
         <div ref={sidebarRef} className={`ExpandContract maxHeight ${showSidebar ? "ShowSidebar" : "HideSidebar"}`}>
           <Sidebar shownTabs={["Main Deck", "Extra Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />

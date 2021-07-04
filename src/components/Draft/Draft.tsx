@@ -2,28 +2,38 @@ import './Draft.css';
 
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
-import { VisibleCard } from '../../constants/Card';
-import { getAllCardSetCardsFetched, getLandingPageBoosters, getDraftBoosters, getPackComplete, getLandingPageBoosterIds, getDraftBoosterIds } from '../../data/boosters/selectors';
-import { getCardsById } from '../../data/cards/selectors';
-import { getCardSetsById } from '../../data/cardSets/selectors';
-import NavBar from '../NavBar/NavBar';
-import { addCardToDeck, addCardToExtraDeck } from '../../data/deck/actions';
-import { createDraftBoostersForRound } from '../../data/boosters/operations';
-import Sidebar from '../Sidebar/Sidebar';
-import MainCardArea from '../MainCardArea/MainCardArea';
-import { isExtraDeckCard } from '../../data/cards/utils';
-import { getCardsForPositionInDraft, getCurrLPBooster, getNumPlayers, getPlayerPosition, getPositionBooster } from '../../data/draftPod/selectors';
-import { removeAllBoosters, removeCardFromBooster } from '../../data/boosters/actions';
-import { makeAIPicks } from './utils';
-import { openNextPack, updatePlayerPosition } from '../../data/draftPod/actions';
 import { Booster } from '../../constants/Booster';
+import { VisibleCard } from '../../constants/Card';
+import { removeAllBoosters, removeCardFromBooster } from '../../data/boosters/actions';
+import { createDraftBoostersForRound } from '../../data/boosters/operations';
+import {
+    getAllCardSetCardsFetched,
+    getDraftBoosterIds,
+    getDraftBoosters,
+    getLandingPageBoosterIds,
+    getLandingPageBoosters,
+    getPackComplete,
+} from '../../data/boosters/selectors';
+import { getCardsById } from '../../data/cards/selectors';
+import { isExtraDeckCard } from '../../data/cards/utils';
+import { getCardSetsById } from '../../data/cardSets/selectors';
+import { addCardToDeck, addCardToExtraDeck } from '../../data/deck/actions';
+import { openNextPack, updatePlayerPosition } from '../../data/draftPod/actions';
+import {
+    getCardsForPositionInDraft,
+    getCurrLPBooster,
+    getNumPlayers,
+    getPlayerPosition,
+    getPositionBooster,
+} from '../../data/draftPod/selectors';
+import MainCardArea from '../MainCardArea/MainCardArea';
+import NavBar from '../NavBar/NavBar';
+import Sidebar from '../Sidebar/Sidebar';
+import { makeAIPicks } from './utils';
 
-interface ParentProps{
-  changePage: React.Dispatch<React.SetStateAction<string>>
-}
-
-function Draft(props: ParentProps) {
+function Draft() {
   const dispatch = useDispatch();
 
   const cardsById = useSelector(getCardsById)
@@ -39,18 +49,17 @@ function Draft(props: ParentProps) {
   const draftBoosters = useSelector(getDraftBoosters)
   const draftBoostersIds = useSelector(getDraftBoosterIds)
   const playerPosition = useSelector(getPlayerPosition)
+  const history = useHistory();
 
   const [showSidebar, toggleShowSidebar] = useState(false)
   
   const sidebarRef = useRef(null as unknown as HTMLDivElement)
 
-  const changePage = props.changePage
-
   //create boosters when all sets are fetched and starting new pack
   useEffect(() => {
     if(allCardSetCardsFetched && packComplete) {
       if (currLPBooster && currLPBooster.id === landingPageBoosters[landingPageBoosterIds[landingPageBoosterIds.length - 1]].id) { // completed last booster
-        changePage("DraftComplete")
+        history.push("/DraftComplete");
       } else {
         let nextBooster: Booster
         if(!currLPBooster) { // first booster opened
@@ -65,7 +74,7 @@ function Draft(props: ParentProps) {
       
     }
     
-  }, [cardSets, currLPBooster, cardsById, dispatch, packComplete, allCardSetCardsFetched, landingPageBoosters, landingPageBoosterIds, numPlayers, changePage]);
+  }, [cardSets, currLPBooster, cardsById, dispatch, packComplete, allCardSetCardsFetched, landingPageBoosters, landingPageBoosterIds, numPlayers]);
 
   function toggleSidebar() {
     toggleShowSidebar(!showSidebar)
@@ -84,7 +93,6 @@ function Draft(props: ParentProps) {
 
   return (
     <div className="maxWH">
-      <NavBar changePage={props.changePage}/>
       <div className="maxWH">
         <div ref={sidebarRef} className={`ExpandContract maxHeight ${showSidebar ? "ShowSidebar" : "HideSidebar"}`}>
           <Sidebar shownTabs={["Main Deck", "Sideboard", "Extra Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />

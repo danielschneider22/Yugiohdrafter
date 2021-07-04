@@ -1,13 +1,16 @@
-import { Provider } from 'react-redux';
 import './App.css';
-import { createStore } from 'redux'
-import { initState, rootReducer } from './data/reducers';
-import SealedBoosterOpener from './components/SealedBoosterOpener/SealedBoosterOpener';
-import LandingPage from './components/BoosterPicker/LandingPage';
+
 import { useState } from 'react';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import { createStore } from 'redux';
+
+import LandingPage from './components/BoosterPicker/LandingPage';
 import Draft from './components/Draft/Draft';
 import DraftComplete from './components/DraftComplete/DraftComplete';
-// import './bootstrap.min.css';
+import NavBar from './components/NavBar/NavBar';
+import SealedBoosterOpener from './components/SealedBoosterOpener/SealedBoosterOpener';
+import { initState, rootReducer } from './data/reducers';
 
 // undefined if browser does not have redux devtools installed
 const reduxDevtoolsCompose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
@@ -19,31 +22,24 @@ const store = createStore(
 );
 
 function App() {
-  const [page, changePage] = useState("LandingPage")
-
   return (
     <Provider store={store}>
       <div className={"AppWrapper maxWH"}>
-        { page === "LandingPage" && 
-          <LandingPage 
-            changePage={changePage}
-          />
-        }
-        { page === "SealedBooster" && 
-          <SealedBoosterOpener 
-            changePage={changePage}
-          />
-        }
-        { page === "Draft" && 
-          <Draft 
-            changePage={changePage}
-          />
-        }
-        { page === "DraftComplete" && 
-          <DraftComplete
-            changePage={changePage}
-          />
-        }
+        <Router>
+          <NavBar />
+          <Route path="/Draft">
+            <Draft />
+          </Route>
+          <Route path="/DraftComplete">
+            <DraftComplete />
+          </Route>
+          <Route path="/SealedBooster">
+            <SealedBoosterOpener />
+          </Route>
+          <Route path="/">
+            <LandingPage />
+          </Route>
+        </Router>
       </div>
       
     </Provider>

@@ -4,4 +4,5 @@ export interface CardSet{
     num_of_cards: number,
     tcg_date: string
     card_ids?: string[]
+    custom_set?: boolean
 }
