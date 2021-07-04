@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { Booster } from '../../constants/Booster';
-import { addBooster, removeAllBoosters, setBoosters } from '../../data/boosters/actions';
+import { removeAllBoosters, setBoosters } from '../../data/boosters/actions';
 import { getSetsForBoosters } from '../../data/cards/utils';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import { resetDeckAndSideboard } from '../../data/deck/actions';
@@ -75,6 +75,11 @@ function NavBar() {
         getSetsForBoosters(Object.values(boosters), dispatch)
         dispatch(resetDeckAndSideboard())
         history.push("/Draft")
+        setMobileMenuShown(false)
+    }
+
+    function goHome() {
+        history.push("/")
     }
     
     return (
@@ -83,14 +88,14 @@ function NavBar() {
             {!customSetPopupVisible && 
                 <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-                <div className="logo d-flex align-items-center">
+                <div className="logo d-flex align-items-center" onClick={goHome}>
                     <img src="assets/img/logo.png" alt="" />
                     <span>YugiohDrafter</span>
                 </div>
 
                 <nav id="navbar" className={"navbar" + (mobileMenuShown ? " navbar-mobile" : "")}>
                     <ul>
-                    <li><Link to="/" className="nav-link scrollto active">Home</Link></li>
+                    <li><Link to="/" className="nav-link scrollto active" onClick={() => setMobileMenuShown(false)}>Home</Link></li>
                     <li><a className="nav-link scrollto" href="#about">Join Draft</a></li>
                     <li><a className="nav-link scrollto" onClick={toggleCustomSetPopupVisiblity}>Create Custom Set</a></li>
                     <li className="dropdown" onClick={showQuickDraftDropdown}><a href="#"><span>Quick Draft</span> <i className="bi bi-chevron-down"></i></a>
@@ -98,7 +103,7 @@ function NavBar() {
                             <li><a href="#" onClick={() => quickDraft("retro_draft_custom")}>Retro Draft</a></li>
                             <li><a href="#" onClick={() => quickDraft("battle_pack_custom")}>Battle Pack Draft</a></li>
                             {latestSet && <li><a href="#" onClick={() => quickDraft(latestSet.set_name)}>{latestSet.set_name} Draft</a></li>}
-                            {customSets.map((set) => <li><a href="#" onClick={() => quickDraft(set.set_name)}>{set.set_name}</a></li>)}
+                            {customSets.map((set) => <li key={set.set_name}><a href="#" onClick={() => quickDraft(set.set_name)}>{set.set_name}</a></li>)}
                             
                         </ul>
                     </li>
