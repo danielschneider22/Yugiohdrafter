@@ -5,20 +5,16 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { Card } from '../../constants/Card';
-import { addBooster, resetBoosterCards } from '../../data/boosters/actions';
+import { addBooster } from '../../data/boosters/actions';
 import { getLandingPageBoosterIds, getLandingPageBoosters } from '../../data/boosters/selectors';
-import { addCards } from '../../data/cards/actions';
-import { fetchCards } from '../../data/cards/operations';
-import { addSets, updateCardIds } from '../../data/cardSets/actions';
+import { addSets } from '../../data/cardSets/actions';
 import { fetchCardSets } from '../../data/cardSets/operations';
 import { getCardSetsById } from '../../data/cardSets/selectors';
-import { resetDeckAndSideboard } from '../../data/deck/actions';
-import { initialiazeDraftPod } from '../../data/draftPod/actions';
 import { roomAddFetchThunk } from '../../data/data/rooms/operations';
-import NavBar from '../NavBar/NavBar';
 import BoosterChooserArea from './BoosterChooserArea';
 import { sortCardSet } from '../../data/cardSets/utils';
+import { getSetsForBoosters } from '../../data/cards/utils';
+import { initialiazeDraftPod } from '../../data/draftPod/actions';
 
 function LandingPage() {
   const dispatch = useDispatch();
@@ -37,10 +33,7 @@ function LandingPage() {
     } else if (cardSets.length === 0) {
         fetchCardSets(dispatch);
     }
-
-    dispatch(resetBoosterCards("landingPageBooster"))
-    dispatch(resetDeckAndSideboard())
-  }, [dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // add a booster if booster list is empty
   useEffect(() => {
@@ -49,27 +42,20 @@ function LandingPage() {
     }
   }, [cardSets, boosters, boosterIds.length, dispatch]);
 
-  function getSetsForBoosters() {
-    const fetchedSets = {} as {[key: string]: string}
-    Object.values(boosters).forEach((booster) => {
-      if(!fetchedSets[booster.cardSetName]) {
-        const cardsOfSet = localStorage.getItem(booster.cardSetName);
-        if(cardsOfSet) {
-          dispatch(addCards(JSON.parse(cardsOfSet) as Card[]))
-          dispatch(updateCardIds(JSON.parse(cardsOfSet) as Card[], booster.cardSetName))
-        } else {
-          fetchCards(dispatch, booster.cardSetName);
-        }
-        fetchedSets[booster.cardSetName] = booster.cardSetName
-      }
-    })
-  }
-
   function launch() {
     if (playMode === "host")  {
       dispatch(roomAddFetchThunk())
     }
+
+    if(format === "sealed" || format === "draft") {
+      getSetsForBoosters(Object.values(boosters), dispatch)
+    }
+    if(format === "draft") {
+      dispatch(initialiazeDraftPod(8, 5, 9, ""))
+    }
     history.push(format === "sealed" ? "/SealedBooster" : "/Draft")
+
+
   }
 
   const loadingBoosters = <div>Loading boosters...</div>

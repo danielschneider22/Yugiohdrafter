@@ -9,6 +9,7 @@ import DraftComplete from './components/DraftComplete/DraftComplete';
 import NavBar from './components/NavBar/NavBar';
 import SealedBoosterOpener from './components/SealedBoosterOpener/SealedBoosterOpener';
 import { initState, rootReducer } from './data/reducers';
+import ToastManager from './components/ToastManager/ToastManager';
 
 // undefined if browser does not have redux devtools installed
 const reduxDevtoolsCompose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
@@ -23,6 +24,11 @@ const store = createStore(
 function App() {
   return (
     <Provider store={store}>
+      <ToastManager
+        position="bottom-left"
+        autoDelete={true}
+        dismissTime={6000}
+      />
       <div className={"AppWrapper maxWH"}>
         <Router>
           <NavBar />

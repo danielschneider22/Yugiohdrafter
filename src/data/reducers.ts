@@ -6,6 +6,7 @@ import cardSetsReducer, { cardSetsInitialState } from './cardSets/reducer';
 import { roomsInitialState, roomsReducer } from './data/rooms/reducers';
 import deckReducer, { deckInitialState } from './deck/reducer';
 import draftPodReducer, { draftPodInitialState } from './draftPod/reducer';
+import toastReducer, { toastsInitialState } from './toasts/reducer';
 
 export const initState = {
     cardSets: cardSetsInitialState,
@@ -17,6 +18,7 @@ export const initState = {
     data: {
         rooms: roomsInitialState,
     },
+    toasts: toastsInitialState,
 }
 
 export const rootReducer = combineReducers({
@@ -28,5 +30,6 @@ export const rootReducer = combineReducers({
     draftPodBoosters: boostersReducer("draftBooster"),
     data: combineReducers({
         rooms: roomsReducer,
-    })
+    }),
+    toasts: toastReducer,
 })

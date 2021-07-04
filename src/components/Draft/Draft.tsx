@@ -32,6 +32,9 @@ import MainCardArea from '../MainCardArea/MainCardArea';
 import NavBar from '../NavBar/NavBar';
 import Sidebar from '../Sidebar/Sidebar';
 import { makeAIPicks } from './utils';
+import { toastBGColorDict } from '../../constants/Toast';
+import { addToast } from '../../data/toasts/actions';
+import _ from 'lodash';
 
 function Draft() {
   const dispatch = useDispatch();
@@ -60,6 +63,7 @@ function Draft() {
     if(allCardSetCardsFetched && packComplete) {
       if (currLPBooster && currLPBooster.id === landingPageBoosters[landingPageBoosterIds[landingPageBoosterIds.length - 1]].id) { // completed last booster
         history.push("/DraftComplete");
+        dispatch(addToast({id: _.uniqueId("draft-complete-"), type: "Success", description: "Edit and Export your Deck", title: "Draft Complete", backgroundColor: toastBGColorDict["Success"]}))
       } else {
         let nextBooster: Booster
         if(!currLPBooster) { // first booster opened
