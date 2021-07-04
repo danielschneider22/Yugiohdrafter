@@ -1,5 +1,5 @@
 import { Provider, RootStateOrAny } from 'react-redux';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Action, applyMiddleware, compose, createStore } from 'redux';
 import thunkMiddleware, { ThunkMiddleware } from 'redux-thunk';
 import './App.css';
@@ -7,6 +7,7 @@ import LandingPage from './components/BoosterPicker/LandingPage';
 import Draft from './components/Draft/Draft';
 import DraftComplete from './components/DraftComplete/DraftComplete';
 import NavBar from './components/NavBar/NavBar';
+import RoomPage from './components/RoomPage/RoomPage';
 import SealedBoosterOpener from './components/SealedBoosterOpener/SealedBoosterOpener';
 import { initState, rootReducer } from './data/reducers';
 
@@ -34,6 +35,9 @@ function App() {
           </Route>
           <Route path="/SealedBooster">
             <SealedBoosterOpener />
+          </Route>
+          <Route path={`/rooms/:id`}>
+            <RoomPage />
           </Route>
           <Route path="/">
             <LandingPage />
