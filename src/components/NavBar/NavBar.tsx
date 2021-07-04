@@ -17,7 +17,7 @@ function NavBar() {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const latestSet = Object.keys(cardSets).length > 0 ? Object.values(cardSets).filter((set) => !set.custom_set).sort((a, b) => +new Date(b.tcg_date) - +new Date(a.tcg_date))[0] : undefined
+    const latestSet = Object.keys(cardSets).length > 0 ? Object.values(cardSets).filter((set) => !set.custom_set && set.num_of_cards > 60).sort((a, b) => +new Date(b.tcg_date) - +new Date(a.tcg_date))[0] : undefined
     const customSets = Object.keys(cardSets).length > 0 ? Object.values(cardSets).filter((set) => set.custom_set) : []
     function toggleMobileMenu() {
         setMobileMenuShown(!mobileMenuShown)
@@ -49,7 +49,24 @@ function NavBar() {
             
         } else if (set_name === "battle_pack_custom") {
             for ( let i = 0; i <= 8; i++ ) {
-                dispatch(addBooster({cardSetName: "Retro Pack", id: _.uniqueId("booster-")}, "landingPageBooster"))
+                const randomType = Math.floor(Math.random() * 3);
+                let battlePackType = ""
+                switch(randomType){
+                    case 0:
+                        battlePackType = "Battle Pack: Epic Dawn"
+                        break;
+                    case 1:
+                        battlePackType = "Battle Pack 2: War of the Giants"
+                        break;
+                    case 2:
+                        battlePackType = "Battle Pack 3: Monster League"
+                        break;
+                }
+                boosters.push({cardSetName: battlePackType, id: _.uniqueId("booster-")})
+            }
+        } else {
+            for ( let i = 0; i <= 8; i++ ) {
+                boosters.push({cardSetName: set_name, id: _.uniqueId("booster-")})
             }
         }
         dispatch(removeAllBoosters("draftBooster"))
@@ -79,9 +96,9 @@ function NavBar() {
                     <li className="dropdown" onClick={showQuickDraftDropdown}><a href="#"><span>Quick Draft</span> <i className="bi bi-chevron-down"></i></a>
                         <ul className={quickDraftDropdownVisible ? "dropdown-active" : ""}>
                             <li><a href="#" onClick={() => quickDraft("retro_draft_custom")}>Retro Draft</a></li>
-                            <li><a href="#">Battle Pack Draft</a></li>
-                            {latestSet && <li><a href="#">{latestSet.set_name} Draft</a></li>}
-                            {customSets.map((set) => <li><a href="#">{set.set_name}</a></li>)}
+                            <li><a href="#" onClick={() => quickDraft("battle_pack_custom")}>Battle Pack Draft</a></li>
+                            {latestSet && <li><a href="#" onClick={() => quickDraft(latestSet.set_name)}>{latestSet.set_name} Draft</a></li>}
+                            {customSets.map((set) => <li><a href="#" onClick={() => quickDraft(set.set_name)}>{set.set_name}</a></li>)}
                             
                         </ul>
                     </li>
