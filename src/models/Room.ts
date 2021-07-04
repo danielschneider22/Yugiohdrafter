@@ -1,4 +1,6 @@
+import moment from "moment";
+
 export interface Room {
-  expires: string
+  expires: moment.Moment
   id: string    
 }

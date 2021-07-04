@@ -6,3 +6,12 @@ export function stateAddItemWithoutMutation<T extends StateItem>(state: State<T>
     byId: {...state.byId, item}
   }
 }
+
+export async function tryCatchPromise<T>(func: Function): Promise<[T | null, any | null]> { // will need a way to pass args
+  try {
+    const data = await func()
+    return [data, null]
+  } catch (error: any) {
+    return [null, error]
+  }
+}

@@ -15,7 +15,7 @@ import { fetchCardSets } from '../../data/cardSets/operations';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import { resetDeckAndSideboard } from '../../data/deck/actions';
 import { initialiazeDraftPod } from '../../data/draftPod/actions';
-import { addRoomFetchThunk } from '../../data/data/rooms/operations';
+import { roomAddFetchThunk } from '../../data/data/rooms/operations';
 import NavBar from '../NavBar/NavBar';
 import BoosterChooserArea from './BoosterChooserArea';
 import { sortCardSet } from '../../data/cardSets/utils';
@@ -67,7 +67,7 @@ function LandingPage() {
 
   function launch() {
     if (playMode === "host")  {
-      dispatch(addRoomFetchThunk())
+      dispatch(roomAddFetchThunk())
     }
     history.push(format === "sealed" ? "/SealedBooster" : "/Draft")
   }
