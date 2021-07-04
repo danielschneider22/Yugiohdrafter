@@ -14,6 +14,18 @@ export function addSets(cardSets: CardSet[]) {
     }
 }
 
+interface AddSet {
+    type: 'cardSets/addSet',
+    cardSet: CardSet
+}
+
+export function addSet(cardSet: CardSet) {
+    return {
+        type: 'cardSets/addSet',
+        cardSet,
+    }
+}
+
 interface UpdateCardIds {
     type: 'cardSets/updateCardIds',
     cards: Card[],
@@ -28,4 +40,4 @@ export function updateCardIds(cards: Card[], set_name: string) {
     }
 }
 
-export type CardSetsActions = AddSets | UpdateCardIds;
+export type CardSetsActions = AddSets | UpdateCardIds | AddSet;
