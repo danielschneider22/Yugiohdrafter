@@ -1,4 +1,9 @@
+import { Dispatch } from "react";
+import { Booster } from "../../constants/Booster";
 import { Card, RarityDict, VisibleCard } from "../../constants/Card";
+import { updateCardIds } from "../cardSets/actions";
+import { addCards } from "./actions";
+import { fetchCards } from "./operations";
 
 export type SortType = "Name" | "Type" | "Rarity";
 
@@ -56,4 +61,20 @@ export const sortCards = (sortType: SortType) => function(a: VisibleCard, b: Vis
 
 export const isExtraDeckCard = (card: Card | VisibleCard) => {
   return card.type.includes("XYZ Monster") || card.type.includes("Fusion Monster") || card.type.includes("Synchro Monster")|| card.type.includes("Link Monster")
+}
+
+export function getSetsForBoosters(boosters: Booster[], dispatch: Dispatch<any>) {
+  const fetchedSets = {} as {[key: string]: string}
+  boosters.forEach((booster) => {
+    if(!fetchedSets[booster.cardSetName]) {
+      const cardsOfSet = localStorage.getItem(booster.cardSetName);
+      if(cardsOfSet) {
+        dispatch(addCards(JSON.parse(cardsOfSet) as Card[]))
+        dispatch(updateCardIds(JSON.parse(cardsOfSet) as Card[], booster.cardSetName))
+      } else {
+        fetchCards(dispatch, booster.cardSetName);
+      }
+      fetchedSets[booster.cardSetName] = booster.cardSetName
+    }
+  })
 }

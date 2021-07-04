@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { Card } from '../../constants/Card';
-import { addBooster, resetBoosterCards } from '../../data/boosters/actions';
+import { addBooster, removeAllBoosters, resetBoosterCards } from '../../data/boosters/actions';
 import { getLandingPageBoosterIds, getLandingPageBoosters } from '../../data/boosters/selectors';
 import { addCards } from '../../data/cards/actions';
 import { fetchCards } from '../../data/cards/operations';
@@ -15,9 +15,9 @@ import { fetchCardSets } from '../../data/cardSets/operations';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import { resetDeckAndSideboard } from '../../data/deck/actions';
 import { initialiazeDraftPod } from '../../data/draftPod/actions';
-import NavBar from '../NavBar/NavBar';
 import BoosterChooserArea from './BoosterChooserArea';
 import { sortCardSet } from '../../data/cardSets/utils';
+import { getSetsForBoosters } from '../../data/cards/utils';
 
 function LandingPage() {
   const dispatch = useDispatch();
@@ -37,8 +37,9 @@ function LandingPage() {
     }
 
     dispatch(resetBoosterCards("landingPageBooster"))
+    dispatch(removeAllBoosters("draftBooster"))
     dispatch(resetDeckAndSideboard())
-  }, [dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // add a booster if booster list is empty
   useEffect(() => {
@@ -47,25 +48,9 @@ function LandingPage() {
     }
   }, [cardSets, boosters, boosterIds.length, dispatch]);
 
-  function getSetsForBoosters() {
-    const fetchedSets = {} as {[key: string]: string}
-    Object.values(boosters).forEach((booster) => {
-      if(!fetchedSets[booster.cardSetName]) {
-        const cardsOfSet = localStorage.getItem(booster.cardSetName);
-        if(cardsOfSet) {
-          dispatch(addCards(JSON.parse(cardsOfSet) as Card[]))
-          dispatch(updateCardIds(JSON.parse(cardsOfSet) as Card[], booster.cardSetName))
-        } else {
-          fetchCards(dispatch, booster.cardSetName);
-        }
-        fetchedSets[booster.cardSetName] = booster.cardSetName
-      }
-    })
-  }
-
   function launch() {
     if(format === "sealed" || format === "draft") {
-      getSetsForBoosters()
+      getSetsForBoosters(Object.values(boosters), dispatch)
     }
     if(format === "draft") {
       dispatch(initialiazeDraftPod(8, 5, 9, ""))

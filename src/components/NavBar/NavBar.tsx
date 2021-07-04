@@ -1,10 +1,24 @@
+import _ from 'lodash';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import { Booster } from '../../constants/Booster';
+import { addBooster, removeAllBoosters, setBoosters } from '../../data/boosters/actions';
+import { getSetsForBoosters } from '../../data/cards/utils';
+import { getCardSetsById } from '../../data/cardSets/selectors';
+import { resetDeckAndSideboard } from '../../data/deck/actions';
+import { initialiazeDraftPod } from '../../data/draftPod/actions';
 import CustomSetPopup from '../CustomSetPopup/CustomSetPopup';
 
 function NavBar() {
 
     const [mobileMenuShown, setMobileMenuShown] = useState(false)
+    const cardSets = useSelector(getCardSetsById)
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+    const latestSet = Object.keys(cardSets).length > 0 ? Object.values(cardSets).filter((set) => !set.custom_set).sort((a, b) => +new Date(b.tcg_date) - +new Date(a.tcg_date))[0] : undefined
+    const customSets = Object.keys(cardSets).length > 0 ? Object.values(cardSets).filter((set) => set.custom_set) : []
     function toggleMobileMenu() {
         setMobileMenuShown(!mobileMenuShown)
     }
@@ -21,6 +35,29 @@ function NavBar() {
             setMobileMenuShown(false)
         }
         setCustomSetPopupVisiblity(!customSetPopupVisible)
+    }
+
+    function quickDraft(set_name: string) {
+        const boosters: Booster[] = []
+        if(set_name === "retro_draft_custom") {
+            for ( let i = 0; i <= 4; i++ ) { 
+                boosters.push({cardSetName: "Retro Pack", id: _.uniqueId("booster-")})
+            }
+            for ( let i = 0; i <= 4; i++ ) { 
+                boosters.push({cardSetName: "Retro Pack 2", id: _.uniqueId("booster-")})
+            }
+            
+        } else if (set_name === "battle_pack_custom") {
+            for ( let i = 0; i <= 8; i++ ) {
+                dispatch(addBooster({cardSetName: "Retro Pack", id: _.uniqueId("booster-")}, "landingPageBooster"))
+            }
+        }
+        dispatch(removeAllBoosters("draftBooster"))
+        dispatch(initialiazeDraftPod(8, 5, 9, ""))
+        dispatch(setBoosters(boosters, "landingPageBooster"))
+        getSetsForBoosters(Object.values(boosters), dispatch)
+        dispatch(resetDeckAndSideboard())
+        history.push("/Draft")
     }
     
     return (
@@ -41,10 +78,11 @@ function NavBar() {
                     <li><a className="nav-link scrollto" onClick={toggleCustomSetPopupVisiblity}>Create Custom Set</a></li>
                     <li className="dropdown" onClick={showQuickDraftDropdown}><a href="#"><span>Quick Draft</span> <i className="bi bi-chevron-down"></i></a>
                         <ul className={quickDraftDropdownVisible ? "dropdown-active" : ""}>
-                        <li><a href="#">Retro Draft</a></li>
-                        <li><a href="#">All Star Draft</a></li>
-                        <li><a href="#">Yugi Draft</a></li>
-                        <li><a href="#">Kaiba Draft</a></li>
+                            <li><a href="#" onClick={() => quickDraft("retro_draft_custom")}>Retro Draft</a></li>
+                            <li><a href="#">Battle Pack Draft</a></li>
+                            {latestSet && <li><a href="#">{latestSet.set_name} Draft</a></li>}
+                            {customSets.map((set) => <li><a href="#">{set.set_name}</a></li>)}
+                            
                         </ul>
                     </li>
                     <li><a className="nav-link scrollto" href="#contact">Contact us</a></li>
