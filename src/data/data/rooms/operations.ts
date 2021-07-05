@@ -10,10 +10,14 @@ import { Monad } from "../../../utils"
 import { tryCatchPromise } from "../../utils"
 import { roomAddFetch, roomAddFetchFail, roomAddFetchSuccess } from "./actions"
 import {History} from 'history'
+import { RoomPlayer } from "../../../constants/RoomPlayer"
+import { Booster } from "../../../constants/Booster"
+import { getSortedLPBoosters } from "../../boosters/selectors"
 
 export const roomAddFetchThunk = (history: History): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
   roomAddFetch()
-  const [roomC, error]: Monad<RoomC> = await tryCatchPromise<RoomC>(roomAddFetchOp)
+  const boostersLP = getSortedLPBoosters(getState())
+  const [roomC, error]: Monad<RoomC> = await tryCatchPromise([boostersLP])<RoomC>(roomAddFetchOp)
   if (roomC) {
     // TODO: @allenwhitedev example of why we need to handle arguments in tryCatchPromise()
     // const [room, error]: Monad<Room> = await tryCatchPromise<Room>(roomContractToModel)
@@ -28,12 +32,17 @@ export const roomAddFetchThunk = (history: History): ThunkAction<void, RootState
     dispatch(roomAddFetchFail(error))
   }
 }
-async function roomAddFetchOp(): Promise<RoomC> {
+async function roomAddFetchOp(boostersLP: Booster[]): Promise<RoomC> {
   const url = `${baseApiUrl}/room`
   const resp = await fetch(url, {
     headers: {'Content-Type': 'application/json'},
     method: 'POST',
-    body: JSON.stringify({})
+    body: JSON.stringify({
+      player: {
+        name: "Host",
+      } as Partial<RoomPlayer>,
+      boostersLP,
+    })
   })
   if (resp.ok) 
     return resp.json()

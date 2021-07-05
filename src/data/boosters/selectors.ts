@@ -8,6 +8,10 @@ export const getLandingPageBoosterIds = (state: typeof initState) => state.boost
 export const getDraftBoosters = (state: typeof initState) => state.draftPodBoosters.byId;
 export const getDraftBoosterIds = (state: typeof initState) => state.draftPodBoosters.allIds;
 
+export const getSortedLPBoosters = createSelector([getLandingPageBoosters, getLandingPageBoosterIds], (boosters, ids) => {
+    return ids.map((id) => boosters[id])
+})
+
 export const getPackComplete = createSelector([getDraftBoosters], (draftBoosters) => {
     return !(Object.values(draftBoosters).some((booster) => booster.cardIds && booster.cardIds.length > 0))
 })
