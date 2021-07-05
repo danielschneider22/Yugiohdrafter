@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { Booster } from '../../constants/Booster';
-import { removeAllBoosters, setBoosters } from '../../data/boosters/actions';
+import { removeAllBoosters, resetBoosterCards, setBoosters } from '../../data/boosters/actions';
 import { getSetsForBoosters } from '../../data/cards/utils';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import { resetDeckAndSideboard } from '../../data/deck/actions';
@@ -86,6 +86,7 @@ function NavBar() {
     function defaultClearAndClose() {
         dispatch(removeAllBoosters("draftBooster"))
         dispatch(resetDeckAndSideboard())
+        dispatch(resetBoosterCards("landingPageBooster"))
         setMobileMenuShown(false)
         const selectHeader = document.getElementById("header")
         selectHeader!.classList.remove('header-scrolled')
