@@ -1,11 +1,10 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { roomByIdSel } from '../../data/data/rooms/selectors';
 import { RootState } from '../../models/RootState';
 import styles from './RoomPage.module.css'
 
 function RoomPage() {
-  const dispatch = useDispatch();
   const params: {id: string} = useParams()
   const room = useSelector((state: RootState) => roomByIdSel(state, params.id))
   

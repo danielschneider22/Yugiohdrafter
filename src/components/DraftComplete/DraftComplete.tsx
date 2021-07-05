@@ -8,7 +8,6 @@ import { getCardsById } from '../../data/cards/selectors';
 import { deckToSideboard } from '../../data/deck/actions';
 import { getDeck } from '../../data/deck/selectors';
 import MainCardArea from '../MainCardArea/MainCardArea';
-import NavBar from '../NavBar/NavBar';
 import Sidebar from '../Sidebar/Sidebar';
 
 function DraftComplete() {

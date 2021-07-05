@@ -29,7 +29,6 @@ import {
     getPositionBooster,
 } from '../../data/draftPod/selectors';
 import MainCardArea from '../MainCardArea/MainCardArea';
-import NavBar from '../NavBar/NavBar';
 import Sidebar from '../Sidebar/Sidebar';
 import { makeAIPicks } from './utils';
 import { toastBGColorDict } from '../../constants/Toast';
@@ -78,7 +77,7 @@ function Draft() {
       
     }
     
-  }, [cardSets, currLPBooster, cardsById, dispatch, packComplete, allCardSetCardsFetched, landingPageBoosters, landingPageBoosterIds, numPlayers]);
+  }, [cardSets, currLPBooster, cardsById, dispatch, packComplete, allCardSetCardsFetched, landingPageBoosters, landingPageBoosterIds, numPlayers, history]);
 
   function toggleSidebar() {
     toggleShowSidebar(!showSidebar)

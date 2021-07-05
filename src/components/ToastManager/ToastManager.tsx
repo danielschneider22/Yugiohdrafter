@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import './Toast.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,6 +34,10 @@ function ToastManager(props: ParentProps) {
     const { position, autoDelete, dismissTime } = props;
     const toastList = useSelector(getSortedToasts)
 
+    const deleteToast = (id: string) => {
+        dispatch(removeToast(id))
+    }
+
     useEffect(() => {
         const interval = setInterval(() => {
             if (autoDelete && toastList.length && toastList.length) {
@@ -45,11 +49,9 @@ function ToastManager(props: ParentProps) {
             clearInterval(interval);
         }
 
-    }, [toastList, autoDelete, dismissTime, toastList]);
+    }, [toastList, autoDelete, dismissTime]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const deleteToast = (id: string) => {
-        dispatch(removeToast(id))
-    }
+    
 
     return (
         <>

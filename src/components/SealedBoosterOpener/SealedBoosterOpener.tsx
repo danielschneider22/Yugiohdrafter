@@ -16,7 +16,6 @@ import {
 } from '../../data/deck/actions';
 import { getSideboard } from '../../data/deck/selectors';
 import MainCardArea from '../MainCardArea/MainCardArea';
-import NavBar from '../NavBar/NavBar';
 import Sidebar from '../Sidebar/Sidebar';
 
 let populatedSideboard = false
