@@ -14,8 +14,7 @@ function RoomPlayers() {
         players.map((player) => {
             return (
                 <div>
-                    <div className="DeleteButton btn-sm btn-danger"><span>x</span></div>
-                    {player}
+                    Player ID: {player}
                     {/* <input> </input> */}
                 </div>
                 
