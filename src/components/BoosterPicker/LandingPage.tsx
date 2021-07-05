@@ -18,12 +18,12 @@ import { initialiazeDraftPod } from '../../data/draftPod/actions';
 
 function LandingPage() {
   const dispatch = useDispatch();
-  const cardSets = Object.values(useSelector(getCardSetsById));
+  const cardSets = Object.values(useSelector(getCardSetsById))
   const boosters = useSelector(getLandingPageBoosters)
   const boosterIds = useSelector(getLandingPageBoosterIds)
   const [format, setFormat] = useState("draft" as "sealed" | "draft")
   const [playMode, setPlayMode] = useState("bots" as "bots" | "host")
-  const history = useHistory();
+  const history = useHistory()
 
   // initialization
   useEffect(() => {

@@ -11,6 +11,8 @@ import RoomPage from './components/RoomPage/RoomPage';
 import SealedBoosterOpener from './components/SealedBoosterOpener/SealedBoosterOpener';
 import { initState, rootReducer } from './data/reducers';
 import ToastManager from './components/ToastManager/ToastManager';
+import { useEffect } from 'react';
+import { getClientIp } from './data/data/rooms/utils';
 
 // undefined if browser does not have redux devtools installed
 const reduxDevtoolsCompose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
@@ -22,7 +24,16 @@ const store = createStore(
   compose(enhancersThunk, ...reduxDevtoolsCompose ? [reduxDevtoolsCompose()] : [], )
 );
 
+export let ip = ""
+
+async function getIP() {
+  ip = await getClientIp()
+}
+
 function App() {
+  useEffect(() => {
+    getIP()
+  })
   return (
     <Provider store={store}>
       <ToastManager

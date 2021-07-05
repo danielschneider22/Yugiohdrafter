@@ -13,6 +13,7 @@ import {History} from 'history'
 import { RoomPlayer } from "../../../constants/RoomPlayer"
 import { Booster } from "../../../constants/Booster"
 import { getSortedLPBoosters } from "../../boosters/selectors"
+import { ip } from "../../../App"
 
 // - mappers
 function roomContractToModel(roomC: RoomC): Room { // mutates
@@ -52,6 +53,7 @@ async function roomAddFetchOp(boostersLP: Booster[]): Promise<RoomC> {
     body: JSON.stringify({
       player: {
         name: "Host",
+        ip,
       } as Partial<RoomPlayer>,
       boostersLP,
     })
@@ -87,3 +89,29 @@ async function roomGetFetchOp(roomId: string): Promise<RoomC> {
   else
     throw new Error(`Fetch failure from getRoomFetchOp(). Response from '${url}': ${JSON.stringify(resp)}`)
 }
+
+// export const roomJoinRoomFetchThunk = (roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
+//   dispatch(roomGetFetch)
+//   const [roomC, error]: Monad<RoomC> = await tryCatchPromise([roomId])<RoomC>(roomJoinRoomFetchOp)
+//   if (roomC) {
+//     const room = await roomContractToModel(roomC)
+//     if (room) {
+//       await dispatch(roomGetFetchSuccess(room))
+//     }
+//     else
+//       dispatch(roomGetFetchFail(error))  
+//   } else {
+//     dispatch(roomGetFetchFail(error))
+//   }
+// }
+// async function roomJoinRoomFetchOp(roomId: string): Promise<RoomC> {
+//   const url = `${baseApiUrl}/room/joinRoom/${roomId}`
+//   const resp = await fetch(url, {
+//     headers: {'Content-Type': 'application/json'},
+//     method: 'GET',
+//   })
+//   if (resp.ok) 
+//     return resp.json()
+//   else
+//     throw new Error(`Fetch failure from getRoomFetchOp(). Response from '${url}': ${JSON.stringify(resp)}`)
+// }
