@@ -166,7 +166,7 @@ section {
 # Header
 --------------------------------------------------------------*/
 .header {
-  /* transition: all 0.5s; */
+  transition: all 0.5s, z-index 0s;
   z-index: 10;
   padding: 20px 0;
 }
@@ -176,7 +176,8 @@ section {
 }
 
 .header.header-scrolled {
-  background: #fff;
+  transition: all .5s;
+  background: #1e1e1e;
   padding: 15px 0;
   box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
 }
@@ -340,7 +341,7 @@ section {
   display: block;
 }
 
-@media (min-width: 800px) {
+@media (min-width: 991px) {
   .mobile-nav-toggle {
     font-size: 120px;
   }

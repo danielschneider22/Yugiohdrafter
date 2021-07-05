@@ -1,5 +1,3 @@
-import './Draft.css';
-
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -57,9 +55,15 @@ function Draft() {
   
   const sidebarRef = useRef(null as unknown as HTMLDivElement)
 
+  useEffect(() => {
+    if(landingPageBoosterIds.length === 0) {
+      history.push("/");
+    }
+  }, [])
+
   //create boosters when all sets are fetched and starting new pack
   useEffect(() => {
-    if(allCardSetCardsFetched && packComplete) {
+    if(allCardSetCardsFetched && packComplete && landingPageBoosterIds.length > 0) {
       if (currLPBooster && currLPBooster.id === landingPageBoosters[landingPageBoosterIds[landingPageBoosterIds.length - 1]].id) { // completed last booster
         history.push("/DraftComplete");
         dispatch(addToast({id: _.uniqueId("draft-complete-"), type: "Success", description: "Edit and Export your Deck", title: "Draft Complete", backgroundColor: toastBGColorDict["Success"]}))

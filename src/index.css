@@ -7,6 +7,11 @@ body {
   height: 100%;
   width: 100%;
   color: white;
+  
+}
+html{
+  background: url(./assets/yugiohbg.png) top center no-repeat;
+  background-size:100% 100%;
 }
 
 code {
@@ -14,10 +19,10 @@ code {
     monospace;
 }
 
-.AppWrapper{
+/* .AppWrapper{
   background: url(./assets/yugiohbg.png) top center no-repeat;
   background-size:100% 100%;
-}
+} */
 
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
