@@ -120,7 +120,7 @@ async function roomJoinRoomFetchOp(roomId: string): Promise<RoomC> {
     method: 'POST',
     body: JSON.stringify({
       player: {
-        ip: getRoomPlayerId(ip, roomId),
+        ip,
         name: "Player",
       } 
     })
