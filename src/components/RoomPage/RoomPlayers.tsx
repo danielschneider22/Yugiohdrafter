@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { roomByIdSel } from "../../data/data/rooms/selectors";

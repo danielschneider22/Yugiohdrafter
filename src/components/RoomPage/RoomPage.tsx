@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { roomGetFetchThunk } from '../../data/data/rooms/operations';
 import { roomByIdSel } from '../../data/data/rooms/selectors';
 import { RootState } from '../../models/RootState';
@@ -17,7 +17,7 @@ function RoomPage() {
     if(!room) {
       dispatch(roomGetFetchThunk(roomId))
     }
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
   
   if (room === null)
     return (
