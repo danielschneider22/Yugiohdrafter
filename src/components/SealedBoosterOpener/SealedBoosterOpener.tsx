@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { VisibleCard } from '../../constants/Card';
 import { createBoostersForFetchedSets } from '../../data/boosters/operations';
@@ -27,6 +28,7 @@ function SealedBoosterOpener() {
   const boosters = useSelector(getLandingPageBoosters)
   const sideboard = useSelector(getSideboard)
   const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
+  const history = useHistory()
 
   const [showSidebar, toggleShowSidebar] = useState(false)
   
@@ -39,6 +41,9 @@ function SealedBoosterOpener() {
   })
 
   useEffect(() => {
+    if(Object.values(boosters).length === 0) {
+      history.push("/");
+    }
     populatedSideboard = false
   }, []);
 
