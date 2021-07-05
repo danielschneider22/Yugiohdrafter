@@ -33,18 +33,21 @@ function App() {
       <div className={"AppWrapper maxWH"}>
         <Router>
           <NavBar />
-          <Route path="/Draft">
-            <Draft />
-          </Route>
-          <Route path="/DraftComplete">
-            <DraftComplete />
-          </Route>
-          <Route path="/SealedBooster">
-            <SealedBoosterOpener />
-          </Route>
-          <Route path="/">
-            <LandingPage />
-          </Route>
+          <div>
+            <Route path="/Draft">
+              <Draft />
+            </Route>
+            <Route path="/DraftComplete">
+              <DraftComplete />
+            </Route>
+            <Route path="/SealedBooster">
+              <SealedBoosterOpener />
+            </Route>
+            <Route path="/">
+              <LandingPage />
+            </Route>
+          </div>
+          
         </Router>
       </div>
       
