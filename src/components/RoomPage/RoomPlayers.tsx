@@ -1,8 +1,13 @@
 import _ from "lodash";
-import { RoomPlayer } from "../../constants/RoomPlayer";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { roomByIdSel } from "../../data/data/rooms/selectors";
+import { RootState } from "../../models/RootState";
 
 function RoomPlayers() {
-  const players: RoomPlayer[] = []
+  const params: {id: string} = useParams()
+  const room = useSelector((state: RootState) => roomByIdSel(state, params.id))
+  const players: string[] = room.roomPlayerIds
   return (
     <div>
     {
@@ -10,7 +15,8 @@ function RoomPlayers() {
             return (
                 <div>
                     <div className="DeleteButton btn-sm btn-danger"><span>x</span></div>
-                    <input>Player 1 </input>
+                    {player}
+                    {/* <input> </input> */}
                 </div>
                 
             )

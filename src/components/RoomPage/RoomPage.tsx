@@ -5,18 +5,18 @@ import { roomGetFetchThunk } from '../../data/data/rooms/operations';
 import { roomByIdSel } from '../../data/data/rooms/selectors';
 import { RootState } from '../../models/RootState';
 import styles from './RoomPage.module.css'
+import RoomPlayers from './RoomPlayers';
 
 function RoomPage() {
   const params: {id: string} = useParams()
-  const room = useSelector((state: RootState) => roomByIdSel(state, params.id))
+  const roomId = params.id
+  const room = useSelector((state: RootState) => roomByIdSel(state, roomId))
   const dispatch = useDispatch()
   const history = useHistory()
 
   useEffect(() => {
     if(!room) {
-      const path = history.location.pathname
-      const roomID = path.substring(path.lastIndexOf('/') + 1)
-      dispatch(roomGetFetchThunk(roomID))
+      dispatch(roomGetFetchThunk(roomId))
     }
   }, [])
   
@@ -33,6 +33,7 @@ function RoomPage() {
     <main className={styles.RoomPage}>
       <h2>Room Id: {room.id}</h2>
       <h3>Expires: {room.expires.format()}</h3>
+      <RoomPlayers />
     </main>
   )
 }

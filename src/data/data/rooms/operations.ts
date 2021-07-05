@@ -8,7 +8,7 @@ import { Room } from "../../../models/Room"
 import { Monad } from "../../../utils"
 
 import { tryCatchPromise } from "../../utils"
-import { roomAddFetch, roomAddFetchFail, roomAddFetchSuccess, roomGetFetch, roomGetFetchFail, roomGetFetchSuccess } from "./actions"
+import { roomAddFetch, roomAddFetchFail, roomAddFetchSuccess, roomGetFetch, roomGetFetchFail, roomGetFetchSuccess, roomGetJoinRoomFetch } from "./actions"
 import {History} from 'history'
 import { RoomPlayer } from "../../../constants/RoomPlayer"
 import { Booster } from "../../../constants/Booster"
@@ -27,10 +27,14 @@ function roomContractToModel(roomC: RoomC): Room { // mutates
   return room
 }
 
+function getRoomPlayerId(ip: string, roomId: string) {
+  return ip + "-" + roomId
+}
+
 export const roomAddFetchThunk = (history: History): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
   dispatch(roomAddFetch())
   const boostersLP = getSortedLPBoosters(getState())
-  const [roomC, error]: Monad<RoomC> = await tryCatchPromise([boostersLP])<RoomC>(roomAddFetchOp)
+  const [roomC, error]: Monad<RoomC> = await tryCatchPromise(dispatch, [boostersLP])<RoomC>(roomAddFetchOp)
   if (roomC) {
     // TODO: @allenwhitedev example of why we need to handle arguments in tryCatchPromise()
     // const [room, error]: Monad<Room> = await tryCatchPromise<Room>(roomContractToModel)
@@ -66,10 +70,14 @@ async function roomAddFetchOp(boostersLP: Booster[]): Promise<RoomC> {
 
 export const roomGetFetchThunk = (roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
   dispatch(roomGetFetch)
-  const [roomC, error]: Monad<RoomC> = await tryCatchPromise([roomId])<RoomC>(roomGetFetchOp)
+  const [roomC, error]: Monad<RoomC> = await tryCatchPromise(dispatch, [roomId])<RoomC>(roomGetFetchOp)
   if (roomC) {
     const room = await roomContractToModel(roomC)
     if (room) {
+      // if the player doesn't exist in the room send request to add them to room
+      if(!room.roomPlayerIds.some((id) => id === getRoomPlayerId(ip, roomId))){
+        dispatch(roomJoinRoomFetchThunk(roomId))
+      }
       await dispatch(roomGetFetchSuccess(room))
     }
     else
@@ -86,32 +94,47 @@ async function roomGetFetchOp(roomId: string): Promise<RoomC> {
   })
   if (resp.ok) 
     return resp.json()
-  else
+  else{
     throw new Error(`Fetch failure from getRoomFetchOp(). Response from '${url}': ${JSON.stringify(resp)}`)
+  }
 }
 
-// export const roomJoinRoomFetchThunk = (roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
-//   dispatch(roomGetFetch)
-//   const [roomC, error]: Monad<RoomC> = await tryCatchPromise([roomId])<RoomC>(roomJoinRoomFetchOp)
-//   if (roomC) {
-//     const room = await roomContractToModel(roomC)
-//     if (room) {
-//       await dispatch(roomGetFetchSuccess(room))
-//     }
-//     else
-//       dispatch(roomGetFetchFail(error))  
-//   } else {
-//     dispatch(roomGetFetchFail(error))
-//   }
-// }
-// async function roomJoinRoomFetchOp(roomId: string): Promise<RoomC> {
-//   const url = `${baseApiUrl}/room/joinRoom/${roomId}`
-//   const resp = await fetch(url, {
-//     headers: {'Content-Type': 'application/json'},
-//     method: 'GET',
-//   })
-//   if (resp.ok) 
-//     return resp.json()
-//   else
-//     throw new Error(`Fetch failure from getRoomFetchOp(). Response from '${url}': ${JSON.stringify(resp)}`)
-// }
+export const roomJoinRoomFetchThunk = (roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
+  dispatch(roomGetJoinRoomFetch)
+  const [roomC, error]: Monad<RoomC> = await tryCatchPromise(dispatch, [roomId])<RoomC>(roomJoinRoomFetchOp)
+  if (roomC) {
+    const room = await roomContractToModel(roomC)
+    if (room) {
+      await dispatch(roomGetJoinRoomFetchSuccess(room))
+    }
+    else
+      dispatch(roomGetJoinRoomFetchFail(error))  
+  } else {
+    dispatch(roomGetJoinRoomFetchFail(error))
+  }
+}
+async function roomJoinRoomFetchOp(roomId: string): Promise<RoomC> {
+  const url = `${baseApiUrl}/room/joinRoom/${roomId}`
+  const resp = await fetch(url, {
+    headers: {'Content-Type': 'application/json'},
+    method: 'POST',
+    body: JSON.stringify({
+      player: {
+        ip: getRoomPlayerId(ip, roomId),
+        name: "Player",
+      } 
+    })
+  })
+  if (resp.ok) 
+    return resp.json()
+  else
+    throw new Error(`Fetch failure from joinRoomFetchOp(). Response from '${url}': ${JSON.stringify(resp)}`)
+}
+
+function roomGetJoinRoomFetchFail(error: any): any {
+  throw new Error("Function not implemented.")
+}
+function roomGetJoinRoomFetchSuccess(room: Room): any {
+  throw new Error("Function not implemented.")
+}
+
