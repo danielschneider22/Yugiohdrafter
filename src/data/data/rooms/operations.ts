@@ -8,14 +8,26 @@ import { Room } from "../../../models/Room"
 import { Monad } from "../../../utils"
 
 import { tryCatchPromise } from "../../utils"
-import { roomAddFetch, roomAddFetchFail, roomAddFetchSuccess } from "./actions"
+import { roomAddFetch, roomAddFetchFail, roomAddFetchSuccess, roomGetFetch, roomGetFetchFail, roomGetFetchSuccess } from "./actions"
 import {History} from 'history'
 import { RoomPlayer } from "../../../constants/RoomPlayer"
 import { Booster } from "../../../constants/Booster"
 import { getSortedLPBoosters } from "../../boosters/selectors"
 
+// - mappers
+function roomContractToModel(roomC: RoomC): Room { // mutates
+  const expires = moment(roomC.expires)
+  
+  if (!expires.isValid()) // invalid expires field returned from backend
+    throw new Error(`Could not parse as moment: 'expires' from ${JSON.stringify(roomC)}`) 
+  
+  const room = roomC as unknown as Room
+  room.expires = expires
+  return room
+}
+
 export const roomAddFetchThunk = (history: History): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
-  roomAddFetch()
+  dispatch(roomAddFetch())
   const boostersLP = getSortedLPBoosters(getState())
   const [roomC, error]: Monad<RoomC> = await tryCatchPromise([boostersLP])<RoomC>(roomAddFetchOp)
   if (roomC) {
@@ -50,14 +62,28 @@ async function roomAddFetchOp(boostersLP: Booster[]): Promise<RoomC> {
     throw new Error(`Fetch failure from addRoomFetchOp(). Response from '${url}': ${JSON.stringify(resp)}`)
 }
 
-// - mappers
-function roomContractToModel(roomC: RoomC): Room { // mutates
-  const expires = moment(roomC.expires)
-  
-  if (!expires.isValid()) // invalid expires field returned from backend
-    throw new Error(`Could not parse as moment: 'expires' from ${JSON.stringify(roomC)}`) 
-  
-  const room = roomC as unknown as Room
-  room.expires = expires
-  return room
+export const roomGetFetchThunk = (roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
+  dispatch(roomGetFetch)
+  const [roomC, error]: Monad<RoomC> = await tryCatchPromise([roomId])<RoomC>(roomGetFetchOp)
+  if (roomC) {
+    const room = await roomContractToModel(roomC)
+    if (room) {
+      await dispatch(roomGetFetchSuccess(room))
+    }
+    else
+      dispatch(roomGetFetchFail(error))  
+  } else {
+    dispatch(roomGetFetchFail(error))
+  }
+}
+async function roomGetFetchOp(roomId: string): Promise<RoomC> {
+  const url = `${baseApiUrl}/room/${roomId}`
+  const resp = await fetch(url, {
+    headers: {'Content-Type': 'application/json'},
+    method: 'GET',
+  })
+  if (resp.ok) 
+    return resp.json()
+  else
+    throw new Error(`Fetch failure from getRoomFetchOp(). Response from '${url}': ${JSON.stringify(resp)}`)
 }

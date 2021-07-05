@@ -45,14 +45,16 @@ function LandingPage() {
   function launch() {
     if (playMode === "host")  {
       dispatch(roomAddFetchThunk(history))
+    } else {
+      getSetsForBoosters(Object.values(boosters), dispatch)
+    
+      if(format === "draft") {
+        dispatch(initialiazeDraftPod(8, 5, 9, ""))
+      }
+      history.push(format === "sealed" ? "/SealedBooster" : "/Draft")
     }
 
-    getSetsForBoosters(Object.values(boosters), dispatch)
     
-    if(format === "draft" && playMode !== "host") {
-      dispatch(initialiazeDraftPod(8, 5, 9, ""))
-    }
-    history.push(format === "sealed" ? "/SealedBooster" : "/Draft")
 
 
   }

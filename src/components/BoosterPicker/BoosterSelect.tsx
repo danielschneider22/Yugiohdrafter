@@ -29,7 +29,7 @@ function BoosterSelect(props: ParentProps) {
             {cardSetsSorted.map((set) => {
                 return <option value={set.set_name} key={set.set_name}>{set.set_name}</option>;
             })}
-        </select>
+          </select>
       </div>
       
   );
