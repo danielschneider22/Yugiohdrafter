@@ -177,7 +177,7 @@ section {
 
 .header.header-scrolled {
   transition: all .5s;
-  background: #434648;
+  background: #1e1e1e;
   padding: 15px 0;
   box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
 }
