@@ -9,6 +9,7 @@ export function roomsReducer(state: State<Room> = roomsInitialState, action: Roo
   switch (action.type) {
     case RoomsActionTypes.ROOM_ADD_FETCH_SUCCESS:
     case RoomsActionTypes.ROOM_GET_FETCH_SUCCESS:
+    case RoomsActionTypes.ROOM_JOIN_ROOM_FETCH_SUCCESS:
       return stateAddItemWithoutMutation<Room>(state, action.room)
 
     case RoomsActionTypes.ROOMS_GET_FETCH_SUCCESS:

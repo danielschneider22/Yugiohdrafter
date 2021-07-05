@@ -11,7 +11,7 @@ import RoomPage from './components/RoomPage/RoomPage';
 import SealedBoosterOpener from './components/SealedBoosterOpener/SealedBoosterOpener';
 import { initState, rootReducer } from './data/reducers';
 import ToastManager from './components/ToastManager/ToastManager';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getClientIp } from './data/data/rooms/utils';
 
 // undefined if browser does not have redux devtools installed
@@ -26,14 +26,24 @@ const store = createStore(
 
 export let ip = ""
 
-async function getIP() {
-  ip = await getClientIp()
-}
-
 function App() {
+  const [ipLoaded, setIpLoaded] = useState(false)
   useEffect(() => {
+    async function getIP() {
+      if(process.env.REACT_APP_ENVIRONMENT === "dev") {
+        ip = (Math.random() * 200000) + ""
+      } else {
+        ip = await getClientIp()
+      }
+      
+      setIpLoaded(true)
+    }
+
     getIP()
-  })
+  }, [])
+  if(!ipLoaded) {
+    return <div></div>
+  }
   return (
     <Provider store={store}>
       <ToastManager

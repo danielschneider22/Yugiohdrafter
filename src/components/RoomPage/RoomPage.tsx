@@ -12,7 +12,6 @@ function RoomPage() {
   const roomId = params.id
   const room = useSelector((state: RootState) => roomByIdSel(state, roomId))
   const dispatch = useDispatch()
-  const history = useHistory()
 
   useEffect(() => {
     if(!room) {

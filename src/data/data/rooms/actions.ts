@@ -31,8 +31,8 @@ export const roomGetFetchSuccess = (room: Room): RoomGetFetchSuccess => ({
 })
 
 // - join room
-export interface RoomGetJoinRoomFetch { type: RoomsActionTypes.ROOM_JOIN_ROOM_FETCH }
-export const roomGetJoinRoomFetch = (): RoomGetJoinRoomFetch => ({ type: RoomsActionTypes.ROOM_JOIN_ROOM_FETCH })
+export interface RoomJoinRoomFetch { type: RoomsActionTypes.ROOM_JOIN_ROOM_FETCH }
+export const roomJoinRoomFetch = (): RoomJoinRoomFetch => ({ type: RoomsActionTypes.ROOM_JOIN_ROOM_FETCH })
 export interface RoomJoinRoomFetchFail { error: any, type: RoomsActionTypes.ROOM_JOIN_ROOM_FETCH_FAIL }
 export const roomJoinRoomFetchFail = (error: any): RoomJoinRoomFetchFail => ({ error, type: RoomsActionTypes.ROOM_JOIN_ROOM_FETCH_FAIL })
 export interface RoomJoinRoomFetchSuccess { 
@@ -67,3 +67,6 @@ export type RoomAction = RoomAddFetch
   | RoomsGetFetch
   | RoomsGetFetchFail
   | RoomsGetFetchSuccess
+  | RoomJoinRoomFetch
+  | RoomJoinRoomFetchFail
+  | RoomJoinRoomFetchSuccess

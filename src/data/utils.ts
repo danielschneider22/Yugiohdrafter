@@ -9,7 +9,6 @@ export function stateAddItemWithoutMutation<T extends StateItem>(state: State<T>
     allIds: [...state.allIds, item.id],
     byId: {...state.byId, [item.id]: item}
   }
-  console.log(coolState)
   return {
     allIds: [...state.allIds, item.id],
     byId: {...state.byId, [item.id]: item}
@@ -21,7 +20,7 @@ export const tryCatchPromise = (dispatch: Dispatch<any>, funcArgs?: any[]) => as
     const data = await (funcArgs ? func(...funcArgs as any[]) : func(funcArgs))
     return [data, null]
   } catch (error: any) {
-    dispatch(addToast({id: _.uniqueId("error-"), type: "Danger", description: "Please contact system admin", title: "Error", backgroundColor: toastBGColorDict["Danger"]}))
+    dispatch(addToast({id: _.uniqueId("error-"), type: "Danger", description: "Request failed", title: "Error", backgroundColor: toastBGColorDict["Danger"]}))
     return [null, error]
   }
 }

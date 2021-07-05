@@ -8,7 +8,7 @@ import { Room } from "../../../models/Room"
 import { Monad } from "../../../utils"
 
 import { tryCatchPromise } from "../../utils"
-import { roomAddFetch, roomAddFetchFail, roomAddFetchSuccess, roomGetFetch, roomGetFetchFail, roomGetFetchSuccess, roomGetJoinRoomFetch } from "./actions"
+import { roomAddFetch, roomAddFetchFail, roomAddFetchSuccess, roomGetFetch, roomGetFetchFail, roomGetFetchSuccess, roomJoinRoomFetch, roomJoinRoomFetchFail, roomJoinRoomFetchSuccess } from "./actions"
 import {History} from 'history'
 import { RoomPlayer } from "../../../constants/RoomPlayer"
 import { Booster } from "../../../constants/Booster"
@@ -100,17 +100,17 @@ async function roomGetFetchOp(roomId: string): Promise<RoomC> {
 }
 
 export const roomJoinRoomFetchThunk = (roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
-  dispatch(roomGetJoinRoomFetch)
+  dispatch(roomJoinRoomFetch)
   const [roomC, error]: Monad<RoomC> = await tryCatchPromise(dispatch, [roomId])<RoomC>(roomJoinRoomFetchOp)
   if (roomC) {
     const room = await roomContractToModel(roomC)
     if (room) {
-      await dispatch(roomGetJoinRoomFetchSuccess(room))
+      await dispatch(roomJoinRoomFetchSuccess(room))
     }
     else
-      dispatch(roomGetJoinRoomFetchFail(error))  
+      dispatch(roomJoinRoomFetchFail(error))  
   } else {
-    dispatch(roomGetJoinRoomFetchFail(error))
+    dispatch(roomJoinRoomFetchFail(error))
   }
 }
 async function roomJoinRoomFetchOp(roomId: string): Promise<RoomC> {
@@ -130,11 +130,3 @@ async function roomJoinRoomFetchOp(roomId: string): Promise<RoomC> {
   else
     throw new Error(`Fetch failure from joinRoomFetchOp(). Response from '${url}': ${JSON.stringify(resp)}`)
 }
-
-function roomGetJoinRoomFetchFail(error: any): any {
-  throw new Error("Function not implemented.")
-}
-function roomGetJoinRoomFetchSuccess(room: Room): any {
-  throw new Error("Function not implemented.")
-}
-
