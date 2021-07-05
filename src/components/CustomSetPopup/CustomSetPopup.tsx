@@ -36,26 +36,26 @@ Blue-Eyes White Dragon
                     <div className="container contact">
                         <div className="row h-100">
                             <div className="col-lg-12">
-                                <div className="contact-form h-100">
+                                <form onSubmit={submit} className="contact-form h-100">
                                     <div className="CreateCustomSetTitle">
                                         Create a Custom Set
                                     </div>
                                     <div className="form-group setName">
                                         <label className="control-label col-6" htmlFor="setName">Set Name:</label>
                                         <div className="col-6">          
-                                            <input value={setName} onChange={doUpdate(setSetName)} type="text" className="form-control" placeholder="Enter Set Name" name="setName"/>
+                                            <input value={setName} onChange={doUpdate(setSetName)} type="text" className="form-control" placeholder="Enter Set Name" name="setName" required/>
                                         </div>
                                     </div>
                                     <div className="form-group CreateSetTextArea cardList">
                                         <label className="control-label col-6" htmlFor="cardList">Card List:</label>
                                         <div className="col-12">
-                                            <textarea value={cardList} onChange={doUpdate(setCardList)} className="form-control" placeholder={placeHolderText} name="cardList"></textarea>
+                                            <textarea value={cardList} onChange={doUpdate(setCardList)} className="form-control" placeholder={placeHolderText} name="cardList" required></textarea>
                                         </div>
                                     </div>
                                     <div className="form-group submit">        
-                                        <button type="submit" className="btn-lg btn-default" onClick={submit}>Submit</button>
+                                        <button type="submit" className="btn-lg btn-default">Submit</button>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
