@@ -87,6 +87,8 @@ function NavBar() {
         dispatch(removeAllBoosters("draftBooster"))
         dispatch(resetDeckAndSideboard())
         setMobileMenuShown(false)
+        const selectHeader = document.getElementById("header")
+        selectHeader!.classList.remove('header-scrolled')
     }
     
     return (
