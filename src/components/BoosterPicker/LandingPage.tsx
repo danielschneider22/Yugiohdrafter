@@ -47,10 +47,9 @@ function LandingPage() {
       dispatch(roomAddFetchThunk(history))
     }
 
-    if(format === "sealed" || format === "draft") {
-      getSetsForBoosters(Object.values(boosters), dispatch)
-    }
-    if(format === "draft") {
+    getSetsForBoosters(Object.values(boosters), dispatch)
+    
+    if(format === "draft" && playMode !== "host") {
       dispatch(initialiazeDraftPod(8, 5, 9, ""))
     }
     history.push(format === "sealed" ? "/SealedBooster" : "/Draft")
