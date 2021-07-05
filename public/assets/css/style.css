@@ -166,8 +166,7 @@ section {
 # Header
 --------------------------------------------------------------*/
 .header {
-  transition: all 0.5s;
-  transition: z-index 0s;
+  transition: all 0.5s, z-index 0s;
   z-index: 10;
   padding: 20px 0;
 }

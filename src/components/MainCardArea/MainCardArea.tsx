@@ -2,8 +2,9 @@ import './MainCardArea.css'
 
 import { VisibleCard } from '../../constants/Card';
 import BottomBar from '../BottomBar/BottomBar';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { sortCards, SortType } from '../../data/cards/utils';
+import { scrollToggleNavVisibility } from '../NavBar/ScrollBGColorChange';
 
 interface ParentProps{
     unsortedCards: VisibleCard[],
@@ -15,11 +16,18 @@ interface ParentProps{
 function MainCardArea(props: ParentProps) {
   const { unsortedCards, cardClicked, loadedCards, title } = props
   const [sortType, toggleSortType] = useState("Name" as SortType)
+  const scrollCardsRef = useRef(null as unknown as HTMLDivElement)
 
   const cards = unsortedCards.sort(sortCards(sortType))
 
+  useEffect(() => {
+    if(scrollCardsRef) {
+        scrollCardsRef.current.addEventListener('scroll', scrollToggleNavVisibility as unknown as (this: HTMLDivElement, ev: Event) => any)
+    }
+  }, [scrollCardsRef])
+
   return (
-    <div className={"ScrollCards"}>
+    <div ref={scrollCardsRef} className={"ScrollCards"}>
         <div className="CardDisplayAreaTitle">{title}</div>
         {cards && cards.map((card, idx) => {
             return <img className="VisibleCard" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"} onClick={() => cardClicked(card)}/>
@@ -36,4 +44,3 @@ function MainCardArea(props: ParentProps) {
 }
 
 export default MainCardArea;
-
