@@ -1,5 +1,3 @@
-import './Draft.css';
-
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -29,7 +27,6 @@ import {
     getPositionBooster,
 } from '../../data/draftPod/selectors';
 import MainCardArea from '../MainCardArea/MainCardArea';
-import NavBar from '../NavBar/NavBar';
 import Sidebar from '../Sidebar/Sidebar';
 import { makeAIPicks } from './utils';
 import { toastBGColorDict } from '../../constants/Toast';

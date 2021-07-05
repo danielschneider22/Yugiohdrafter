@@ -1,5 +1,3 @@
-import './SealedBoosterOpener.css';
-
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
