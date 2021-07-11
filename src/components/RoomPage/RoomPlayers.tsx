@@ -36,8 +36,8 @@ function RoomPlayers() {
     }
 
     const isReadySpan = player.isReady ?
-      <button role="img" aria-label="checkmark" title='Ready' onClick={toggleReady} className={`btn btn-dark ${styles.xButton} ${styles.readyButton} ${isCurrPlayer ? styles.currPlayerReadyButton : ""}`} disabled={!isCurrPlayer}><i className="bi bi-check"></i></button>
-      : <button role="img" aria-label="redcross" title='Not Ready' onClick={toggleReady} className={`btn btn-dark ${styles.checkButton} ${styles.readyButton} ${isCurrPlayer ? styles.currPlayerReadyButton : ""}`} disabled={!isCurrPlayer}><i className="bi bi-x"></i></button>
+      <button role="img" aria-label="checkmark" title='Ready' onClick={toggleReady} className={`btn btn-dark ${styles.checkButton} ${styles.readyButton} ${isCurrPlayer ? styles.currPlayerReadyButton : ""}`} disabled={!isCurrPlayer}><i className="bi bi-check-circle-fill"></i></button>
+      : <button role="img" aria-label="redcross" title='Not Ready' onClick={toggleReady} className={`btn btn-dark ${styles.xButton} ${styles.readyButton} ${isCurrPlayer ? styles.currPlayerReadyButton : ""}`} disabled={!isCurrPlayer}><i className="bi bi-x-circle-fill"></i></button>
     const isHostIcon = player.isHost ?
       <span role="img" aria-label="checkmark" title='Host'>👑</span>
       : <React.Fragment/>

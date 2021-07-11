@@ -14,7 +14,7 @@
 }
 .roomPlayer {
   margin: 8px;
-  border: 2px solid #fff;
+  border: 2px solid #3e3e3e;
   border-radius: 5px;
   padding: 8px;
 }
@@ -44,9 +44,11 @@
 .readyButton{
   padding: 0;
   font-weight: bold;
+  height: 30px;
+  width: 30px;
 }
 .xButton > i{
-  color: red;
+  color: #bb0000;
   font-size: 25px;
 }
 .checkButton > i{
