@@ -1,3 +1,5 @@
+import { createSelector } from "reselect";
+import { ip } from "../../../App";
 import { RoomPlayer } from "../../../constants/RoomPlayer";
 import { Room } from "../../../models/Room";
 import { RootState } from "../../../models/RootState";
@@ -24,3 +26,7 @@ export const roomPlayersStateForRoomSel = (state: RootState, room: Room) => {
   })
   return roomPlayersStateForRoom
 }
+
+export const getUserPlayerInfo = createSelector([roomPlayersStateSel], (roomPlayers) => {
+  Object.keys(roomPlayers).find((id) => id.includes(ip))
+})

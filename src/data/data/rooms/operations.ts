@@ -28,7 +28,7 @@ function roomContractToModel(roomC: RoomC): Room { // mutates
   return room
 }
 
-function getRoomPlayerId(ip: string, roomId: string) {
+export function getRoomPlayerId(ip: string, roomId: string) {
   return ip + "-" + roomId
 }
 

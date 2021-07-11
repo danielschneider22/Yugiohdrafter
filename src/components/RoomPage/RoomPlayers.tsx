@@ -1,10 +1,17 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { ip } from "../../App";
+import { RoomPlayer } from "../../constants/RoomPlayer";
 import { roomPlayersStateForRoomSel, roomPlayersStateSel } from "../../data/data/roomPlayers.ts/selectors";
+import { getRoomPlayerId } from "../../data/data/rooms/operations";
 import { roomByIdSel } from "../../data/data/rooms/selectors";
 import { RootState } from "../../models/RootState";
 import styles from './RoomPage.module.css'
+
+function isPlayerUser(roomPlayer: RoomPlayer, room: string){
+  return roomPlayer.id === getRoomPlayerId(ip, room)
+}
 
 function RoomPlayers() {
   const params: {id: string} = useParams()
@@ -20,10 +27,17 @@ function RoomPlayers() {
       <span role="img" aria-label="checkmark" title='Host'>👑</span>
       : <React.Fragment/>
 
+    const isCurrPlayer = isPlayerUser(player, room.id)
     return (
       <li className={styles.roomPlayer} key={id}>
-        {isReadySpan}    
-        <span aria-label="player ID">&nbsp; {player.id}</span>
+        {isReadySpan}
+        {isCurrPlayer && 
+          <input className={styles.roomPlayerInput} value={player.name} />
+        } 
+        {!isCurrPlayer && 
+          <span aria-label="player ID">&nbsp; {player.name}</span>
+        }
+        
         <span>&nbsp; {isHostIcon}</span>
       </li>
     )

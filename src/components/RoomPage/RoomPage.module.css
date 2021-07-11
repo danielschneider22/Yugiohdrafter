@@ -10,6 +10,7 @@
 }
 .playersList {
   list-style: none;
+  padding-left: 0px;
 }
 .roomPlayer {
   margin: 8px;
@@ -22,4 +23,16 @@
 }
 .recentlyCopiedText {
   /* TBA: */
+}
+
+.roomPlayerInput{
+  background-color: #424242;
+  color: white;
+}
+
+.LaunchButton{
+  background-color: #008c68;
+  border-color: #008c68;
+  text-align: center;
+  cursor: pointer;
 }

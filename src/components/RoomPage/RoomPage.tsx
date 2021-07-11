@@ -1,8 +1,11 @@
+import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
+import { toastBGColorDict } from '../../constants/Toast';
 import { roomGetFetchThunk } from '../../data/data/rooms/operations';
 import { roomByIdSel } from '../../data/data/rooms/selectors';
+import { addToast } from '../../data/toasts/actions';
 import { RootState } from '../../models/RootState';
 import styles from './RoomPage.module.css'
 import RoomPlayers from './RoomPlayers';
@@ -17,13 +20,12 @@ function RoomPage() {
   const [recentlyCopiedToClipboard, setRecentlyCopiedToClipboard] = useState(false)
 
   function copyRoomUrlToClipboard() {
-    if (!recentlyCopiedToClipboard) {
-      navigator.clipboard.writeText(window.location.href)
+    navigator.clipboard.writeText(window.location.href)
 
-      // should invoke setTimeout after this update to true has been performed, major lag required to make this an actual issue 
-      setRecentlyCopiedToClipboard(true)
-      setTimeout(() => {setRecentlyCopiedToClipboard(false)}, COPIED_TO_CLIPBOARD_DURATION)
-    }
+    // should invoke setTimeout after this update to true has been performed, major lag required to make this an actual issue 
+    setRecentlyCopiedToClipboard(true)
+    dispatch(addToast({id: _.uniqueId("copy-to-clipboard-"), type: "Success", description: "Room URL Copied to Clipboard", title: "Success", backgroundColor: toastBGColorDict["Success"]}))
+    // setTimeout(() => {setRecentlyCopiedToClipboard(false)}, COPIED_TO_CLIPBOARD_DURATION)
   }
 
   useEffect(() => {
@@ -45,6 +47,10 @@ function RoomPage() {
     <span className={styles.recentlyCopiedText}> Room URL Copied to Clipboard</span>
     : <React.Fragment />
   
+  function startDraft() {
+    console.log("Start Draft")
+  }
+  
   return (
     <main className={styles.RoomPage}>
       <h2>
@@ -53,9 +59,12 @@ function RoomPage() {
           <b>{room.id}</b> 
           <span title='Copy Room Url To Clipboard'>&nbsp; 📋</span>
         </span>
-        {recentlyCopiedText}
+        {/* {recentlyCopiedText} */}
       </h2>
       <RoomPlayers />
+      <div className="d-flex justify-content-center">
+        <div className={"btn-lg btn-success " + styles.LaunchButton} onClick={startDraft}>Start Draft</div>
+      </div>
     </main>
   )
 }
