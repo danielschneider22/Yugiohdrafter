@@ -14,6 +14,7 @@ import { RoomPlayer } from "../../../constants/RoomPlayer"
 import { Booster } from "../../../constants/Booster"
 import { getSortedLPBoosters } from "../../boosters/selectors"
 import { ip } from "../../../App"
+import { RoomResultC } from "../../../contracts/RoomResultC"
 
 // - mappers
 function roomContractToModel(roomC: RoomC): Room { // mutates
@@ -34,13 +35,13 @@ function getRoomPlayerId(ip: string, roomId: string) {
 export const roomAddFetchThunk = (history: History): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
   dispatch(roomAddFetch())
   const boostersLP = getSortedLPBoosters(getState())
-  const [roomC, error]: Monad<RoomC> = await tryCatchPromise(dispatch, [boostersLP])<RoomC>(roomAddFetchOp)
-  if (roomC) {
+  const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [boostersLP])<RoomResultC>(roomAddFetchOp)
+  if (roomResultC) {
     // TODO: @allenwhitedev example of why we need to handle arguments in tryCatchPromise()
     // const [room, error]: Monad<Room> = await tryCatchPromise<Room>(roomContractToModel)
-    const room = await roomContractToModel(roomC)
+    const room = await roomContractToModel(roomResultC.room)
     if (room) {
-      await dispatch(roomAddFetchSuccess(room))
+      await dispatch(roomAddFetchSuccess(room, roomResultC.roomPlayers))
       return history.push(`/room/${room.id}`)
     }
     else
@@ -70,15 +71,15 @@ async function roomAddFetchOp(boostersLP: Booster[]): Promise<RoomC> {
 
 export const roomGetFetchThunk = (roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
   dispatch(roomGetFetch)
-  const [roomC, error]: Monad<RoomC> = await tryCatchPromise(dispatch, [roomId])<RoomC>(roomGetFetchOp)
-  if (roomC) {
-    const room = await roomContractToModel(roomC)
+  const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [roomId])<RoomResultC>(roomGetFetchOp)
+  if (roomResultC) {
+    const room = await roomContractToModel(roomResultC.room)
     if (room) {
       // if the player doesn't exist in the room send request to add them to room
       if(!room.roomPlayerIds.some((id) => id === getRoomPlayerId(ip, roomId))){
         dispatch(roomJoinRoomFetchThunk(roomId))
       }
-      await dispatch(roomGetFetchSuccess(room))
+      await dispatch(roomGetFetchSuccess(room, roomResultC.roomPlayers))
     }
     else
       dispatch(roomGetFetchFail(error))  
@@ -86,7 +87,7 @@ export const roomGetFetchThunk = (roomId: string): ThunkAction<void, RootStateOr
     dispatch(roomGetFetchFail(error))
   }
 }
-async function roomGetFetchOp(roomId: string): Promise<RoomC> {
+async function roomGetFetchOp(roomId: string): Promise<RoomResultC> {
   const url = `${baseApiUrl}/room/${roomId}`
   const resp = await fetch(url, {
     headers: {'Content-Type': 'application/json'},
@@ -101,11 +102,11 @@ async function roomGetFetchOp(roomId: string): Promise<RoomC> {
 
 export const roomJoinRoomFetchThunk = (roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
   dispatch(roomJoinRoomFetch)
-  const [roomC, error]: Monad<RoomC> = await tryCatchPromise(dispatch, [roomId])<RoomC>(roomJoinRoomFetchOp)
-  if (roomC) {
-    const room = await roomContractToModel(roomC)
+  const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [roomId])<RoomResultC>(roomJoinRoomFetchOp)
+  if (roomResultC) {
+    const room = await roomContractToModel(roomResultC.room)
     if (room) {
-      await dispatch(roomJoinRoomFetchSuccess(room))
+      await dispatch(roomJoinRoomFetchSuccess(room, roomResultC.roomPlayers))
     }
     else
       dispatch(roomJoinRoomFetchFail(error))  

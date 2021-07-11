@@ -7,12 +7,12 @@ import LandingPage from './components/BoosterPicker/LandingPage';
 import Draft from './components/Draft/Draft';
 import DraftComplete from './components/DraftComplete/DraftComplete';
 import NavBar from './components/NavBar/NavBar';
-import RoomPage from './components/RoomPage/RoomPage';
 import SealedBoosterOpener from './components/SealedBoosterOpener/SealedBoosterOpener';
 import { initState, rootReducer } from './data/reducers';
 import ToastManager from './components/ToastManager/ToastManager';
 import { useEffect, useState } from 'react';
 import { getClientIp } from './data/data/rooms/utils';
+import RoomPage from './components/RoomPage/RoomPage';
 
 // undefined if browser does not have redux devtools installed
 const reduxDevtoolsCompose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
