@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { ip } from "../../App";
 import { RoomPlayer } from "../../constants/RoomPlayer";
-import { roomChangeNameFetchThunk } from "../../data/data/roomPlayers.ts/operations";
-import { roomPlayersStateForRoomSel, roomPlayersStateSel } from "../../data/data/roomPlayers.ts/selectors";
+import { roomUpdatePlayerFetchThunk } from "../../data/data/roomPlayers.ts/operations";
+import { roomPlayersStateForRoomSel } from "../../data/data/roomPlayers.ts/selectors";
 import { getRoomPlayerId } from "../../data/data/rooms/operations";
 import { roomByIdSel } from "../../data/data/rooms/selectors";
 import { RootState } from "../../models/RootState";
@@ -22,18 +22,23 @@ function RoomPlayers() {
 
   const Players: JSX.Element[] = roomPlayers.allIds.map((id: string) => {
     const player = roomPlayers.byId[id]
+    const isCurrPlayer = isPlayerUser(player, room.id)
+
+    function toggleReady() {
+      dispatch(roomUpdatePlayerFetchThunk(room.id, {isReady: !player.isReady}))
+    }
+
     const isReadySpan = player.isReady ?
-      <span role="img" aria-label="checkmark" title='Ready'>✅</span>
-      : <span role="img" aria-label="redcross" title='Not Ready'>❌</span>
+      <span role="img" aria-label="checkmark" title='Ready' onClick={toggleReady} className={isCurrPlayer ? styles.readyButton : ""}>✅</span>
+      : <span role="img" aria-label="redcross" title='Not Ready' onClick={toggleReady} className={isCurrPlayer ? styles.readyButton : ""}>❌</span>
     const isHostIcon = player.isHost ?
       <span role="img" aria-label="checkmark" title='Host'>👑</span>
       : <React.Fragment/>
 
     function changeName(event: React.ChangeEvent<HTMLInputElement>) {
-      dispatch(roomChangeNameFetchThunk(room.id, event.currentTarget.value))
+      dispatch(roomUpdatePlayerFetchThunk(room.id, {name: event.currentTarget.value}))
     }
-
-    const isCurrPlayer = isPlayerUser(player, room.id)
+    
     return (
       <li className={styles.roomPlayer} key={id}>
         {isReadySpan}

@@ -3,23 +3,23 @@ import { Room } from "../../../models/Room";
 import { State } from "../../../models/State";
 import { RoomPlayersActionTypes as types } from "./types";
 
-export interface RoomChangeNameFetch { type: types.ROOM_CHANGE_NAME_FETCH, name: string }
-export const roomChangeNameFetch = (name: string): RoomChangeNameFetch => ({ type: types.ROOM_CHANGE_NAME_FETCH, name })
+export interface RoomUpdatePlayerFetch { type: types.ROOM_UPDATE_PLAYER_FETCH, player: Partial<RoomPlayer> }
+export const roomUpdatePlayerFetch = (player: Partial<RoomPlayer>): RoomUpdatePlayerFetch => ({ type: types.ROOM_UPDATE_PLAYER_FETCH, player })
 
-export interface RoomChangeNameFetchFail { error: any, type: types.ROOM_CHANGE_NAME_FETCH_FAIL }
-export const roomChangeNameFetchFail = (error: any): RoomChangeNameFetchFail => ({ error, type: types.ROOM_CHANGE_NAME_FETCH_FAIL })
+export interface RoomUpdatePlayerFetchFail { error: any, type: types.ROOM_UPDATE_PLAYER_FETCH_FAIL }
+export const roomUpdatePlayerFetchFail = (error: any): RoomUpdatePlayerFetchFail => ({ error, type: types.ROOM_UPDATE_PLAYER_FETCH_FAIL })
 
-export type RoomChangeNameFetchSuccess = { 
+export type RoomUpdatePlayerFetchSuccess = { 
   room: Room
   roomPlayers: State<RoomPlayer>
-  type: types.ROOM_CHANGE_NAME_FETCH_SUCCESS 
+  type: types.ROOM_UPDATE_PLAYER_FETCH_SUCCESS 
 }
-export const roomChangeNameFetchSuccess = (room: Room, roomPlayers: State<RoomPlayer>): RoomChangeNameFetchSuccess => ({ 
+export const roomUpdatePlayerFetchSuccess = (room: Room, roomPlayers: State<RoomPlayer>): RoomUpdatePlayerFetchSuccess => ({ 
   room,
   roomPlayers,
-  type: types.ROOM_CHANGE_NAME_FETCH_SUCCESS 
+  type: types.ROOM_UPDATE_PLAYER_FETCH_SUCCESS 
 })
 
-export type RoomPlayerAction = RoomChangeNameFetch
-  | RoomChangeNameFetchFail
-  | RoomChangeNameFetchSuccess
+export type RoomPlayerAction = RoomUpdatePlayerFetch
+  | RoomUpdatePlayerFetchFail
+  | RoomUpdatePlayerFetchSuccess

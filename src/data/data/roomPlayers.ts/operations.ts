@@ -7,34 +7,33 @@ import { RoomPlayer } from "../../../constants/RoomPlayer"
 import { RoomResultC } from "../../../contracts/RoomResultC"
 import { Monad } from "../../../utils"
 import { tryCatchPromise } from "../../utils"
-import { roomGetFetch, roomGetFetchFail } from "../rooms/actions"
 import { roomContractToModel } from "../rooms/operations"
-import { roomChangeNameFetchSuccess } from "./actions"
+import { roomUpdatePlayerFetch, roomUpdatePlayerFetchFail, roomUpdatePlayerFetchSuccess } from "./actions"
 
-export const roomChangeNameFetchThunk = (roomId: string, name: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
-  dispatch(roomGetFetch)
-  const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [roomId, name])<RoomResultC>(roomChangeNameFetchOp)
+export const roomUpdatePlayerFetchThunk = (roomId: string, player: Partial<RoomPlayer>): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
+  dispatch(roomUpdatePlayerFetch(player))
+  const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [roomId, player])<RoomResultC>(roomUpdatePlayerFetchOp)
   if (roomResultC) {
     const room = await roomContractToModel(roomResultC.room)
     if (room) {
-      await dispatch(roomChangeNameFetchSuccess(room, roomResultC.roomPlayers))
+      await dispatch(roomUpdatePlayerFetchSuccess(room, roomResultC.roomPlayers))
     }
     else
-      dispatch(roomGetFetchFail(error))  
+      dispatch(roomUpdatePlayerFetchFail(error))  
   } else {
-    dispatch(roomGetFetchFail(error))
+    dispatch(roomUpdatePlayerFetchFail(error))
   }
 }
-async function roomChangeNameFetchOp(roomId: string, name: string): Promise<RoomResultC> {
-  const url = `${baseApiUrl}/room/changeName/${roomId}`
+async function roomUpdatePlayerFetchOp(roomId: string, player: Partial<RoomPlayer>): Promise<RoomResultC> {
+  const url = `${baseApiUrl}/room/updatePlayer/${roomId}`
   const resp = await fetch(url, {
     headers: {'Content-Type': 'application/json'},
     method: 'POST',
     body: JSON.stringify({
       player: {
-        name,
-        ip,
-      } as Partial<RoomPlayer>,
+        ...player,
+        ip
+      }
     })
   })
   if (resp.ok) 

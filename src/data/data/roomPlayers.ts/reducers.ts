@@ -12,7 +12,7 @@ export function roomPlayersReducer(state: State<RoomPlayer> = roomsPlayersInitia
     case RoomsActionTypes.ROOM_ADD_FETCH_SUCCESS:
     case RoomsActionTypes.ROOM_GET_FETCH_SUCCESS:
     case RoomsActionTypes.ROOM_JOIN_ROOM_FETCH_SUCCESS:
-    case RoomPlayersActionTypes.ROOM_CHANGE_NAME_FETCH_SUCCESS:
+    case RoomPlayersActionTypes.ROOM_UPDATE_PLAYER_FETCH_SUCCESS:
       return stateAddStateWithoutMutation<RoomPlayer>(state, action.roomPlayers)
 
     default:
