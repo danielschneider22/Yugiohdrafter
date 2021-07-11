@@ -8,3 +8,18 @@
 .centerText {
   margin: 0 auto;
 }
+.playersList {
+  list-style: none;
+}
+.roomPlayer {
+  margin: 8px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  padding: 8px;
+}
+.copyRoomUrlToClipboard {
+  cursor: pointer;
+}
+.recentlyCopiedText {
+  /* TBA: */
+}
