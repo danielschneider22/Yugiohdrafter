@@ -1,4 +1,4 @@
-import { Provider, RootStateOrAny } from 'react-redux';
+import { Provider, RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Action, applyMiddleware, compose, createStore } from 'redux';
 import thunkMiddleware, { ThunkMiddleware } from 'redux-thunk';
@@ -13,22 +13,19 @@ import ToastManager from './components/ToastManager/ToastManager';
 import { useEffect, useState } from 'react';
 import { getClientIp } from './data/data/rooms/utils';
 import RoomPage from './components/RoomPage/RoomPage';
-
-// undefined if browser does not have redux devtools installed
-const reduxDevtoolsCompose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
-const enhancersThunk = applyMiddleware(thunkMiddleware as ThunkMiddleware<RootStateOrAny, Action>)
-
-const store = createStore(
-  rootReducer,
-  initState as any,
-  compose(enhancersThunk, ...reduxDevtoolsCompose ? [reduxDevtoolsCompose()] : [], )
-);
+import { getCardSetsById } from './data/cardSets/selectors';
+import { addSets } from './data/cardSets/actions';
+import { fetchCardSets } from './data/cardSets/operations';
 
 export let ip = ""
 
 function App() {
   const [ipLoaded, setIpLoaded] = useState(false)
+  const cardSets = Object.values(useSelector(getCardSetsById))
+  const dispatch = useDispatch();
+
   useEffect(() => {
+    // get client's ip address
     async function getIP() {
       if(process.env.REACT_APP_ENVIRONMENT === "dev") {
         ip = (Math.random() * 200000) + ""
@@ -38,14 +35,22 @@ function App() {
       
       setIpLoaded(true)
     }
-
     getIP()
+
+    // fetch all card sets
+    const sets = localStorage.getItem("cardSets");
+    if(cardSets.length === 0 && sets) {
+        dispatch(addSets(JSON.parse(sets)))
+    } else if (cardSets.length === 0) {
+        fetchCardSets(dispatch);
+    }
   }, [])
-  if(!ipLoaded) {
+
+  if(!ipLoaded || cardSets.length === 0) {
     return <div></div>
   }
   return (
-    <Provider store={store}>
+    <div>
       <ToastManager
         position="bottom-left"
         autoDelete={true}
@@ -73,8 +78,9 @@ function App() {
           </Switch>
         </Router>
       </div>
-    </Provider>
+    </div>
   );
 }
 
 export default App;
+

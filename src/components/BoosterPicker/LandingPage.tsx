@@ -25,16 +25,6 @@ function LandingPage() {
   const [playMode, setPlayMode] = useState("bots" as "bots" | "host")
   const history = useHistory()
 
-  // initialization
-  useEffect(() => {
-    const sets = localStorage.getItem("cardSets");
-    if(cardSets.length === 0 && sets) {
-        dispatch(addSets(JSON.parse(sets)))
-    } else if (cardSets.length === 0) {
-        fetchCardSets(dispatch);
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
   // add a booster if booster list is empty
   useEffect(() => {
     if(boosterIds.length === 0 && cardSets.length > 0) {
