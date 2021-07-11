@@ -6,7 +6,7 @@ import { addToast } from "./toasts/actions";
 
 export function stateAddItemWithoutMutation<T extends StateItem>(state: State<T>, item: T): State<T> {
   return {
-    allIds: [...state.allIds, item.id],
+    allIds: [...new Set([...state.allIds, item.id])],
     byId: {...state.byId, [item.id]: item}
   }
 }
@@ -25,11 +25,7 @@ export function stateAddStateWithoutMutation<T extends StateItem>(state: State<T
 export function stateRemoveDupeState<T extends StateItem>(state: State<T>, newState: State<T>): State<T> {
   const allIdsNew: string[] = [] // quicker to push unique entries to new array than to splice (O(n)) out dupe vales
   newState.allIds.forEach(id => {
-    if (state.byId[id] !== undefined) { // true if dupe item is in state
-      delete newState.byId[id] // remove dupe from newState byId, newState allIds omits push to allIdsNew
-    } else {
-      allIdsNew.push(id) // unique entry, will be merged into returned state
-    }
+    allIdsNew.push(id) // unique entry, will be merged into returned state
   })
   
   const uniqueNewState: State<T> = { // filter out newState items already in (current) state

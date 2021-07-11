@@ -1,8 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { ip } from "../../App";
 import { RoomPlayer } from "../../constants/RoomPlayer";
+import { roomChangeNameFetchThunk } from "../../data/data/roomPlayers.ts/operations";
 import { roomPlayersStateForRoomSel, roomPlayersStateSel } from "../../data/data/roomPlayers.ts/selectors";
 import { getRoomPlayerId } from "../../data/data/rooms/operations";
 import { roomByIdSel } from "../../data/data/rooms/selectors";
@@ -17,6 +18,7 @@ function RoomPlayers() {
   const params: {id: string} = useParams()
   const room = useSelector((state: RootState) => roomByIdSel(state, params.id))
   const roomPlayers = useSelector((state: RootState) => roomPlayersStateForRoomSel(state, room))
+  const dispatch = useDispatch()
 
   const Players: JSX.Element[] = roomPlayers.allIds.map((id: string) => {
     const player = roomPlayers.byId[id]
@@ -27,12 +29,16 @@ function RoomPlayers() {
       <span role="img" aria-label="checkmark" title='Host'>👑</span>
       : <React.Fragment/>
 
+    function changeName(event: React.ChangeEvent<HTMLInputElement>) {
+      dispatch(roomChangeNameFetchThunk(room.id, event.currentTarget.value))
+    }
+
     const isCurrPlayer = isPlayerUser(player, room.id)
     return (
       <li className={styles.roomPlayer} key={id}>
         {isReadySpan}
         {isCurrPlayer && 
-          <input className={styles.roomPlayerInput} value={player.name} />
+          <input className={styles.roomPlayerInput} value={player.name} onChange={changeName} />
         } 
         {!isCurrPlayer && 
           <span aria-label="player ID">&nbsp; {player.name}</span>

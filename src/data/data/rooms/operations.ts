@@ -17,7 +17,7 @@ import { ip } from "../../../App"
 import { RoomResultC } from "../../../contracts/RoomResultC"
 
 // - mappers
-function roomContractToModel(roomC: RoomC): Room { // mutates
+export function roomContractToModel(roomC: RoomC): Room { // mutates
   const expires = moment(roomC.expires)
   
   if (!expires.isValid()) // invalid expires field returned from backend
