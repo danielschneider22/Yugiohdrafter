@@ -1,10 +1,10 @@
-import _ from "lodash";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addBooster, updateBooster } from "../../data/boosters/actions";
 import { getLandingPageBoosterIds, getLandingPageBoosters } from "../../data/boosters/selectors";
 import { getCardSetsById } from "../../data/cardSets/selectors";
 import BoosterSelect from "./BoosterSelect";
+import { v4 as uuidv4 } from 'uuid';
 
 function BoosterChooserArea() {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ function BoosterChooserArea() {
   }
 
   function addBoosterButtonClick() {
-    dispatch(addBooster({cardSetName: boosters[boosterIds[boosterIds.length - 1]].cardSetName, id: _.uniqueId("booster-")}, "landingPageBooster"))
+    dispatch(addBooster({cardSetName: boosters[boosterIds[boosterIds.length - 1]].cardSetName, id: "booster-" + uuidv4()}, "landingPageBooster"))
     setTimeout(() => {
       scrollableArea.current.scrollTop = scrollableArea.current.scrollHeight;
     })

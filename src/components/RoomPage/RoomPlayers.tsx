@@ -31,12 +31,13 @@ function RoomPlayers() {
     const isCurrPlayer = isPlayerUser(player, room.id)
 
     function toggleReady() {
-      dispatch(roomUpdatePlayerFetchThunk(room.id, {isReady: !player.isReady}))
+      if(isCurrPlayer)
+        dispatch(roomUpdatePlayerFetchThunk(room.id, {isReady: !player.isReady}))
     }
 
     const isReadySpan = player.isReady ?
-      <span role="img" aria-label="checkmark" title='Ready' onClick={toggleReady} className={isCurrPlayer ? styles.readyButton : ""}>✅</span>
-      : <span role="img" aria-label="redcross" title='Not Ready' onClick={toggleReady} className={isCurrPlayer ? styles.readyButton : ""}>❌</span>
+      <button role="img" aria-label="checkmark" title='Ready' onClick={toggleReady} className={`btn btn-dark ${styles.xButton} ${styles.readyButton} ${isCurrPlayer ? styles.currPlayerReadyButton : ""}`} disabled={!isCurrPlayer}><i className="bi bi-check"></i></button>
+      : <button role="img" aria-label="redcross" title='Not Ready' onClick={toggleReady} className={`btn btn-dark ${styles.checkButton} ${styles.readyButton} ${isCurrPlayer ? styles.currPlayerReadyButton : ""}`} disabled={!isCurrPlayer}><i className="bi bi-x"></i></button>
     const isHostIcon = player.isHost ?
       <span role="img" aria-label="checkmark" title='Host'>👑</span>
       : <React.Fragment/>

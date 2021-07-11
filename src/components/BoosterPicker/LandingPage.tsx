@@ -1,6 +1,5 @@
 import './BoosterPicker.css';
 
-import * as _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -15,6 +14,7 @@ import BoosterChooserArea from './BoosterChooserArea';
 import { sortCardSet } from '../../data/cardSets/utils';
 import { getSetsForBoosters } from '../../data/cards/utils';
 import { initialiazeDraftPod } from '../../data/draftPod/actions';
+import { v4 as uuidv4 } from 'uuid';
 
 function LandingPage() {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ function LandingPage() {
   // add a booster if booster list is empty
   useEffect(() => {
     if(boosterIds.length === 0 && cardSets.length > 0) {
-        dispatch(addBooster({cardSetName: cardSets.sort(sortCardSet)[0].set_name, id: _.uniqueId("booster-")}, "landingPageBooster"))
+        dispatch(addBooster({cardSetName: cardSets.sort(sortCardSet)[0].set_name, id: "booster-" + uuidv4()}, "landingPageBooster"))
     }
   }, [cardSets, boosters, boosterIds.length, dispatch]);
 
@@ -53,10 +53,6 @@ function LandingPage() {
       }
       history.push(format === "sealed" ? "/SealedBooster" : "/Draft")
     }
-
-    
-
-
   }
 
   const loadingBoosters = <div>Loading boosters...</div>
