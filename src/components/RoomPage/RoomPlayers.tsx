@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { ip } from "../../App";
 import { RoomPlayer } from "../../constants/RoomPlayer";
 import { roomUpdatePlayerFetchThunk } from "../../data/data/roomPlayers.ts/operations";
 import { roomPlayersStateForRoomSel } from "../../data/data/roomPlayers.ts/selectors";
-import { getRoomPlayerId } from "../../data/data/rooms/operations";
+import { getRoomPlayerId, roomGetFetchThunk } from "../../data/data/rooms/operations";
 import { roomByIdSel } from "../../data/data/rooms/selectors";
 import { RootState } from "../../models/RootState";
 import styles from './RoomPage.module.css'
@@ -19,6 +19,12 @@ function RoomPlayers() {
   const room = useSelector((state: RootState) => roomByIdSel(state, params.id))
   const roomPlayers = useSelector((state: RootState) => roomPlayersStateForRoomSel(state, room))
   const dispatch = useDispatch()
+
+  
+  // initialization set interval to refresh room every 3 seconds
+  useEffect(() => {
+    setInterval(() => dispatch(roomGetFetchThunk(room.id)), 3000);
+  }, [])
 
   const Players: JSX.Element[] = roomPlayers.allIds.map((id: string) => {
     const player = roomPlayers.byId[id]
