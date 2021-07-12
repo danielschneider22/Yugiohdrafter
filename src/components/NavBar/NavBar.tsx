@@ -115,7 +115,7 @@ function NavBar() {
                             <li><a href="#" onClick={() => quickDraft("retro_draft_custom")}>Retro Draft</a></li>
                             <li><a href="#" onClick={() => quickDraft("battle_pack_custom")}>Battle Pack Draft</a></li>
                             {latestSet && <li><a href="#" onClick={() => quickDraft(latestSet.id)}>{latestSet.id} Draft</a></li>}
-                            {customSets.map((set) => <li key={set.id}><a href="#" onClick={() => quickDraft(set.id)}>{set.id}</a></li>)}
+                            {customSets.map((set) => <li key={set.id}><a href="#" onClick={() => quickDraft(set.id)}>{set.set_name}</a></li>)}
                             
                         </ul>
                     </li>
