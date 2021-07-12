@@ -17,6 +17,10 @@ import { ip } from "../../../App"
 import { RoomResultC } from "../../../contracts/RoomResultC"
 import { removeAllBoosters, setBoosters } from "../../boosters/actions"
 import { getSetsForBoosters } from "../../cards/utils"
+import { addSet } from "../../cardSets/actions"
+import { fetchCardsById, fetchCardsByName } from "../../cards/operations"
+import { CardSet } from "../../../constants/CardSet"
+import { getCustomSets } from "../../cardSets/selectors"
 
 // - mappers
 export function roomContractToModel(roomC: RoomC): Room { // mutates
@@ -37,7 +41,8 @@ export function getRoomPlayerId(ip: string, roomId: string) {
 export const roomAddFetchThunk = (history: History): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
   dispatch(roomAddFetch())
   const boostersLP = getSortedLPBoosters(getState())
-  const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [boostersLP])<RoomResultC>(roomAddFetchOp)
+  const customSets = getCustomSets(getState())
+  const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [boostersLP, customSets])<RoomResultC>(roomAddFetchOp)
   if (roomResultC) {
     // TODO: @allenwhitedev example of why we need to handle arguments in tryCatchPromise()
     // const [room, error]: Monad<Room> = await tryCatchPromise<Room>(roomContractToModel)
@@ -52,7 +57,7 @@ export const roomAddFetchThunk = (history: History): ThunkAction<void, RootState
     dispatch(roomAddFetchFail(error))
   }
 }
-async function roomAddFetchOp(boostersLP: Booster[]): Promise<RoomC> {
+async function roomAddFetchOp(boostersLP: Booster[], customSets: CardSet[]): Promise<RoomC> {
   const url = `${baseApiUrl}/room`
   const resp = await fetch(url, {
     headers: {'Content-Type': 'application/json'},
@@ -63,7 +68,7 @@ async function roomAddFetchOp(boostersLP: Booster[]): Promise<RoomC> {
         ip,
       } as Partial<RoomPlayer>,
       boostersLP,
-      customSets: []
+      customSets
     })
   })
   if (resp.ok) 
@@ -112,9 +117,21 @@ export const roomJoinRoomFetchThunk = (roomId: string): ThunkAction<void, RootSt
       await dispatch(roomJoinRoomFetchSuccess(room, roomResultC.roomPlayers))
       if(roomResultC.boostersLP) {
         const boosters = Object.values(roomResultC.boostersLP.byId)
+        const customSets = roomResultC.customSets
+
+        // fetch all custom set cards
+        if(customSets && customSets.allIds.length > 0) {
+          Object.values(customSets.byId).forEach(async (set) => {
+            dispatch(addSet({id: set.id, set_name: set.set_name, set_code: set.set_code, num_of_cards: set.card_ids!.length, tcg_date: Date(), custom_set: true}))
+            await fetchCardsById(dispatch, set.card_ids!, set.id)
+          })
+        }
+
+        // fetch all non-custom set cards
+        const nonCustomSets = boosters.filter((booster) => !customSets?.allIds.includes(booster.cardSetName))
+        getSetsForBoosters(nonCustomSets, dispatch)
         dispatch(removeAllBoosters("draftBooster"))
         dispatch(setBoosters(boosters, "landingPageBooster"))
-        getSetsForBoosters(boosters, dispatch)
       }
       
     }
