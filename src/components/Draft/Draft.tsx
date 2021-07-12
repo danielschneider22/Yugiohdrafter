@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import { Booster } from '../../constants/Booster';
 import { VisibleCard } from '../../constants/Card';
-import { removeAllBoosters, removeCardFromBooster } from '../../data/boosters/actions';
+import { removeAllBoosters, removeCardFromBooster, setBoosters } from '../../data/boosters/actions';
 import { createDraftBoostersForRound } from '../../data/boosters/operations';
 import {
     getAllCardSetCardsFetched,
@@ -75,7 +75,8 @@ function Draft() {
           nextBooster = landingPageBoosters[landingPageBoosterIds[landingPageBoosterIds.findIndex((id) => id === currLPBooster.id) + 1]]
         }
         dispatch(removeAllBoosters("draftBooster"))
-        createDraftBoostersForRound(nextBooster, cardSets, cardsById, numPlayers, dispatch)
+        const boosters = createDraftBoostersForRound(nextBooster, cardSets, cardsById, numPlayers)
+        dispatch(setBoosters(boosters, "draftBooster" ))
         dispatch(openNextPack(nextBooster.id))
       }
       

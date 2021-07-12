@@ -5,12 +5,13 @@ import { Link, useParams } from 'react-router-dom';
 import { toastBGColorDict } from '../../constants/Toast';
 import { getAllCardSetCardsFetched } from '../../data/boosters/selectors';
 import { getUserPlayerInfo } from '../../data/data/roomPlayers.ts/selectors';
-import { roomGetFetchThunk } from '../../data/data/rooms/operations';
+import { roomGetFetchThunk, roomStartDraftFetchThunk } from '../../data/data/rooms/operations';
 import { roomByIdSel } from '../../data/data/rooms/selectors';
 import { addToast } from '../../data/toasts/actions';
 import { RootState } from '../../models/RootState';
 import styles from './RoomPage.module.css'
 import RoomPlayers from './RoomPlayers';
+import { useHistory } from 'react-router-dom';
 
 const COPIED_TO_CLIPBOARD_DURATION = 3000 // milliseconds
 
@@ -22,6 +23,7 @@ function RoomPage() {
   const [recentlyCopiedToClipboard, setRecentlyCopiedToClipboard] = useState(false)
   const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
   const userPlayer = useSelector(getUserPlayerInfo)
+  const history = useHistory()
 
   function copyRoomUrlToClipboard() {
     navigator.clipboard.writeText(window.location.href)
@@ -57,7 +59,7 @@ function RoomPage() {
     : <React.Fragment />
   
   function startDraft() {
-    console.log("Start Draft")
+    dispatch(roomStartDraftFetchThunk(history, roomId))
   }
   
   return (

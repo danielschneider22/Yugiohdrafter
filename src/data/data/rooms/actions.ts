@@ -69,6 +69,20 @@ export const roomsGetFetchSuccess = (roomState: State<Room>): RoomsGetFetchSucce
   type: types.ROOMS_GET_FETCH_SUCCESS 
 })
 
+// -- start draft room fetch
+export interface RoomStartDraftFetch { type: types.ROOMS_START_DRAFT_FETCH }
+export const roomStartDraftFetch = (): RoomStartDraftFetch => ({ type: types.ROOMS_START_DRAFT_FETCH })
+
+export interface RoomStartDraftFetchFail { error: any, type: types.ROOMS_START_DRAFT_FETCH_FAIL }
+export const roomStartDraftFetchFail = (error: any): RoomStartDraftFetchFail => ({ error, type: types.ROOMS_START_DRAFT_FETCH_FAIL })
+
+export type RoomStartDraftFetchSuccess = Modify<RoomGetFetchSuccess, { type: types.ROOMS_START_DRAFT_FETCH_SUCCESS }>
+export const roomStartDraftFetchSuccess = (room: Room, roomPlayers: State<RoomPlayer>): RoomStartDraftFetchSuccess => ({ 
+  room,
+  roomPlayers,
+  type: types.ROOMS_START_DRAFT_FETCH_SUCCESS
+})
+
 export type RoomAction = RoomAddFetch
   | RoomAddFetchFail
   | RoomAddFetchSuccess
@@ -81,3 +95,6 @@ export type RoomAction = RoomAddFetch
   | RoomJoinRoomFetch
   | RoomJoinRoomFetchFail
   | RoomJoinRoomFetchSuccess
+  | RoomStartDraftFetch
+  | RoomStartDraftFetchFail
+  | RoomStartDraftFetchSuccess
