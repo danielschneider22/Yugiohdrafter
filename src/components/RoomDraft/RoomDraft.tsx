@@ -59,7 +59,7 @@ function RoomDraft() {
     if(landingPageBoosterIds.length === 0) {
       history.push("/");
     }
-    const updateRoomInterval = setInterval(() => dispatch(roomGetFetchThunk(roomId)), 3000);
+    const updateRoomInterval = setInterval(() => dispatch(roomGetFetchThunk(roomId)), 1000);
     return () => {
       clearInterval(updateRoomInterval)
     };
