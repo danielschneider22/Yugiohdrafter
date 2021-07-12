@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { ip } from "../../App";
 import { RoomPlayer } from "../../constants/RoomPlayer";
+import { getAllCardSetCardsFetched } from "../../data/boosters/selectors";
 import { roomUpdatePlayerFetchThunk } from "../../data/data/roomPlayers.ts/operations";
 import { roomPlayersStateForRoomSel } from "../../data/data/roomPlayers.ts/selectors";
 import { getRoomPlayerId, roomGetFetchThunk } from "../../data/data/rooms/operations";
@@ -19,8 +20,8 @@ function RoomPlayers() {
   const room = useSelector((state: RootState) => roomByIdSel(state, params.id))
   const roomPlayers = useSelector((state: RootState) => roomPlayersStateForRoomSel(state, room))
   const dispatch = useDispatch()
+  const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
 
-  
   // initialization set interval to refresh room every 3 seconds
   useEffect(() => {
     setInterval(() => dispatch(roomGetFetchThunk(room.id)), 3000);
@@ -36,8 +37,8 @@ function RoomPlayers() {
     }
 
     const isReadySpan = player.isReady ?
-      <button role="img" aria-label="checkmark" title='Ready' onClick={toggleReady} className={`btn btn-dark ${styles.checkButton} ${styles.readyButton} ${isCurrPlayer ? styles.currPlayerReadyButton : ""}`} disabled={!isCurrPlayer}><i className="bi bi-check-circle-fill"></i></button>
-      : <button role="img" aria-label="redcross" title='Not Ready' onClick={toggleReady} className={`btn btn-dark ${styles.xButton} ${styles.readyButton} ${isCurrPlayer ? styles.currPlayerReadyButton : ""}`} disabled={!isCurrPlayer}><i className="bi bi-x-circle-fill"></i></button>
+      <button role="img" aria-label="checkmark" title='Ready' onClick={toggleReady} className={`btn btn-dark ${styles.checkButton} ${styles.readyButton} ${isCurrPlayer ? styles.currPlayerReadyButton : ""}`} disabled={!isCurrPlayer || !allCardSetCardsFetched}><i className="bi bi-check-circle-fill"></i></button>
+      : <button role="img" aria-label="redcross" title='Not Ready' onClick={toggleReady} className={`btn btn-dark ${styles.xButton} ${styles.readyButton} ${isCurrPlayer ? styles.currPlayerReadyButton : ""}`} disabled={!isCurrPlayer || !allCardSetCardsFetched}><i className="bi bi-x-circle-fill"></i></button>
     const isHostIcon = player.isHost ?
       <span role="img" aria-label="checkmark" title='Host'>👑</span>
       : <React.Fragment/>
