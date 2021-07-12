@@ -1,4 +1,5 @@
 export interface CardSet{
+    id: string,
     set_name: string,
     set_code: string,
     num_of_cards: number,

@@ -28,16 +28,15 @@ function LandingPage() {
   // add a booster if booster list is empty
   useEffect(() => {
     if(boosterIds.length === 0 && cardSets.length > 0) {
-        dispatch(addBooster({cardSetName: cardSets.sort(sortCardSet)[0].set_name, id: "booster-" + uuidv4()}, "landingPageBooster"))
+        dispatch(addBooster({cardSetName: cardSets.sort(sortCardSet)[0].id, id: "booster-" + uuidv4()}, "landingPageBooster"))
     }
   }, [cardSets, boosters, boosterIds.length, dispatch]);
 
   function launch() {
+    getSetsForBoosters(Object.values(boosters), dispatch)
     if (playMode === "host")  {
       dispatch(roomAddFetchThunk(history))
-    } else {
-      getSetsForBoosters(Object.values(boosters), dispatch)
-    
+    } else {    
       if(format === "draft") {
         dispatch(initialiazeDraftPod(8, 5, 9, ""))
       }

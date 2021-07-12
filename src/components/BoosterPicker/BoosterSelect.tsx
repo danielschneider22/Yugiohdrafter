@@ -27,7 +27,7 @@ function BoosterSelect(props: ParentProps) {
           <div className={"BoosterText"}>Booster <br/>#{(boosterNum + 1)}</div>
           <select value={booster.cardSetName} onChange={(event) => boosterChanged(booster.id, event.target.value)}>
             {cardSetsSorted.map((set) => {
-                return <option value={set.set_name} key={set.set_name}>{set.set_name}</option>;
+                return <option value={set.id} key={set.id}>{set.id}</option>;
             })}
           </select>
       </div>

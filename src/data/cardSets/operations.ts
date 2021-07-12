@@ -9,6 +9,11 @@ export async function fetchCardSets(dispatch: Dispatch<any>) {
 
     sets = sets.filter((set) => {
         return set.num_of_cards > 50;
-    });
+    }).map((set) => {
+        return {
+            ...set,
+            id: set.set_name
+        }
+    })
     dispatch(addSets(sets))
 }

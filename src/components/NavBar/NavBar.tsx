@@ -112,8 +112,8 @@ function NavBar() {
                         <ul className={quickDraftDropdownVisible ? "dropdown-active" : ""}>
                             <li><a href="#" onClick={() => quickDraft("retro_draft_custom")}>Retro Draft</a></li>
                             <li><a href="#" onClick={() => quickDraft("battle_pack_custom")}>Battle Pack Draft</a></li>
-                            {latestSet && <li><a href="#" onClick={() => quickDraft(latestSet.set_name)}>{latestSet.set_name} Draft</a></li>}
-                            {customSets.map((set) => <li key={set.set_name}><a href="#" onClick={() => quickDraft(set.set_name)}>{set.set_name}</a></li>)}
+                            {latestSet && <li><a href="#" onClick={() => quickDraft(latestSet.id)}>{latestSet.id} Draft</a></li>}
+                            {customSets.map((set) => <li key={set.id}><a href="#" onClick={() => quickDraft(set.id)}>{set.id}</a></li>)}
                             
                         </ul>
                     </li>

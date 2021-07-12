@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchCardsByName } from '../../data/cards/operations';
 import { addSet } from '../../data/cardSets/actions';
@@ -22,9 +22,10 @@ Blue-Eyes White Dragon
         updateFunc(event.currentTarget.value)
     }
 
-    async function submit() {
+    async function submit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault()
         const cardNames = cardList.split(/\r?\n/);
-        dispatch(addSet({set_name: setName, set_code: setName, num_of_cards: cardNames.length, tcg_date: Date(), custom_set: true}))
+        dispatch(addSet({id: setName, set_name: setName, set_code: setName, num_of_cards: cardNames.length, tcg_date: Date(), custom_set: true}))
         await fetchCardsByName(dispatch, cardNames, setName)
         props.toggleCustomSetPopupVisiblity()
     }

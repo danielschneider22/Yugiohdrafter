@@ -13,7 +13,7 @@ export function getRandomCardFromArray(cards: Card[], allCards: Card[]) {
 }
 
 export function createBooster(cardsOfSet: Card[], cardSet: CardSet) {
-    const set_name = cardSet.set_name
+    const set_name = cardSet.id
     const cards: Card[] = []
 
     // if it's a custom set don't do rarity logic

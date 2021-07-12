@@ -12,8 +12,8 @@ export default function cardSetsReducer(state = cardSetsInitialState, action: Ca
         const allIds = [] as string[]
         const byId = {} as {[key: string]: CardSet}
         action.cardSets.forEach((set) => {
-            allIds.push(set.set_name)
-            byId[set.set_name] = set
+            allIds.push(set.id)
+            byId[set.id] = set
         })
         localStorage.setItem("cardSets", JSON.stringify(action.cardSets));
         return {
@@ -23,9 +23,9 @@ export default function cardSetsReducer(state = cardSetsInitialState, action: Ca
         }
       }
       case 'cardSets/addSet': {
-        const allIds = [...new Set([action.cardSet.set_name, ...state.allIds])]
+        const allIds = [...new Set([action.cardSet.id, ...state.allIds])]
         const byId = {...state.byId}
-        byId[action.cardSet.set_name] = action.cardSet
+        byId[action.cardSet.id] = action.cardSet
         localStorage.setItem("cardSets", JSON.stringify(Object.values(byId)));
         return {
             ...state,
@@ -36,7 +36,7 @@ export default function cardSetsReducer(state = cardSetsInitialState, action: Ca
       case 'cardSets/updateCardIds': {
         const byId = {} as {[key: string]: CardSet}
         Object.values(state.byId).forEach((cardSet) => {
-          byId[cardSet.set_name] = cardSet.set_name !== action.set_name ? state.byId[cardSet.set_name] : {...state.byId[cardSet.set_name], card_ids: action.cards.map((card) => card.id)}
+          byId[cardSet.id] = cardSet.id !== action.set_name ? state.byId[cardSet.id] : {...state.byId[cardSet.id], card_ids: action.cards.map((card) => card.id)}
         })
         return {...state, byId}
       }

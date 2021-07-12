@@ -15,6 +15,8 @@ import { Booster } from "../../../constants/Booster"
 import { getSortedLPBoosters } from "../../boosters/selectors"
 import { ip } from "../../../App"
 import { RoomResultC } from "../../../contracts/RoomResultC"
+import { removeAllBoosters, setBoosters } from "../../boosters/actions"
+import { getSetsForBoosters } from "../../cards/utils"
 
 // - mappers
 export function roomContractToModel(roomC: RoomC): Room { // mutates
@@ -61,6 +63,7 @@ async function roomAddFetchOp(boostersLP: Booster[]): Promise<RoomC> {
         ip,
       } as Partial<RoomPlayer>,
       boostersLP,
+      customSets: []
     })
   })
   if (resp.ok) 
@@ -107,6 +110,13 @@ export const roomJoinRoomFetchThunk = (roomId: string): ThunkAction<void, RootSt
     const room = await roomContractToModel(roomResultC.room)
     if (room) {
       await dispatch(roomJoinRoomFetchSuccess(room, roomResultC.roomPlayers))
+      if(roomResultC.boostersLP) {
+        const boosters = Object.values(roomResultC.boostersLP.byId)
+        dispatch(removeAllBoosters("draftBooster"))
+        dispatch(setBoosters(boosters, "landingPageBooster"))
+        getSetsForBoosters(boosters, dispatch)
+      }
+      
     }
     else
       dispatch(roomJoinRoomFetchFail(error))  

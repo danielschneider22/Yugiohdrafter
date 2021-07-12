@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { toastBGColorDict } from '../../constants/Toast';
+import { getAllCardSetCardsFetched } from '../../data/boosters/selectors';
 import { roomGetFetchThunk } from '../../data/data/rooms/operations';
 import { roomByIdSel } from '../../data/data/rooms/selectors';
 import { addToast } from '../../data/toasts/actions';
@@ -18,6 +19,7 @@ function RoomPage() {
   const room = useSelector((state: RootState) => roomByIdSel(state, roomId))
   const dispatch = useDispatch()
   const [recentlyCopiedToClipboard, setRecentlyCopiedToClipboard] = useState(false)
+  const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
 
   function copyRoomUrlToClipboard() {
     navigator.clipboard.writeText(window.location.href)
@@ -62,6 +64,9 @@ function RoomPage() {
         {/* {recentlyCopiedText} */}
       </h2>
       <RoomPlayers />
+      { !allCardSetCardsFetched &&
+        <div>Loading sets for draft...</div>
+      }
       <div className="d-flex justify-content-center">
         <div className={"btn-lg btn-success " + styles.LaunchButton} onClick={startDraft}>Start Draft</div>
       </div>
