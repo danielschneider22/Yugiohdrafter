@@ -18,8 +18,6 @@ export const getCardsForPositionInDraft = createSelector([getPositionBooster, ge
     return positionBooster ? positionBooster.cardIds!.map((cardId) => cardsById[cardId]) : []
 })
 
-
-
 export const getCurrLPBooster = createSelector([currLPBoosterId, getLandingPageBoosters], (currLPBoosterId, landingPageBoosters) => {
     return landingPageBoosters[currLPBoosterId]
 })

@@ -1,15 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import { Booster } from '../../constants/Booster';
 import { VisibleCard } from '../../constants/Card';
-import { removeAllBoosters, removeCardFromBooster, setBoosters } from '../../data/boosters/actions';
+import { removeAllBoosters, setBoosters } from '../../data/boosters/actions';
 import { createDraftBoostersForRound } from '../../data/boosters/operations';
 import {
     getAllCardSetCardsFetched,
-    getDraftBoosterIds,
-    getDraftBoosters,
     getLandingPageBoosterIds,
     getLandingPageBoosters,
     getPackComplete,
@@ -18,24 +16,26 @@ import { getCardsById } from '../../data/cards/selectors';
 import { isExtraDeckCard } from '../../data/cards/utils';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import { addCardToDeck, addCardToExtraDeck } from '../../data/deck/actions';
-import { openNextPack, updatePlayerPosition } from '../../data/draftPod/actions';
+import { openNextPack } from '../../data/draftPod/actions';
 import {
     getCardsForPositionInDraft,
     getCurrLPBooster,
     getNumPlayers,
-    getPlayerPosition,
     getPositionBooster,
 } from '../../data/draftPod/selectors';
 import MainCardArea from '../MainCardArea/MainCardArea';
 import Sidebar from '../Sidebar/Sidebar';
-import { makeAIPicks } from './utils';
 import { toastBGColorDict } from '../../constants/Toast';
 import { addToast } from '../../data/toasts/actions';
 import _ from 'lodash';
+import { roomMakePickFetchThunk } from '../../data/data/rooms/operations';
+import { CardPick } from '../../constants/CardPick';
 
 function RoomDraft() {
   const dispatch = useDispatch();
 
+  const params: {id: string} = useParams()
+  const roomId = params.id
   const cardsById = useSelector(getCardsById)
   const cardSets = useSelector(getCardSetsById)
   const packComplete = useSelector(getPackComplete)
@@ -46,9 +46,6 @@ function RoomDraft() {
   const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
   const cards = useSelector(getCardsForPositionInDraft) as VisibleCard[]
   const positionBooster = useSelector(getPositionBooster)
-  const draftBoosters = useSelector(getDraftBoosters)
-  const draftBoostersIds = useSelector(getDraftBoosterIds)
-  const playerPosition = useSelector(getPlayerPosition)
   const history = useHistory();
 
   const [showSidebar, toggleShowSidebar] = useState(false)
@@ -94,9 +91,8 @@ function RoomDraft() {
     } else {
       dispatch(addCardToDeck(card.id))
     }
-    dispatch(removeCardFromBooster(positionBooster!.id, card.id, "draftBooster"))
-    makeAIPicks(playerPosition, draftBoosters, draftBoostersIds, dispatch, cardsById)
-    dispatch(updatePlayerPosition())
+    const cardPick: CardPick = { boosterId: positionBooster!.id, cardId: card.id}
+    dispatch(roomMakePickFetchThunk(roomId, cardPick))
   }
 
   return (

@@ -8,11 +8,11 @@ import { Room } from "../../../models/Room"
 import { Monad } from "../../../utils"
 
 import { tryCatchPromise } from "../../utils"
-import { roomAddFetch, roomAddFetchFail, roomAddFetchSuccess, roomGetFetch, roomGetFetchFail, roomGetFetchSuccess, roomJoinRoomFetch, roomJoinRoomFetchFail, roomJoinRoomFetchSuccess, roomStartDraftFetch, roomStartDraftFetchFail, roomStartDraftFetchSuccess } from "./actions"
+import { roomAddFetch, roomAddFetchFail, roomAddFetchSuccess, roomGetFetch, roomGetFetchFail, roomGetFetchSuccess, roomJoinRoomFetch, roomJoinRoomFetchFail, roomJoinRoomFetchSuccess, roomMakePicksFetch, roomMakePicksFetchFail, roomMakePicksFetchSuccess, roomStartDraftFetch, roomStartDraftFetchFail, roomStartDraftFetchSuccess } from "./actions"
 import {History} from 'history'
 import { RoomPlayer } from "../../../constants/RoomPlayer"
 import { Booster } from "../../../constants/Booster"
-import { getSortedLPBoosters } from "../../boosters/selectors"
+import { getDraftBoosterIds, getDraftBoosters, getSortedLPBoosters } from "../../boosters/selectors"
 import { ip } from "../../../App"
 import { RoomResultC } from "../../../contracts/RoomResultC"
 import { removeAllBoosters, setBoosters } from "../../boosters/actions"
@@ -24,6 +24,9 @@ import { getCardSetsById, getCustomSets } from "../../cardSets/selectors"
 import { createDraftBoostersForRound } from "../../boosters/operations"
 import { getCardsById } from "../../cards/selectors"
 import { getNumPlayers } from "../../draftPod/selectors"
+import { getUserPlayerInfo, roomPlayersById } from "../roomPlayers.ts/selectors"
+import { CardPick } from "../../../constants/CardPick"
+import { makeAIPicks } from "../../../components/Draft/utils"
 
 // - mappers
 export function roomContractToModel(roomC: RoomC): Room { // mutates
@@ -190,6 +193,48 @@ async function roomStartDraftFetchOp(roomId: string, boostersDraft: Booster[]): 
     method: 'POST',
     body: JSON.stringify({
       boostersDraft,
+    })
+  })
+  if (resp.ok) 
+    return resp.json()
+  else
+    throw new Error(`Fetch failure from startDraft(). Response from '${url}': ${JSON.stringify(resp)}`)
+}
+
+export const roomMakePickFetchThunk = (roomId: string, cardPick: CardPick): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
+  dispatch(roomMakePicksFetch())
+  const userPlayer = getUserPlayerInfo(getState())
+  const roomPlayers = roomPlayersById(getState())
+  const draftBoosters = getDraftBoosters(getState())
+  const draftBoosterIds = getDraftBoosterIds(getState())
+  const cardsById = getCardsById(getState())
+  let draftPicks: CardPick[] = []
+  if(userPlayer?.isHost) {
+    const playerPositions = Object.values(roomPlayers).map((player) => player.position)
+    const aiPicks = makeAIPicks(playerPositions, draftBoosters, draftBoosterIds, cardsById)
+    draftPicks = [...aiPicks, cardPick]
+  } else {
+    draftPicks = [cardPick]
+  }
+  const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [roomId, draftPicks])<RoomResultC>(roomMakePicksFetchOp)
+  if (roomResultC) {
+    const room = await roomContractToModel(roomResultC.room)
+    if (room) {
+      await dispatch(roomMakePicksFetchSuccess(room, roomResultC.roomPlayers, roomResultC.boostersLP, roomResultC.boostersDraft))
+    }
+    else
+      dispatch(roomMakePicksFetchFail(error))  
+  } else {
+    dispatch(roomMakePicksFetchFail(error))
+  }
+}
+async function roomMakePicksFetchOp(roomId: string, draftPicks: {boosterId: string, cardId: string}): Promise<RoomC> {
+  const url = `${baseApiUrl}/room/draftPicks/${roomId}`
+  const resp = await fetch(url, {
+    headers: {'Content-Type': 'application/json'},
+    method: 'POST',
+    body: JSON.stringify({
+      draftPicks,
     })
   })
   if (resp.ok) 

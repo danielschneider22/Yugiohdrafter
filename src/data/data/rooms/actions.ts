@@ -94,6 +94,22 @@ export const roomStartDraftFetchSuccess = (room: Room, roomPlayers: State<RoomPl
   type: types.ROOMS_START_DRAFT_FETCH_SUCCESS
 })
 
+// -- start draft room fetch
+export interface RoomMakePicksFetch { type: types.ROOMS_MAKE_PICKS_FETCH }
+export const roomMakePicksFetch = (): RoomMakePicksFetch => ({ type: types.ROOMS_MAKE_PICKS_FETCH })
+
+export interface RoomMakePicksFetchFail { error: any, type: types.ROOMS_MAKE_PICKS_FETCH_FAIL }
+export const roomMakePicksFetchFail = (error: any): RoomMakePicksFetchFail => ({ error, type: types.ROOMS_MAKE_PICKS_FETCH_FAIL })
+
+export type RoomMakePicksFetchSuccess = Modify<RoomGetFetchSuccess, { type: types.ROOMS_MAKE_PICKS_FETCH_SUCCESS }>
+export const roomMakePicksFetchSuccess = (room: Room, roomPlayers: State<RoomPlayer>, boostersLP?: State<Booster>, boostersDraft?: State<Booster>): RoomMakePicksFetchSuccess => ({ 
+  room,
+  roomPlayers,
+  boostersLP,
+  boostersDraft,
+  type: types.ROOMS_MAKE_PICKS_FETCH_SUCCESS
+})
+
 // - get rooms fetch
 export interface ClearRoomInfo { type: types.ROOMS_CLEAR_ROOM_INFO }
 export const clearRoomInfo = (): ClearRoomInfo => ({ type: types.ROOMS_CLEAR_ROOM_INFO })
@@ -113,4 +129,7 @@ export type RoomAction = RoomAddFetch
   | RoomStartDraftFetch
   | RoomStartDraftFetchFail
   | RoomStartDraftFetchSuccess
+  | RoomMakePicksFetch
+  | RoomMakePicksFetchFail
+  | RoomMakePicksFetchSuccess
   | ClearRoomInfo

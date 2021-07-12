@@ -92,6 +92,7 @@ export default function getBoostersReducer(boosterType: BoosterType) {
       case RoomsActionTypes.ROOM_GET_FETCH_SUCCESS:
       case RoomsActionTypes.ROOM_JOIN_ROOM_FETCH_SUCCESS:
       case RoomsActionTypes.ROOMS_START_DRAFT_FETCH_SUCCESS:
+      case RoomsActionTypes.ROOMS_MAKE_PICKS_FETCH_SUCCESS:
       case RoomPlayersActionTypes.ROOM_UPDATE_PLAYER_FETCH_SUCCESS:
       {
         if(boosterType === "draftBooster" && action.boostersDraft){

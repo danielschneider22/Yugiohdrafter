@@ -1,6 +1,7 @@
 import { Dispatch } from "react";
 import { Booster } from "../../constants/Booster";
 import { Card } from "../../constants/Card";
+import { CardPick } from "../../constants/CardPick";
 import { removeCardFromBooster } from "../../data/boosters/actions";
 import { findHighestRarity, isExtraDeckCard, sortByRarity } from "../../data/cards/utils";
 import { getRandomCardFromArray } from "../SealedBoosterOpener/BoosterCreatorHelper";
@@ -22,12 +23,14 @@ function aiBoosterPick(booster: Booster, cardsById: {[key: string]: Card}) {
     }
 }
 
-export function makeAIPicks(playerPosition: number, draftBoosters: {[key: string]: Booster}, draftBoosterIds: string[], dispatch: Dispatch<any>, cardsById: {[key: string]: Card}) {
+export function makeAIPicks(playerPositions: number[], draftBoosters: {[key: string]: Booster}, draftBoosterIds: string[], cardsById: {[key: string]: Card}) {
+    const cardPicks: CardPick[] = []
     draftBoosterIds.forEach((id: string, idx: number) => {
-        if(idx !== playerPosition) {
+        if(!playerPositions.includes(idx)) {
             const booster = draftBoosters[id]
-            const pickedId = aiBoosterPick(booster, cardsById)
-            dispatch(removeCardFromBooster(id, pickedId, "draftBooster"))
+            const cardId = aiBoosterPick(booster, cardsById)
+            cardPicks.push({boosterId: id, cardId})
         }
     })
+    return cardPicks
 }

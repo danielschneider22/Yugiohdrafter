@@ -1,3 +1,7 @@
+import { ip } from '../../App';
+import { RoomPlayer } from '../../constants/RoomPlayer';
+import { RoomAction } from '../data/rooms/actions';
+import { RoomsActionTypes } from '../data/rooms/types';
 import { DraftPodActions } from './actions';
 
 export const draftPodInitialState = {
@@ -8,7 +12,7 @@ export const draftPodInitialState = {
     playerPosition: 0,
 }
 
-export default function draftPodReducer(state = draftPodInitialState, action: DraftPodActions) {
+export default function draftPodReducer(state = draftPodInitialState, action: DraftPodActions | RoomAction) {
     switch (action.type) {
       case 'draftPod/initializeDraftPod': {
         const {numPlayers, numBoosters, cardsPerBooster, currLPBoosterId} = {...action}
@@ -34,6 +38,13 @@ export default function draftPodReducer(state = draftPodInitialState, action: Dr
           currLPBoosterId: action.currLPBoosterId
         }
       }
+      case RoomsActionTypes.ROOMS_START_DRAFT_FETCH_SUCCESS:
+      case RoomsActionTypes.ROOMS_MAKE_PICKS_FETCH_SUCCESS: // should fix this so we only use room player
+          const playerPosition = Object.values(action.roomPlayers.byId).find((player: RoomPlayer) => player.id.includes(ip))?.position
+          return {
+            ...state,
+            playerPosition,
+          }
       default:
         return state
     }

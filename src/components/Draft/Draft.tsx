@@ -95,7 +95,9 @@ function Draft() {
       dispatch(addCardToDeck(card.id))
     }
     dispatch(removeCardFromBooster(positionBooster!.id, card.id, "draftBooster"))
-    makeAIPicks(playerPosition, draftBoosters, draftBoostersIds, dispatch, cardsById)
+    const cardPicks = makeAIPicks([playerPosition], draftBoosters, draftBoostersIds, cardsById)
+    cardPicks.forEach((pick) => dispatch(removeCardFromBooster(pick.boosterId, pick.cardId, "draftBooster")) )
+    
     dispatch(updatePlayerPosition())
   }
 

@@ -16,7 +16,7 @@ export function stateAddStateWithoutMutation<T extends StateItem>(state: State<T
   const uniqueNewState: State<T> = stateRemoveDupeState(state, newState)
 
   return {
-    allIds: [...state.allIds, ...uniqueNewState.allIds],
+    allIds: [...new Set([...state.allIds, ...uniqueNewState.allIds])],
     byId: {...state.byId, ...uniqueNewState.byId}
   }
 }
