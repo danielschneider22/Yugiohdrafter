@@ -32,10 +32,15 @@ function RoomPage() {
     // setTimeout(() => {setRecentlyCopiedToClipboard(false)}, COPIED_TO_CLIPBOARD_DURATION)
   }
 
+  // initialization
   useEffect(() => {
     if(!room) {
       dispatch(roomGetFetchThunk(roomId))
     }
+    const updateRoomInterval = setInterval(() => dispatch(roomGetFetchThunk(roomId)), 3000);
+    return () => {
+      clearInterval(updateRoomInterval)
+    };
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
   
   if (room === null)

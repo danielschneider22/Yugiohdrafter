@@ -22,11 +22,6 @@ function RoomPlayers() {
   const dispatch = useDispatch()
   const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
 
-  // initialization set interval to refresh room every 3 seconds
-  useEffect(() => {
-    setInterval(() => dispatch(roomGetFetchThunk(room.id)), 3000);
-  }, [])
-
   const Players: JSX.Element[] = roomPlayers.allIds.map((id: string) => {
     const player = roomPlayers.byId[id]
     const isCurrPlayer = isPlayerUser(player, room.id)

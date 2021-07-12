@@ -21,9 +21,6 @@
 .copyRoomUrlToClipboard {
   cursor: pointer;
 }
-.recentlyCopiedText {
-  /* TBA: */
-}
 
 .roomPlayerInput{
   background-color: #424242;
