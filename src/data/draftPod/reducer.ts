@@ -38,6 +38,7 @@ export default function draftPodReducer(state = draftPodInitialState, action: Dr
           currLPBoosterId: action.currLPBoosterId
         }
       }
+      case RoomsActionTypes.ROOM_GET_FETCH_SUCCESS:
       case RoomsActionTypes.ROOMS_START_DRAFT_FETCH_SUCCESS:
       case RoomsActionTypes.ROOMS_MAKE_PICKS_FETCH_SUCCESS: // should fix this so we only use room player
           const playerPosition = Object.values(action.roomPlayers.byId).find((player: RoomPlayer) => player.id.includes(ip))?.position

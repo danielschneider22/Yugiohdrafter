@@ -29,7 +29,7 @@ export function makeAIPicks(playerPositions: number[], draftBoosters: {[key: str
         if(!playerPositions.includes(idx)) {
             const booster = draftBoosters[id]
             const cardId = aiBoosterPick(booster, cardsById)
-            cardPicks.push({boosterId: id, cardId})
+            cardPicks.push({boosterId: id, cardId, pickerId: "computer"})
         }
     })
     return cardPicks

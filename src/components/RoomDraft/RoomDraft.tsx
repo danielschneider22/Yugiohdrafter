@@ -7,6 +7,7 @@ import { VisibleCard } from '../../constants/Card';
 import { removeAllBoosters, setBoosters } from '../../data/boosters/actions';
 import { createDraftBoostersForRound } from '../../data/boosters/operations';
 import {
+  canViewPack,
     getAllCardSetCardsFetched,
     getLandingPageBoosterIds,
     getLandingPageBoosters,
@@ -28,8 +29,9 @@ import Sidebar from '../Sidebar/Sidebar';
 import { toastBGColorDict } from '../../constants/Toast';
 import { addToast } from '../../data/toasts/actions';
 import _ from 'lodash';
-import { roomMakePickFetchThunk } from '../../data/data/rooms/operations';
+import { getRoomPlayerId, roomGetFetchThunk, roomMakePickFetchThunk } from '../../data/data/rooms/operations';
 import { CardPick } from '../../constants/CardPick';
+import { ip } from '../../App';
 
 function RoomDraft() {
   const dispatch = useDispatch();
@@ -47,6 +49,7 @@ function RoomDraft() {
   const cards = useSelector(getCardsForPositionInDraft) as VisibleCard[]
   const positionBooster = useSelector(getPositionBooster)
   const history = useHistory();
+  const packViewable = useSelector(canViewPack)
 
   const [showSidebar, toggleShowSidebar] = useState(false)
   
@@ -56,6 +59,10 @@ function RoomDraft() {
     if(landingPageBoosterIds.length === 0) {
       history.push("/");
     }
+    const updateRoomInterval = setInterval(() => dispatch(roomGetFetchThunk(roomId)), 3000);
+    return () => {
+      clearInterval(updateRoomInterval)
+    };
   }, [])
 
   //create boosters when all sets are fetched and starting new pack
@@ -91,7 +98,7 @@ function RoomDraft() {
     } else {
       dispatch(addCardToDeck(card.id))
     }
-    const cardPick: CardPick = { boosterId: positionBooster!.id, cardId: card.id}
+    const cardPick: CardPick = { boosterId: positionBooster!.id, cardId: card.id, pickerId: getRoomPlayerId(ip, roomId)}
     dispatch(roomMakePickFetchThunk(roomId, cardPick))
   }
 
@@ -102,12 +109,19 @@ function RoomDraft() {
           <Sidebar shownTabs={["Main Deck", "Sideboard", "Extra Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />
         </div>
         <div className={`justify-content-center maxHeight ExpandContract MainCardAreaWrapper`} style={{ width: showSidebar ? "calc(100% - 250px)" : "100%" }}>
-            <MainCardArea 
-              unsortedCards={cards}
-              title={"D R A F T I N G"}
-              cardClicked={draftCard}
-              loadedCards={allCardSetCardsFetched}
-            />
+            { packViewable &&
+              <MainCardArea 
+                unsortedCards={cards}
+                title={"D R A F T I N G"}
+                cardClicked={draftCard}
+                loadedCards={allCardSetCardsFetched}
+              />
+            }
+            { !packViewable &&
+              <div className={"ScrollCards CardDisplayAreaTitle"}>Waiting for other players...</div>
+            }
+            
+            
         </div>
       </div>
     </div>
