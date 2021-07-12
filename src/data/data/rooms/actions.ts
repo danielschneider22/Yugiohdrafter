@@ -1,4 +1,5 @@
 import RoomPlayers from "../../../components/RoomPage/RoomPlayers";
+import { Booster } from "../../../constants/Booster";
 import { RoomPlayer } from "../../../constants/RoomPlayer";
 import { Room } from "../../../models/Room";
 import { State } from "../../../models/State";
@@ -18,11 +19,15 @@ export const roomGetFetchFail = (error: any): RoomGetFetchFail => ({ error, type
 export type RoomGetFetchSuccess = { 
   room: Room
   roomPlayers: State<RoomPlayer>
+  boostersLP?: State<Booster>
+  boostersDraft?: State<Booster>
   type: types.ROOM_GET_FETCH_SUCCESS 
 }
-export const roomGetFetchSuccess = (room: Room, roomPlayers: State<RoomPlayer>): RoomGetFetchSuccess => ({ 
+export const roomGetFetchSuccess = (room: Room, roomPlayers: State<RoomPlayer>, boostersLP?: State<Booster>, boostersDraft?: State<Booster>): RoomGetFetchSuccess => ({ 
   room,
   roomPlayers,
+  boostersLP,
+  boostersDraft,
   type: types.ROOM_GET_FETCH_SUCCESS 
 })
 
@@ -34,9 +39,11 @@ export interface RoomAddFetchFail { error: any, type: types.ROOM_ADD_FETCH_FAIL 
 export const roomAddFetchFail = (error: any): RoomAddFetchFail => ({ error, type: types.ROOM_ADD_FETCH_FAIL })
 
 export type RoomAddFetchSuccess = Modify<RoomGetFetchSuccess, { type: types.ROOM_ADD_FETCH_SUCCESS }>
-export const roomAddFetchSuccess = (room: Room, roomPlayers: State<RoomPlayer>): RoomAddFetchSuccess => ({ 
+export const roomAddFetchSuccess = (room: Room, roomPlayers: State<RoomPlayer>, boostersLP?: State<Booster>, boostersDraft?: State<Booster>): RoomAddFetchSuccess => ({ 
   room,
   roomPlayers,
+  boostersLP,
+  boostersDraft,
   type: types.ROOM_ADD_FETCH_SUCCESS 
 })
 
@@ -48,9 +55,11 @@ export interface RoomJoinRoomFetchFail { error: any, type: types.ROOM_JOIN_ROOM_
 export const roomJoinRoomFetchFail = (error: any): RoomJoinRoomFetchFail => ({ error, type: types.ROOM_JOIN_ROOM_FETCH_FAIL })
 
 export type RoomJoinRoomFetchSuccess = Modify<RoomGetFetchSuccess, { type: types.ROOM_JOIN_ROOM_FETCH_SUCCESS }>
-export const roomJoinRoomFetchSuccess = (room: Room, roomPlayers: State<RoomPlayer>): RoomJoinRoomFetchSuccess => ({ 
+export const roomJoinRoomFetchSuccess = (room: Room, roomPlayers: State<RoomPlayer>, boostersLP?: State<Booster>, boostersDraft?: State<Booster>): RoomJoinRoomFetchSuccess => ({ 
   room,
   roomPlayers,
+  boostersLP,
+  boostersDraft,
   type: types.ROOM_JOIN_ROOM_FETCH_SUCCESS 
 })
 
@@ -77,11 +86,17 @@ export interface RoomStartDraftFetchFail { error: any, type: types.ROOMS_START_D
 export const roomStartDraftFetchFail = (error: any): RoomStartDraftFetchFail => ({ error, type: types.ROOMS_START_DRAFT_FETCH_FAIL })
 
 export type RoomStartDraftFetchSuccess = Modify<RoomGetFetchSuccess, { type: types.ROOMS_START_DRAFT_FETCH_SUCCESS }>
-export const roomStartDraftFetchSuccess = (room: Room, roomPlayers: State<RoomPlayer>): RoomStartDraftFetchSuccess => ({ 
+export const roomStartDraftFetchSuccess = (room: Room, roomPlayers: State<RoomPlayer>, boostersLP?: State<Booster>, boostersDraft?: State<Booster>): RoomStartDraftFetchSuccess => ({ 
   room,
   roomPlayers,
+  boostersLP,
+  boostersDraft,
   type: types.ROOMS_START_DRAFT_FETCH_SUCCESS
 })
+
+// - get rooms fetch
+export interface ClearRoomInfo { type: types.ROOMS_CLEAR_ROOM_INFO }
+export const clearRoomInfo = (): ClearRoomInfo => ({ type: types.ROOMS_CLEAR_ROOM_INFO })
 
 export type RoomAction = RoomAddFetch
   | RoomAddFetchFail
@@ -98,3 +113,4 @@ export type RoomAction = RoomAddFetch
   | RoomStartDraftFetch
   | RoomStartDraftFetchFail
   | RoomStartDraftFetchSuccess
+  | ClearRoomInfo

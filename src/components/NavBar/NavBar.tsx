@@ -6,6 +6,7 @@ import { Booster } from '../../constants/Booster';
 import { removeAllBoosters, resetBoosterCards, setBoosters } from '../../data/boosters/actions';
 import { getSetsForBoosters } from '../../data/cards/utils';
 import { getCardSetsById } from '../../data/cardSets/selectors';
+import { clearRoomInfo } from '../../data/data/rooms/actions';
 import { resetDeckAndSideboard } from '../../data/deck/actions';
 import { initialiazeDraftPod } from '../../data/draftPod/actions';
 import CustomSetPopup from '../CustomSetPopup/CustomSetPopup';
@@ -87,6 +88,7 @@ function NavBar() {
         dispatch(removeAllBoosters("draftBooster"))
         dispatch(resetDeckAndSideboard())
         dispatch(resetBoosterCards("landingPageBooster"))
+        dispatch(clearRoomInfo())
         setMobileMenuShown(false)
         const selectHeader = document.getElementById("header")
         selectHeader!.classList.remove('header-scrolled')

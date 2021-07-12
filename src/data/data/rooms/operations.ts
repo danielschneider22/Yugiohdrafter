@@ -51,7 +51,7 @@ export const roomAddFetchThunk = (history: History): ThunkAction<void, RootState
     // const [room, error]: Monad<Room> = await tryCatchPromise<Room>(roomContractToModel)
     const room = await roomContractToModel(roomResultC.room)
     if (room) {
-      await dispatch(roomAddFetchSuccess(room, roomResultC.roomPlayers))
+      await dispatch(roomAddFetchSuccess(room, roomResultC.roomPlayers, roomResultC.boostersLP, roomResultC.boostersDraft))
       return history.push(`/room/${room.id}`)
     }
     else
@@ -90,7 +90,7 @@ export const roomGetFetchThunk = (roomId: string): ThunkAction<void, RootStateOr
       if(!room.roomPlayerIds.some((id) => id === getRoomPlayerId(ip, roomId))){
         dispatch(roomJoinRoomFetchThunk(roomId))
       }
-      await dispatch(roomGetFetchSuccess(room, roomResultC.roomPlayers))
+      await dispatch(roomGetFetchSuccess(room, roomResultC.roomPlayers, roomResultC.boostersLP, roomResultC.boostersDraft))
     }
     else
       dispatch(roomGetFetchFail(error))  
@@ -117,7 +117,7 @@ export const roomJoinRoomFetchThunk = (roomId: string): ThunkAction<void, RootSt
   if (roomResultC) {
     const room = await roomContractToModel(roomResultC.room)
     if (room) {
-      await dispatch(roomJoinRoomFetchSuccess(room, roomResultC.roomPlayers))
+      await dispatch(roomJoinRoomFetchSuccess(room, roomResultC.roomPlayers, roomResultC.boostersLP, roomResultC.boostersDraft))
       if(roomResultC.boostersLP) {
         const boosters = Object.values(roomResultC.boostersLP.byId)
         const customSets = roomResultC.customSets
@@ -174,7 +174,7 @@ export const roomStartDraftFetchThunk = (history: History, roomId: string): Thun
   if (roomResultC) {
     const room = await roomContractToModel(roomResultC.room)
     if (room) {
-      await dispatch(roomStartDraftFetchSuccess(room, roomResultC.roomPlayers))
+      await dispatch(roomStartDraftFetchSuccess(room, roomResultC.roomPlayers, roomResultC.boostersLP, roomResultC.boostersDraft))
       return history.push(`/room/${room.id}`)
     }
     else

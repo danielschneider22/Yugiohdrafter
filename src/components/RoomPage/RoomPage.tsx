@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { toastBGColorDict } from '../../constants/Toast';
-import { getAllCardSetCardsFetched } from '../../data/boosters/selectors';
+import { getAllCardSetCardsFetched, getDraftBoosterIds, getDraftBoosters } from '../../data/boosters/selectors';
 import { getUserPlayerInfo } from '../../data/data/roomPlayers.ts/selectors';
 import { roomGetFetchThunk, roomStartDraftFetchThunk } from '../../data/data/rooms/operations';
 import { roomByIdSel } from '../../data/data/rooms/selectors';
@@ -24,6 +24,7 @@ function RoomPage() {
   const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
   const userPlayer = useSelector(getUserPlayerInfo)
   const history = useHistory()
+  const draftBoostersIds = useSelector(getDraftBoosterIds)
 
   function copyRoomUrlToClipboard() {
     navigator.clipboard.writeText(window.location.href)
@@ -44,6 +45,12 @@ function RoomPage() {
       clearInterval(updateRoomInterval)
     };
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if(draftBoostersIds.length > 0) {
+      history.push(`/room/draft/${roomId}`);
+    }
+  }, [draftBoostersIds]) // eslint-disable-line react-hooks/exhaustive-deps
   
   if (room === null)
     return (

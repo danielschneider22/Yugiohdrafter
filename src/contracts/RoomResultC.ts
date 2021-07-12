@@ -9,4 +9,5 @@ export interface RoomResultC {
   roomPlayers: State<RoomPlayer>
   boostersLP: State<Booster>
   customSets?: State<CardSet>
+  boostersDraft?: State<Booster>
 }

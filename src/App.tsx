@@ -16,6 +16,7 @@ import RoomPage from './components/RoomPage/RoomPage';
 import { getCardSetsById } from './data/cardSets/selectors';
 import { addSets } from './data/cardSets/actions';
 import { fetchCardSets } from './data/cardSets/operations';
+import RoomDraft from './components/RoomDraft/RoomDraft';
 
 export let ip = ""
 
@@ -68,6 +69,9 @@ function App() {
               </Route>
               <Route path="/SealedBooster">
                 <SealedBoosterOpener />
+              </Route>
+              <Route path={`/room/draft/:id`}>
+                <RoomDraft />
               </Route>
               <Route path={`/room/:id`}>
                 <RoomPage />

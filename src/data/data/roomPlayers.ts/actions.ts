@@ -1,3 +1,4 @@
+import { Booster } from "../../../constants/Booster";
 import { RoomPlayer } from "../../../constants/RoomPlayer";
 import { Room } from "../../../models/Room";
 import { State } from "../../../models/State";
@@ -12,11 +13,15 @@ export const roomUpdatePlayerFetchFail = (error: any): RoomUpdatePlayerFetchFail
 export type RoomUpdatePlayerFetchSuccess = { 
   room: Room
   roomPlayers: State<RoomPlayer>
+  boostersLP?: State<Booster>
+  boostersDraft?: State<Booster>
   type: types.ROOM_UPDATE_PLAYER_FETCH_SUCCESS 
 }
-export const roomUpdatePlayerFetchSuccess = (room: Room, roomPlayers: State<RoomPlayer>): RoomUpdatePlayerFetchSuccess => ({ 
+export const roomUpdatePlayerFetchSuccess = (room: Room, roomPlayers: State<RoomPlayer>, boostersLP?: State<Booster>, boostersDraft?: State<Booster>): RoomUpdatePlayerFetchSuccess => ({ 
   room,
   roomPlayers,
+  boostersLP,
+  boostersDraft,
   type: types.ROOM_UPDATE_PLAYER_FETCH_SUCCESS 
 })
 

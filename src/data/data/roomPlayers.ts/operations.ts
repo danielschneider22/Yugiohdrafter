@@ -16,7 +16,7 @@ export const roomUpdatePlayerFetchThunk = (roomId: string, player: Partial<RoomP
   if (roomResultC) {
     const room = await roomContractToModel(roomResultC.room)
     if (room) {
-      await dispatch(roomUpdatePlayerFetchSuccess(room, roomResultC.roomPlayers))
+      await dispatch(roomUpdatePlayerFetchSuccess(room, roomResultC.roomPlayers, roomResultC.boostersLP, roomResultC.boostersDraft))
     }
     else
       dispatch(roomUpdatePlayerFetchFail(error))  
