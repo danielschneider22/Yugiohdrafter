@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { ip } from '../../App';
 import { fetchCardsByName } from '../../data/cards/operations';
 import { addSet } from '../../data/cardSets/actions';
 import './CustomSetPopup.css';
@@ -25,8 +26,9 @@ Blue-Eyes White Dragon
     async function submit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
         const cardNames = cardList.split(/\r?\n/);
-        dispatch(addSet({id: setName, set_name: setName, set_code: setName, num_of_cards: cardNames.length, tcg_date: Date(), custom_set: true}))
-        await fetchCardsByName(dispatch, cardNames, setName)
+        const setId = setName + "|" + ip
+        dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: cardNames.length, tcg_date: Date(), custom_set: true}))
+        await fetchCardsByName(dispatch, cardNames, setId)
         props.toggleCustomSetPopupVisiblity()
     }
 
