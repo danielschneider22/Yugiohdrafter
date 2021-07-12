@@ -6,6 +6,7 @@ import { RootState } from "../../../models/RootState";
 import { State } from "../../../models/State";
 
 export const roomPlayersStateSel = (state: RootState) => state.data.roomPlayers
+export const roomPlayersById = (state: RootState) => state.data.roomPlayers.byId
 
 export const roomPlayersStateForRoomSel = (state: RootState, room: Room) => {
   const roomPlayerIdsForRoom = room.roomPlayerIds
@@ -27,6 +28,6 @@ export const roomPlayersStateForRoomSel = (state: RootState, room: Room) => {
   return roomPlayersStateForRoom
 }
 
-export const getUserPlayerInfo = createSelector([roomPlayersStateSel], (roomPlayers) => {
-  Object.keys(roomPlayers).find((id) => id.includes(ip))
+export const getUserPlayerInfo = createSelector([roomPlayersById], (roomPlayers) => {
+  return Object.values(roomPlayers).find((player: RoomPlayer) => player.id.includes(ip))
 })

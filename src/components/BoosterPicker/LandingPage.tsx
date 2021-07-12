@@ -73,7 +73,7 @@ function LandingPage() {
           </div>
           {boosterArea}
           <div className="d-flex justify-content-center">
-            <div className="LaunchButton w-50 btn-lg btn-success" onClick={launch}>Launch</div>
+            <button className="LaunchButton w-50 btn-lg btn-success" onClick={launch}>Launch</button>
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { toastBGColorDict } from '../../constants/Toast';
 import { getAllCardSetCardsFetched } from '../../data/boosters/selectors';
+import { getUserPlayerInfo } from '../../data/data/roomPlayers.ts/selectors';
 import { roomGetFetchThunk } from '../../data/data/rooms/operations';
 import { roomByIdSel } from '../../data/data/rooms/selectors';
 import { addToast } from '../../data/toasts/actions';
@@ -20,6 +21,7 @@ function RoomPage() {
   const dispatch = useDispatch()
   const [recentlyCopiedToClipboard, setRecentlyCopiedToClipboard] = useState(false)
   const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
+  const userPlayer = useSelector(getUserPlayerInfo)
 
   function copyRoomUrlToClipboard() {
     navigator.clipboard.writeText(window.location.href)
@@ -67,9 +69,17 @@ function RoomPage() {
       { !allCardSetCardsFetched &&
         <div>Loading sets for draft...</div>
       }
-      <div className="d-flex justify-content-center">
-        <div className={"btn-lg btn-success " + styles.LaunchButton} onClick={startDraft}>Start Draft</div>
-      </div>
+      { userPlayer && userPlayer!.isHost &&
+        <div className="d-flex justify-content-center">
+          <button className={"btn-lg btn-success " + styles.LaunchButton} onClick={startDraft} disabled={!userPlayer.isReady}>Start Draft</button>
+        </div>
+      }
+      { userPlayer && !userPlayer!.isHost &&
+        <div className="d-flex justify-content-center">
+          <button className={"btn-lg btn-dark " + styles.HostWaitButton} disabled>Waiting on Host to Start Draft</button>
+        </div>
+      }
+      
     </main>
   )
 }

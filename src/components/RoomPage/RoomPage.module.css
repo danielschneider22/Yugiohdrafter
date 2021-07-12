@@ -32,10 +32,11 @@
 }
 
 .LaunchButton{
-  background-color: #008c68;
-  border-color: #008c68;
   text-align: center;
-  cursor: pointer;
+}
+
+.HostWaitButton{
+  text-align: center;
 }
 
 .currPlayerReadyButton{
