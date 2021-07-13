@@ -8,7 +8,7 @@ import { Room } from "../../../models/Room"
 import { Monad } from "../../../utils"
 
 import { tryCatchPromise } from "../../utils"
-import { roomAddFetch, roomAddFetchFail, roomAddFetchSuccess, roomGetFetch, roomGetFetchFail, roomGetFetchSuccess, roomJoinRoomFetch, roomJoinRoomFetchFail, roomJoinRoomFetchSuccess, roomMakePicksFetch, roomMakePicksFetchFail, roomMakePicksFetchSuccess, roomStartDraftFetch, roomStartDraftFetchFail, roomStartDraftFetchSuccess } from "./actions"
+import { roomAddFetch, roomAddFetchFail, roomAddFetchSuccess, roomGetFetch, roomGetFetchFail, roomGetFetchSuccess, roomJoinRoomFetch, roomJoinRoomFetchFail, roomJoinRoomFetchSuccess, roomMakePicksFetch, roomMakePicksFetchFail, roomMakePicksFetchSuccess, roomNextRoundFetch, roomNextRoundFetchFail, roomNextRoundFetchSuccess, roomStartDraftFetch, roomStartDraftFetchFail, roomStartDraftFetchSuccess } from "./actions"
 import {History} from 'history'
 import { RoomPlayer } from "../../../constants/RoomPlayer"
 import { Booster } from "../../../constants/Booster"
@@ -23,7 +23,7 @@ import { CardSet } from "../../../constants/CardSet"
 import { getCardSetsById, getCustomSets } from "../../cardSets/selectors"
 import { createDraftBoostersForRound } from "../../boosters/operations"
 import { getCardsById } from "../../cards/selectors"
-import { getNumPlayers } from "../../draftPod/selectors"
+import { getCurrLPBooster, getNumPlayers } from "../../draftPod/selectors"
 import { getUserPlayerInfo, roomPlayersById } from "../roomPlayers.ts/selectors"
 import { CardPick } from "../../../constants/CardPick"
 import { makeAIPicks } from "../../../components/Draft/utils"
@@ -241,4 +241,40 @@ async function roomMakePicksFetchOp(roomId: string, draftPicks: {boosterId: stri
     return resp.json()
   else
     throw new Error(`Fetch failure from startDraft(). Response from '${url}': ${JSON.stringify(resp)}`)
+}
+
+export const roomNextRoundFetchThunk = (roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
+  dispatch(roomNextRoundFetch())
+  const lpBoosters = getSortedLPBoosters(getState())
+  const cardSets = getCardSetsById(getState())
+  const cardsById = getCardsById(getState())
+  const numPlayers = getNumPlayers(getState())
+  const currLPBooster = getCurrLPBooster(getState())
+  const nextBooster = lpBoosters[lpBoosters.findIndex((booster) => booster.id === currLPBooster.id) + 1]
+  const boostersDraft = createDraftBoostersForRound(nextBooster, cardSets, cardsById, numPlayers)
+  const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [roomId, boostersDraft])<RoomResultC>(roomNextRoundFetchOp)
+  if (roomResultC) {
+    const room = await roomContractToModel(roomResultC.room)
+    if (room) {
+      await dispatch(roomNextRoundFetchSuccess(room, roomResultC.roomPlayers, roomResultC.boostersLP, roomResultC.boostersDraft))
+    }
+    else
+      dispatch(roomNextRoundFetchFail(error))  
+  } else {
+    dispatch(roomNextRoundFetchFail(error))
+  }
+}
+async function roomNextRoundFetchOp(roomId: string, boostersDraft: Booster[]): Promise<RoomC> {
+  const url = `${baseApiUrl}/room/nextRound/${roomId}`
+  const resp = await fetch(url, {
+    headers: {'Content-Type': 'application/json'},
+    method: 'POST',
+    body: JSON.stringify({
+      boostersDraft,
+    })
+  })
+  if (resp.ok) 
+    return resp.json()
+  else
+    throw new Error(`Fetch failure from nextRound(). Response from '${url}': ${JSON.stringify(resp)}`)
 }

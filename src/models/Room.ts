@@ -5,5 +5,6 @@ export interface Room {
   id: string,
   boosterIdsRound: string[],
   boosterIdsLP: string[],
-  roomPlayerIds: string[]    
+  roomPlayerIds: string[],
+  currLPBoosterId?: string 
 }

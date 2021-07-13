@@ -17,6 +17,10 @@ export const getPackComplete = createSelector([getDraftBoosters], (draftBoosters
     return !(Object.values(draftBoosters).some((booster) => booster.cardIds && booster.cardIds.length > 0))
 })
 
+export const getRoundComplete = createSelector([getDraftBoosters], (draftBoosters) => {
+    return Object.values(draftBoosters).every((booster) => booster.cardIds && booster.cardIds.length === 0)
+})
+
 export const getAllCardSetCardsFetched = createSelector([getLandingPageBoosters, getCardSetsById], (landingPageBoosters, cardSets) => {
     return Object.values(landingPageBoosters).every((booster) => cardSets[booster.cardSetName].card_ids && cardSets[booster.cardSetName].card_ids!.length > 0)
 })

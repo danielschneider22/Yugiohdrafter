@@ -3,7 +3,7 @@ import { RoomPlayerAction } from '../data/roomPlayers.ts/actions';
 import { RoomPlayersActionTypes } from '../data/roomPlayers.ts/types';
 import { RoomAction, RoomStartDraftFetchSuccess } from '../data/rooms/actions';
 import { RoomsActionTypes } from '../data/rooms/types';
-import { stateAddStateWithoutMutation } from '../utils';
+import { stateAddStateWithoutMutation, stateRemoveDupeState } from '../utils';
 import { BoosterActions, BoosterType } from './actions';
 
 export const boostersInitialState = {
@@ -96,9 +96,9 @@ export default function getBoostersReducer(boosterType: BoosterType) {
       case RoomPlayersActionTypes.ROOM_UPDATE_PLAYER_FETCH_SUCCESS:
       {
         if(boosterType === "draftBooster" && action.boostersDraft){
-          return stateAddStateWithoutMutation<Booster>(state, action.boostersDraft)
+          return stateRemoveDupeState<Booster>(state, action.boostersDraft)
         } else if (boosterType === "landingPageBooster" && action.boostersLP) {
-          return stateAddStateWithoutMutation<Booster>(state, action.boostersLP)
+          return stateRemoveDupeState<Booster>(state, action.boostersLP)
         }
         return state
       }

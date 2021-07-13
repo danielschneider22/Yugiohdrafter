@@ -45,6 +45,7 @@ export default function draftPodReducer(state = draftPodInitialState, action: Dr
           return {
             ...state,
             playerPosition,
+            currLPBoosterId: action.room.currLPBoosterId
           }
       default:
         return state

@@ -94,7 +94,7 @@ export const roomStartDraftFetchSuccess = (room: Room, roomPlayers: State<RoomPl
   type: types.ROOMS_START_DRAFT_FETCH_SUCCESS
 })
 
-// -- start draft room fetch
+// -- start make pick fetch
 export interface RoomMakePicksFetch { type: types.ROOMS_MAKE_PICKS_FETCH }
 export const roomMakePicksFetch = (): RoomMakePicksFetch => ({ type: types.ROOMS_MAKE_PICKS_FETCH })
 
@@ -108,6 +108,22 @@ export const roomMakePicksFetchSuccess = (room: Room, roomPlayers: State<RoomPla
   boostersLP,
   boostersDraft,
   type: types.ROOMS_MAKE_PICKS_FETCH_SUCCESS
+})
+
+// -- start next round fetch
+export interface RoomNextRoundFetch { type: types.ROOMS_NEXT_ROUND_FETCH }
+export const roomNextRoundFetch = (): RoomNextRoundFetch => ({ type: types.ROOMS_NEXT_ROUND_FETCH })
+
+export interface RoomNextRoundFetchFail { error: any, type: types.ROOMS_ROOMS_NEXT_ROUND_FETCH_FETCH_FAIL }
+export const roomNextRoundFetchFail = (error: any): RoomNextRoundFetchFail => ({ error, type: types.ROOMS_ROOMS_NEXT_ROUND_FETCH_FETCH_FAIL })
+
+export type RoomNextRoundFetchSuccess = Modify<RoomGetFetchSuccess, { type: types.ROOMS_ROOMS_NEXT_ROUND_FETCH_SUCCESS }>
+export const roomNextRoundFetchSuccess = (room: Room, roomPlayers: State<RoomPlayer>, boostersLP?: State<Booster>, boostersDraft?: State<Booster>): RoomNextRoundFetchSuccess => ({ 
+  room,
+  roomPlayers,
+  boostersLP,
+  boostersDraft,
+  type: types.ROOMS_ROOMS_NEXT_ROUND_FETCH_SUCCESS
 })
 
 // - get rooms fetch

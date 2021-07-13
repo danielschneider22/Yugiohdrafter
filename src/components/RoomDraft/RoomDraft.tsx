@@ -2,22 +2,18 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 
-import { Booster } from '../../constants/Booster';
 import { VisibleCard } from '../../constants/Card';
-import { removeAllBoosters, setBoosters } from '../../data/boosters/actions';
-import { createDraftBoostersForRound } from '../../data/boosters/operations';
 import {
   canViewPack,
     getAllCardSetCardsFetched,
     getLandingPageBoosterIds,
     getLandingPageBoosters,
-    getPackComplete,
+    getRoundComplete,
 } from '../../data/boosters/selectors';
 import { getCardsById } from '../../data/cards/selectors';
 import { isExtraDeckCard } from '../../data/cards/utils';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import { addCardToDeck, addCardToExtraDeck } from '../../data/deck/actions';
-import { openNextPack } from '../../data/draftPod/actions';
 import {
     getCardsForPositionInDraft,
     getCurrLPBooster,
@@ -29,9 +25,10 @@ import Sidebar from '../Sidebar/Sidebar';
 import { toastBGColorDict } from '../../constants/Toast';
 import { addToast } from '../../data/toasts/actions';
 import _ from 'lodash';
-import { getRoomPlayerId, roomGetFetchThunk, roomMakePickFetchThunk } from '../../data/data/rooms/operations';
+import { getRoomPlayerId, roomGetFetchThunk, roomMakePickFetchThunk, roomNextRoundFetchThunk } from '../../data/data/rooms/operations';
 import { CardPick } from '../../constants/CardPick';
 import { ip } from '../../App';
+import { getUserPlayerInfo } from '../../data/data/roomPlayers.ts/selectors';
 
 function RoomDraft() {
   const dispatch = useDispatch();
@@ -40,7 +37,7 @@ function RoomDraft() {
   const roomId = params.id
   const cardsById = useSelector(getCardsById)
   const cardSets = useSelector(getCardSetsById)
-  const packComplete = useSelector(getPackComplete)
+  const roundComplete = useSelector(getRoundComplete)
   const numPlayers = useSelector(getNumPlayers)
   const currLPBooster = useSelector(getCurrLPBooster)
   const landingPageBoosterIds = useSelector(getLandingPageBoosterIds)
@@ -50,6 +47,7 @@ function RoomDraft() {
   const positionBooster = useSelector(getPositionBooster)
   const history = useHistory();
   const packViewable = useSelector(canViewPack)
+  const playerInfo = useSelector(getUserPlayerInfo)
 
   const [showSidebar, toggleShowSidebar] = useState(false)
   
@@ -65,28 +63,19 @@ function RoomDraft() {
     };
   }, [])
 
-  //create boosters when all sets are fetched and starting new pack
+  // go to draft complete when finished and start a new round if host and boosters are finished
   useEffect(() => {
-    if(allCardSetCardsFetched && packComplete && landingPageBoosterIds.length > 0) {
+    if(allCardSetCardsFetched && roundComplete && landingPageBoosterIds.length > 0) {
       if (currLPBooster && currLPBooster.id === landingPageBoosters[landingPageBoosterIds[landingPageBoosterIds.length - 1]].id) { // completed last booster
         history.push("/DraftComplete");
         dispatch(addToast({id: _.uniqueId("draft-complete-"), type: "Success", description: "Edit and Export your Deck", title: "Draft Complete", backgroundColor: toastBGColorDict["Success"]}))
-      } else {
-        let nextBooster: Booster
-        if(!currLPBooster) { // first booster opened
-          nextBooster = landingPageBoosters[landingPageBoosterIds[0]]
-        } else {
-          nextBooster = landingPageBoosters[landingPageBoosterIds[landingPageBoosterIds.findIndex((id) => id === currLPBooster.id) + 1]]
-        }
-        dispatch(removeAllBoosters("draftBooster"))
-        const boosters = createDraftBoostersForRound(nextBooster, cardSets, cardsById, numPlayers)
-        dispatch(setBoosters(boosters, "draftBooster" ))
-        dispatch(openNextPack(nextBooster.id))
+      } else if(playerInfo?.isHost) {
+        dispatch(roomNextRoundFetchThunk(roomId))
       }
       
     }
     
-  }, [cardSets, currLPBooster, cardsById, dispatch, packComplete, allCardSetCardsFetched, landingPageBoosters, landingPageBoosterIds, numPlayers, history]);
+  }, [cardSets, currLPBooster, cardsById, dispatch, roundComplete, allCardSetCardsFetched, landingPageBoosters, landingPageBoosterIds, numPlayers, history]);
 
   function toggleSidebar() {
     toggleShowSidebar(!showSidebar)

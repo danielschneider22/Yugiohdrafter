@@ -10,4 +10,5 @@ export interface RoomResultC {
   boostersLP: State<Booster>
   customSets?: State<CardSet>
   boostersDraft?: State<Booster>
+  currLPBooster?: string
 }
