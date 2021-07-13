@@ -44,7 +44,8 @@ export default function deckReducer(state = deckInitialState, action: DeckAction
         return {
           ...state,
           deckIds: [],
-          sideboardIds: []
+          sideboardIds: [],
+          extraDeckIds: [],
         }
       }
       default:
