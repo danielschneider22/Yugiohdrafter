@@ -28,7 +28,7 @@ function App() {
   useEffect(() => {
     // get client's ip address
     async function getIP() {
-      if(process.env.REACT_APP_ENVIRONMENT === "dev") {
+      if(process.env.NODE_ENV === "development") {
         ip = (Math.random() * 200000) + ""
       } else {
         ip = await getClientIp()
