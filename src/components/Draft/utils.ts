@@ -1,8 +1,6 @@
-import { Dispatch } from "react";
 import { Booster } from "../../constants/Booster";
 import { Card } from "../../constants/Card";
 import { CardPick } from "../../constants/CardPick";
-import { removeCardFromBooster } from "../../data/boosters/actions";
 import { findHighestRarity, isExtraDeckCard, sortByRarity } from "../../data/cards/utils";
 import { getRandomCardFromArray } from "../SealedBoosterOpener/BoosterCreatorHelper";
 

@@ -5,7 +5,7 @@ import { Card } from "../../constants/Card";
 import { CardSet } from "../../constants/CardSet";
 import { getJSONWithErrorHandling } from "../../helpers/errorHandling";
 import { addCards } from "../cards/actions";
-import { addBooster, setBoosters, updateBooster } from "./actions";
+import { updateBooster } from "./actions";
 
 export async function fetchCardsForBooster(dispatch: Dispatch<any>, set_name: string, boosterId: string) {
     const response = await fetch('https://db.ygoprodeck.com/queries/pack-opener/pack-open.php?format=' + set_name);

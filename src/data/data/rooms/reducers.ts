@@ -17,8 +17,6 @@ export function roomsReducer(state: State<Room> = roomsInitialState, action: Roo
       return stateAddItemWithoutMutation<Room>(state, action.room)
 
     case RoomsActionTypes.ROOMS_GET_FETCH_SUCCESS:
-      return action.roomState // - replace with latest list of rooms
-    case RoomsActionTypes.ROOMS_GET_FETCH_SUCCESS:
         return action.roomState // - replace with latest list of rooms
     case RoomsActionTypes.ROOMS_CLEAR_ROOM_INFO:
         return roomsInitialState

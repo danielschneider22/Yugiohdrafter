@@ -1,14 +1,11 @@
-import { Provider, RootStateOrAny, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Action, applyMiddleware, compose, createStore } from 'redux';
-import thunkMiddleware, { ThunkMiddleware } from 'redux-thunk';
 import './App.css';
 import LandingPage from './components/BoosterPicker/LandingPage';
 import Draft from './components/Draft/Draft';
 import DraftComplete from './components/DraftComplete/DraftComplete';
 import NavBar from './components/NavBar/NavBar';
 import SealedBoosterOpener from './components/SealedBoosterOpener/SealedBoosterOpener';
-import { initState, rootReducer } from './data/reducers';
 import ToastManager from './components/ToastManager/ToastManager';
 import { useEffect, useState } from 'react';
 import { getClientIp } from './data/data/rooms/utils';
@@ -45,7 +42,7 @@ function App() {
     } else if (cardSets.length === 0) {
         fetchCardSets(dispatch);
     }
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   if(!ipLoaded || cardSets.length === 0) {
     return <div></div>

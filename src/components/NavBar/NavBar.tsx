@@ -12,7 +12,7 @@ import { initialiazeDraftPod } from '../../data/draftPod/actions';
 import CustomSetPopup from '../CustomSetPopup/CustomSetPopup';
 
 function NavBar() {
-
+    /* eslint-disable jsx-a11y/anchor-is-valid */
     const [mobileMenuShown, setMobileMenuShown] = useState(false)
     const cardSets = useSelector(getCardSetsById)
     const dispatch = useDispatch();

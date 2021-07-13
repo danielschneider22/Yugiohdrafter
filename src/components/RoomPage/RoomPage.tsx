@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { toastBGColorDict } from '../../constants/Toast';
-import { getAllCardSetCardsFetched, getDraftBoosterIds, getDraftBoosters } from '../../data/boosters/selectors';
+import { getAllCardSetCardsFetched, getDraftBoosterIds } from '../../data/boosters/selectors';
 import { getUserPlayerInfo } from '../../data/data/roomPlayers.ts/selectors';
 import { roomGetFetchThunk, roomStartDraftFetchThunk } from '../../data/data/rooms/operations';
 import { roomByIdSel } from '../../data/data/rooms/selectors';
@@ -13,14 +13,14 @@ import styles from './RoomPage.module.css'
 import RoomPlayers from './RoomPlayers';
 import { useHistory } from 'react-router-dom';
 
-const COPIED_TO_CLIPBOARD_DURATION = 3000 // milliseconds
+// const COPIED_TO_CLIPBOARD_DURATION = 3000 // milliseconds
 
 function RoomPage() {
   const params: {id: string} = useParams()
   const roomId = params.id
   const room = useSelector((state: RootState) => roomByIdSel(state, roomId))
   const dispatch = useDispatch()
-  const [recentlyCopiedToClipboard, setRecentlyCopiedToClipboard] = useState(false)
+  // const [recentlyCopiedToClipboard, setRecentlyCopiedToClipboard] = useState(false)
   const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
   const userPlayer = useSelector(getUserPlayerInfo)
   const history = useHistory()
@@ -30,7 +30,7 @@ function RoomPage() {
     navigator.clipboard.writeText(window.location.href)
 
     // should invoke setTimeout after this update to true has been performed, major lag required to make this an actual issue 
-    setRecentlyCopiedToClipboard(true)
+    // setRecentlyCopiedToClipboard(true)
     dispatch(addToast({id: _.uniqueId("copy-to-clipboard-"), type: "Success", description: "Room URL Copied to Clipboard", title: "Success", backgroundColor: toastBGColorDict["Success"]}))
     // setTimeout(() => {setRecentlyCopiedToClipboard(false)}, COPIED_TO_CLIPBOARD_DURATION)
   }
@@ -61,9 +61,9 @@ function RoomPage() {
       </main>
     )
   
-  const recentlyCopiedText = recentlyCopiedToClipboard ?
-    <span className={styles.recentlyCopiedText}> Room URL Copied to Clipboard</span>
-    : <React.Fragment />
+  // const recentlyCopiedText = recentlyCopiedToClipboard ?
+  //   <span className={styles.recentlyCopiedText}> Room URL Copied to Clipboard</span>
+  //   : <React.Fragment />
   
   function startDraft() {
     dispatch(roomStartDraftFetchThunk(history, roomId))

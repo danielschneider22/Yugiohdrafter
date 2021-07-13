@@ -1,4 +1,3 @@
-import RoomPlayers from "../../../components/RoomPage/RoomPlayers";
 import { Booster } from "../../../constants/Booster";
 import { RoomPlayer } from "../../../constants/RoomPlayer";
 import { Room } from "../../../models/Room";

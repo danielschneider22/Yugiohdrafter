@@ -44,7 +44,7 @@ function SealedBoosterOpener() {
       history.push("/");
     }
     populatedSideboard = false
-  }, []);
+  }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
   //create boosters when all sets for boosters are fetched
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { ip } from "../../App";
@@ -6,7 +6,7 @@ import { RoomPlayer } from "../../constants/RoomPlayer";
 import { getAllCardSetCardsFetched } from "../../data/boosters/selectors";
 import { roomUpdatePlayerFetchThunk } from "../../data/data/roomPlayers.ts/operations";
 import { roomPlayersStateForRoomSel } from "../../data/data/roomPlayers.ts/selectors";
-import { getRoomPlayerId, roomGetFetchThunk } from "../../data/data/rooms/operations";
+import { getRoomPlayerId } from "../../data/data/rooms/operations";
 import { roomByIdSel } from "../../data/data/rooms/selectors";
 import { RootState } from "../../models/RootState";
 import styles from './RoomPage.module.css'

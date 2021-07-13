@@ -61,7 +61,7 @@ function RoomDraft() {
     return () => {
       clearInterval(updateRoomInterval)
     };
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // go to draft complete when finished and start a new round if host and boosters are finished
   useEffect(() => {
@@ -75,7 +75,7 @@ function RoomDraft() {
       
     }
     
-  }, [cardSets, currLPBooster, cardsById, dispatch, roundComplete, allCardSetCardsFetched, landingPageBoosters, landingPageBoosterIds, numPlayers, history]);
+  }, [cardSets, currLPBooster, cardsById, dispatch, roundComplete, allCardSetCardsFetched, landingPageBoosters, landingPageBoosterIds, numPlayers, history, playerInfo, roomId]);
 
   function toggleSidebar() {
     toggleShowSidebar(!showSidebar)

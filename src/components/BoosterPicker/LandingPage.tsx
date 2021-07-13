@@ -6,8 +6,6 @@ import { useHistory } from 'react-router-dom';
 
 import { addBooster } from '../../data/boosters/actions';
 import { getLandingPageBoosterIds, getLandingPageBoosters } from '../../data/boosters/selectors';
-import { addSets } from '../../data/cardSets/actions';
-import { fetchCardSets } from '../../data/cardSets/operations';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import { roomAddFetchThunk } from '../../data/data/rooms/operations';
 import BoosterChooserArea from './BoosterChooserArea';

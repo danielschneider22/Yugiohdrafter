@@ -59,7 +59,7 @@ function Draft() {
     if(landingPageBoosterIds.length === 0) {
       history.push("/");
     }
-  }, [])
+  }, [])  // eslint-disable-line react-hooks/exhaustive-deps
 
   //create boosters when all sets are fetched and starting new pack
   useEffect(() => {
