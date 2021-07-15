@@ -45,9 +45,6 @@ function Sidebar(props: ParentProps) {
     activeTabCards.push(cardsById[cardId])
   })
   
-  if(parentWidth) {
-    parentMaxWidth = parentWidth
-  }
   const tabsStyle = showSidebar ? {left: parentMaxWidth - 86} : {left: "-40px"}
 
   function switchMainDeckSideboard(card: Card, idx: number) {
