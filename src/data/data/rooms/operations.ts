@@ -47,7 +47,7 @@ export function getRoomPlayerId(ip: string, roomId: string) {
 export const roomAddFetchThunk = (history: History): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
   dispatch(roomAddFetch())
   const boostersLP = getSortedLPBoosters(getState())
-  const customSets = getCustomSets(getState()).filter((set) => boostersLP.some((booster) => booster.id === set.id))
+  const customSets = getCustomSets(getState()).filter((set) => boostersLP.some((booster) => booster.cardSetName === set.id))
   const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [boostersLP, customSets])<RoomResultC>(roomAddFetchOp)
   if (roomResultC) {
     // TODO: @allenwhitedev example of why we need to handle arguments in tryCatchPromise()

@@ -22,7 +22,7 @@ export const getRoundComplete = createSelector([getDraftBoosters], (draftBooster
 })
 
 export const getAllCardSetCardsFetched = createSelector([getLandingPageBoosters, getCardSetsById], (landingPageBoosters, cardSets) => {
-    return Object.values(landingPageBoosters).every((booster) => cardSets[booster.cardSetName].card_ids && cardSets[booster.cardSetName].card_ids!.length > 0)
+    return Object.values(landingPageBoosters).every((booster) => cardSets[booster.cardSetName] && cardSets[booster.cardSetName].card_ids && cardSets[booster.cardSetName].card_ids!.length > 0)
 })
 
 // you can only view a pack if your pack has the same or greater number of cards in it
