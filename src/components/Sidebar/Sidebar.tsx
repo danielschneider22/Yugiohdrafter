@@ -20,7 +20,7 @@ interface ParentProps{
 let parentMaxWidth = 250
 
 function Sidebar(props: ParentProps) {
-  const {showSidebar, toggleSidebar, parentWidth, shownTabs} = props
+  const {showSidebar, toggleSidebar, shownTabs} = props
   const cardsById = useSelector(getCardsById)
   const dispatch = useDispatch();
   const deck = useSelector(getDeck)
