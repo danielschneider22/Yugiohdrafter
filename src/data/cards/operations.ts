@@ -29,7 +29,7 @@ export async function fetchCardsByName(dispatch: Dispatch<any>, names: string[],
 }
 
 export async function fetchCardsById(dispatch: Dispatch<any>, ids: string[], set_name: string) {
-    const response = await fetch('https://db.ygoprodeck.com/api/v7/cardinfo.php?id=' + ids.join("|"));
+    const response = await fetch('https://db.ygoprodeck.com/api/v7/cardinfo.php?id=' + ids.join(","));
     const cards = await getJSONWithErrorHandling(response, dispatch, "Please check card list", "Invalid Card Name")
 
     if(cards) {
