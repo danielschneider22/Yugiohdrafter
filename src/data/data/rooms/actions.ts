@@ -93,6 +93,22 @@ export const roomStartDraftFetchSuccess = (room: Room, roomPlayers: State<RoomPl
   type: types.ROOMS_START_DRAFT_FETCH_SUCCESS
 })
 
+// -- start sealed room fetch
+export interface RoomStartSealedFetch { type: types.ROOMS_START_SEALED_FETCH }
+export const roomStartSealedFetch = (): RoomStartSealedFetch => ({ type: types.ROOMS_START_SEALED_FETCH })
+
+export interface RoomStartSealedFetchFail { error: any, type: types.ROOMS_START_SEALED_FETCH_FAIL }
+export const roomStartSealedFetchFail = (error: any): RoomStartSealedFetchFail => ({ error, type: types.ROOMS_START_SEALED_FETCH_FAIL })
+
+export type RoomStartSealedFetchSuccess = Modify<RoomGetFetchSuccess, { type: types.ROOMS_START_SEALED_FETCH_FETCH_SUCCESS }>
+export const roomStartSealedFetchSuccess = (room: Room, roomPlayers: State<RoomPlayer>, boostersLP?: State<Booster>, boostersDraft?: State<Booster>): RoomStartSealedFetchSuccess => ({ 
+  room,
+  roomPlayers,
+  boostersLP,
+  boostersDraft,
+  type: types.ROOMS_START_SEALED_FETCH_FETCH_SUCCESS
+})
+
 // -- start make pick fetch
 export interface RoomMakePicksFetch { type: types.ROOMS_MAKE_PICKS_FETCH }
 export const roomMakePicksFetch = (): RoomMakePicksFetch => ({ type: types.ROOMS_MAKE_PICKS_FETCH })

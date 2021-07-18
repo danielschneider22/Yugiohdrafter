@@ -8,14 +8,14 @@ import { Room } from "../../../models/Room"
 import { Monad } from "../../../utils"
 
 import { tryCatchPromise } from "../../utils"
-import { roomAddFetch, roomAddFetchFail, roomAddFetchSuccess, roomGetFetch, roomGetFetchFail, roomGetFetchSuccess, roomJoinRoomFetch, roomJoinRoomFetchFail, roomJoinRoomFetchSuccess, roomMakePicksFetch, roomMakePicksFetchFail, roomMakePicksFetchSuccess, roomNextRoundFetch, roomNextRoundFetchFail, roomNextRoundFetchSuccess, roomStartDraftFetch, roomStartDraftFetchFail, roomStartDraftFetchSuccess } from "./actions"
+import { roomAddFetch, roomAddFetchFail, roomAddFetchSuccess, roomGetFetch, roomGetFetchFail, roomGetFetchSuccess, roomJoinRoomFetch, roomJoinRoomFetchFail, roomJoinRoomFetchSuccess, roomMakePicksFetch, roomMakePicksFetchFail, roomMakePicksFetchSuccess, roomNextRoundFetch, roomNextRoundFetchFail, roomNextRoundFetchSuccess, roomStartDraftFetch, roomStartDraftFetchFail, roomStartDraftFetchSuccess, roomStartSealedFetch, roomStartSealedFetchFail, roomStartSealedFetchSuccess } from "./actions"
 import {History} from 'history'
 import { RoomPlayer } from "../../../constants/RoomPlayer"
 import { Booster } from "../../../constants/Booster"
 import { getDraftBoosterIds, getDraftBoosters, getSortedLPBoosters } from "../../boosters/selectors"
 import { ip } from "../../../App"
 import { RoomResultC } from "../../../contracts/RoomResultC"
-import { removeAllBoosters, setBoosters } from "../../boosters/actions"
+import { removeAllBoosters, resetBoosterCards, setBoosters } from "../../boosters/actions"
 import { getSetsForBoosters } from "../../cards/utils"
 import { addSet } from "../../cardSets/actions"
 import { fetchCardsById } from "../../cards/operations"
@@ -44,11 +44,11 @@ export function getRoomPlayerId(ip: string, roomId: string) {
   return ip + "-" + roomId
 }
 
-export const roomAddFetchThunk = (history: History): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
+export const roomAddFetchThunk = (history: History, format: "sealed" | "draft"): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
   dispatch(roomAddFetch())
   const boostersLP = getSortedLPBoosters(getState())
   const customSets = getCustomSets(getState()).filter((set) => boostersLP.some((booster) => booster.cardSetName === set.id))
-  const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [boostersLP, customSets])<RoomResultC>(roomAddFetchOp)
+  const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [boostersLP, customSets, format])<RoomResultC>(roomAddFetchOp)
   if (roomResultC) {
     // TODO: @allenwhitedev example of why we need to handle arguments in tryCatchPromise()
     // const [room, error]: Monad<Room> = await tryCatchPromise<Room>(roomContractToModel)
@@ -63,7 +63,7 @@ export const roomAddFetchThunk = (history: History): ThunkAction<void, RootState
     dispatch(roomAddFetchFail(error))
   }
 }
-async function roomAddFetchOp(boostersLP: Booster[], customSets: CardSet[]): Promise<RoomC> {
+async function roomAddFetchOp(boostersLP: Booster[], customSets: CardSet[], format: "sealed" | "draft"): Promise<RoomC> {
   const url = `${baseApiUrl}/room`
   const resp = await fetch(url, {
     headers: {'Content-Type': 'application/json'},
@@ -74,7 +74,8 @@ async function roomAddFetchOp(boostersLP: Booster[], customSets: CardSet[]): Pro
         ip,
       } as Partial<RoomPlayer>,
       boostersLP,
-      customSets
+      customSets,
+      format
     })
   })
   if (resp.ok) 
@@ -199,6 +200,34 @@ async function roomStartDraftFetchOp(roomId: string, boostersDraft: Booster[]): 
     return resp.json()
   else
     throw new Error(`Fetch failure from startDraft(). Response from '${url}': ${JSON.stringify(resp)}`)
+}
+
+export const roomStartSealedFetchThunk = (history: History, roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
+  dispatch(roomStartSealedFetch())
+  const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [roomId])<RoomResultC>(roomStartSealedFetchOp)
+  if (roomResultC) {
+    const room = await roomContractToModel(roomResultC.room)
+    if (room) {
+      dispatch(resetBoosterCards("landingPageBooster"))
+      await dispatch(roomStartSealedFetchSuccess(room, roomResultC.roomPlayers, roomResultC.boostersLP, roomResultC.boostersDraft))
+      return history.push(`/room/${room.id}`)
+    }
+    else
+      dispatch(roomStartSealedFetchFail(error))  
+  } else {
+    dispatch(roomStartSealedFetchFail(error))
+  }
+}
+async function roomStartSealedFetchOp(roomId: string, boostersDraft: Booster[]): Promise<RoomC> {
+  const url = `${baseApiUrl}/room/startSealed/${roomId}`
+  const resp = await fetch(url, {
+    headers: {'Content-Type': 'application/json'},
+    method: 'POST',
+  })
+  if (resp.ok) 
+    return resp.json()
+  else
+    throw new Error(`Fetch failure from startSealed(). Response from '${url}': ${JSON.stringify(resp)}`)
 }
 
 export const roomMakePickFetchThunk = (roomId: string, cardPick: CardPick): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {

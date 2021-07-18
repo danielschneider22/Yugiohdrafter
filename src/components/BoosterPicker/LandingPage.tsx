@@ -33,7 +33,7 @@ function LandingPage() {
   function launch() {
     getSetsForBoosters(Object.values(boosters), dispatch)
     if (playMode === "host")  {
-      dispatch(roomAddFetchThunk(history))
+      dispatch(roomAddFetchThunk(history, format))
     } else {    
       if(format === "draft") {
         dispatch(initialiazeDraftPod(8, 5, 9, ""))
@@ -55,18 +55,18 @@ function LandingPage() {
           </div>
           <div className="btn-group btn-group-toggle ToggleButton justify-content-center" data-toggle="buttons">
             <label className={`btn btn-secondary col-6 ${format === "draft" ? "active" : ""}`} onClick={() => setFormat("draft")}>
-              <input type="radio" id="draft" name="format" value="draft" checked={format === "draft"} autoComplete="off" onClick={() => setFormat("draft")} /> Draft
+              <input type="radio" id="draft" name="format" value="draft" checked={format === "draft"} autoComplete="off" onChange={() => setFormat("draft")} /> Draft
             </label>
             <label className={`btn btn-secondary col-6 ${format === "sealed" ? "active" : ""}`} onClick={() => setFormat("sealed")}>
-              <input type="radio" id="sealed" name="format" value="sealed" autoComplete="off" checked={format === "sealed"} onClick={() => setFormat("sealed")}/> Sealed
+              <input type="radio" id="sealed" name="format" value="sealed" autoComplete="off" checked={format === "sealed"} onChange={() => setFormat("sealed")}/> Sealed
             </label>
           </div>
           <div className="btn-group btn-group-toggle ToggleButton justify-content-center" data-toggle="buttons">
             <label className={`btn btn-secondary col-6 ${playMode === "bots" ? "active" : ""}`} onClick={() => setPlayMode("bots")}>
-              <input type="radio" id="bots" name="playMode" value="bots" checked={playMode === "bots"} autoComplete="off" onClick={() => setPlayMode("bots")} /> Play With Bots
+              <input type="radio" id="bots" name="playMode" value="bots" checked={playMode === "bots"} autoComplete="off" onChange={() => setPlayMode("bots")} /> Play With Bots
             </label>
             <label className={`btn btn-secondary col-6 ${playMode === "host" ? "active" : ""}`} onClick={() => setPlayMode("host")}>
-              <input type="radio" id="host" name="playMode" value="host" autoComplete="off" checked={playMode === "host"} onClick={() => setPlayMode("host")}/> Host Draft
+              <input type="radio" id="host" name="playMode" value="host" autoComplete="off" checked={playMode === "host"} onChange={() => setPlayMode("host")}/> Host Draft
             </label>
           </div>
           {boosterArea}

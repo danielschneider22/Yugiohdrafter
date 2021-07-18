@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import { toastBGColorDict } from '../../constants/Toast';
 import { getAllCardSetCardsFetched, getDraftBoosterIds } from '../../data/boosters/selectors';
 import { getUserPlayerInfo } from '../../data/data/roomPlayers.ts/selectors';
-import { roomGetFetchThunk, roomStartDraftFetchThunk } from '../../data/data/rooms/operations';
+import { roomGetFetchThunk, roomStartDraftFetchThunk, roomStartSealedFetchThunk } from '../../data/data/rooms/operations';
 import { roomByIdSel } from '../../data/data/rooms/selectors';
 import { addToast } from '../../data/toasts/actions';
 import { RootState } from '../../models/RootState';
@@ -47,8 +47,11 @@ function RoomPage() {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if(draftBoostersIds.length > 0) {
+    if(room && room.started && room.format === "draft") {
       history.push(`/room/draft/${roomId}`);
+    }
+    if(room && room.started && room.format === "sealed") {
+      history.push(`/SealedBooster`);
     }
   }, [draftBoostersIds]) // eslint-disable-line react-hooks/exhaustive-deps
   
@@ -65,8 +68,11 @@ function RoomPage() {
   //   <span className={styles.recentlyCopiedText}> Room URL Copied to Clipboard</span>
   //   : <React.Fragment />
   
-  function startDraft() {
-    dispatch(roomStartDraftFetchThunk(history, roomId))
+  function start() {
+    if(room.format === "draft")
+      dispatch(roomStartDraftFetchThunk(history, roomId))
+    else
+     dispatch(roomStartSealedFetchThunk(history, roomId))
   }
   
   return (
@@ -79,19 +85,21 @@ function RoomPage() {
         </span>
         {/* {recentlyCopiedText} */}
       </h2>
-      <div className={styles.SubtitleRoom}>Share this url with other players to have them join the draft.</div>
+      { userPlayer?.isHost &&
+        <div className={styles.SubtitleRoom}>Share the page url with other players to have them join.</div>
+      }
       <RoomPlayers />
       { !allCardSetCardsFetched &&
         <div>Loading sets for draft...</div>
       }
       { userPlayer && userPlayer!.isHost &&
         <div className="d-flex justify-content-center">
-          <button className={"btn-lg btn-success " + styles.LaunchButton} onClick={startDraft} disabled={!userPlayer.isReady}>Start Draft</button>
+          <button className={"btn-lg btn-success " + styles.LaunchButton} onClick={start} disabled={!userPlayer.isReady}>Start {room.format === "draft" ? "Draft" : "Sealed"}</button>
         </div>
       }
       { userPlayer && !userPlayer!.isHost &&
         <div className="d-flex justify-content-center">
-          <button className={"btn-lg btn-dark " + styles.HostWaitButton} disabled>Waiting on Host to Start Draft</button>
+          <button className={"btn-lg btn-dark " + styles.HostWaitButton} disabled>Waiting on Host to Start {room.format === "draft" ? "Draft" : "Sealed"}</button>
         </div>
       }
       
