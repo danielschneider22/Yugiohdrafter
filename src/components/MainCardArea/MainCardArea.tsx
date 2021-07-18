@@ -28,8 +28,10 @@ function MainCardArea(props: ParentProps) {
   }, [scrollCardsRef])
 
   const safariIOSSpacingStyle: React.CSSProperties = {paddingTop: -1000}
-  if(cards.length <= 1 && (isiOS() || navigator.userAgent.indexOf("Safari") !== -1)) {
-    safariIOSSpacingStyle.marginTop = -200
+  const usePaddedSpacing = isiOS()
+  if(usePaddedSpacing) {
+    safariIOSSpacingStyle.marginTop = 800
+    safariIOSSpacingStyle.color = 'transparent'
   }
 
   return (
@@ -41,8 +43,8 @@ function MainCardArea(props: ParentProps) {
         {(!cards || cards.length === 0) && !loadedCards &&
             <div>Loading cards...</div>
         }
-        {cards.length <= 1 && isiOS() &&
-          <div style={{marginTop: '120px', color: 'transparent'}}>Buffer</div>
+        {usePaddedSpacing &&
+          <div style={safariIOSSpacingStyle}>Buffer</div>
         }
         <BottomBar 
             sortType={sortType}
