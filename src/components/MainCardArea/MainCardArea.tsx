@@ -5,6 +5,7 @@ import BottomBar from '../BottomBar/BottomBar';
 import { useEffect, useRef, useState } from 'react';
 import { sortCards, SortType } from '../../data/cards/utils';
 import { scrollToggleNavVisibility } from '../NavBar/ScrollBGColorChange';
+import { isiOS } from '../../utils';
 
 interface ParentProps{
     unsortedCards: VisibleCard[],
@@ -26,6 +27,11 @@ function MainCardArea(props: ParentProps) {
     }
   }, [scrollCardsRef])
 
+  const safariIOSSpacingStyle: React.CSSProperties = {paddingTop: -1000}
+  if(cards.length <= 1 && (isiOS() || navigator.userAgent.indexOf("Safari") !== -1)) {
+    safariIOSSpacingStyle.marginTop = -200
+  }
+
   return (
     <div ref={scrollCardsRef} className={"ScrollCards"}>
         <div className="CardDisplayAreaTitle">{title}: {cards.length}</div>
@@ -34,6 +40,9 @@ function MainCardArea(props: ParentProps) {
         })}
         {(!cards || cards.length === 0) && !loadedCards &&
             <div>Loading cards...</div>
+        }
+        {cards.length <= 1 && isiOS() &&
+          <div style={{marginTop: '120px', color: 'transparent'}}>Buffer</div>
         }
         <BottomBar 
             sortType={sortType}
