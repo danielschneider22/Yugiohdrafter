@@ -11,6 +11,8 @@ import { resetDeckAndSideboard } from '../../data/deck/actions';
 import { initialiazeDraftPod } from '../../data/draftPod/actions';
 import CustomSetPopup from '../CustomSetPopup/CustomSetPopup';
 
+import cardImage from '../../assets/logo.png';
+
 function NavBar() {
     /* eslint-disable jsx-a11y/anchor-is-valid */
     const [mobileMenuShown, setMobileMenuShown] = useState(false)
@@ -101,14 +103,13 @@ function NavBar() {
                 <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
 
                 <div className="logo d-flex align-items-center" onClick={goHome}>
-                    <img src="assets/img/logo.png" alt="" />
+                    <img src={cardImage} alt="" />
                     <span>YugiohDrafter</span>
                 </div>
 
                 <nav id="navbar" className={"navbar" + (mobileMenuShown ? " navbar-mobile" : "")}>
                     <ul>
                     <li><Link to="/" className="nav-link scrollto active" onClick={() => defaultClearAndClose()}>Home</Link></li>
-                    <li><a className="nav-link scrollto" href="#about">Join Draft</a></li>
                     <li><a className="nav-link scrollto" onClick={toggleCustomSetPopupVisiblity}>Create Custom Set</a></li>
                     <li className="dropdown" onClick={showQuickDraftDropdown}><a href="#"><span>Quick Draft</span> <i className="bi bi-chevron-down"></i></a>
                         <ul className={quickDraftDropdownVisible ? "dropdown-active" : ""}>

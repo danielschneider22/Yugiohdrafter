@@ -79,6 +79,7 @@ function RoomPage() {
         </span>
         {/* {recentlyCopiedText} */}
       </h2>
+      <div className={styles.SubtitleRoom}>Share this url with other players to have them join the draft.</div>
       <RoomPlayers />
       { !allCardSetCardsFetched &&
         <div>Loading sets for draft...</div>
