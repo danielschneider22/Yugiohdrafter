@@ -53,7 +53,7 @@ function RoomPage() {
     if(room && room.started && room.format === "sealed") {
       history.push(`/SealedBooster`);
     }
-  }, [draftBoostersIds]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [draftBoostersIds, room]) // eslint-disable-line react-hooks/exhaustive-deps
   
   if (room === null)
     return (

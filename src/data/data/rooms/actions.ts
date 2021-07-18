@@ -160,6 +160,9 @@ export type RoomAction = RoomAddFetch
   | RoomStartDraftFetch
   | RoomStartDraftFetchFail
   | RoomStartDraftFetchSuccess
+  | RoomStartSealedFetch
+  | RoomStartSealedFetchFail
+  | RoomStartSealedFetchSuccess
   | RoomMakePicksFetch
   | RoomMakePicksFetchFail
   | RoomMakePicksFetchSuccess
