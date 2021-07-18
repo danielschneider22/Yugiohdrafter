@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { ip } from '../../App';
 import { fetchCardsByName } from '../../data/cards/operations';
 import { addSet } from '../../data/cardSets/actions';
+import { isMobile } from 'react-device-detect';
 import './CustomSetPopup.css';
 
 interface ParentProps{
@@ -10,9 +11,7 @@ interface ParentProps{
 }
 
 function CustomSetPopup(props: ParentProps) {
-    const placeHolderText = `Jinzo
-Dark Magician
-Blue-Eyes White Dragon
+    const placeHolderText = isMobile ? "Card List (one card per line)" :`Jinzo\nDark Magician\nBlue-Eyes White Dragon
   `;
 
     const [setName, setSetName] = useState("")
