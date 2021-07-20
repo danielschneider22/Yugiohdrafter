@@ -1,9 +1,9 @@
 .BottomBar{
-    position: absolute;
+    position: sticky;
     height: 50px;
     bottom: 0px;
     background-color: #121512;
-    float: right;
+    float: left;
     text-align: center;
     width: 25%;
     border-top-right-radius: 9px;

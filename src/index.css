@@ -7,11 +7,18 @@ body {
   height: 100%;
   width: 100%;
   color: white;
+  /* prevent overscroll bounce*/
+  background-color: #0E0E0E;
+  /* overflow-y: hidden; */
+  -webkit-overflow-scrolling: touch;
   
 }
 html{
   background: url(./assets/yugiohbg.png) top center no-repeat;
   background-size:100% 100%;
+  position: fixed;
+  background-color: #0E0E0E;
+  height: 100%;
 }
 
 code {
