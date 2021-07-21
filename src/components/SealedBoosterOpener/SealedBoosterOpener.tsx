@@ -77,7 +77,7 @@ function SealedBoosterOpener() {
         <div className={`justify-content-center maxHeight ExpandContract MainCardAreaWrapper`} style={{ width: showSidebar ? "calc(100% - 250px)" : "100%" }}>
             <MainCardArea 
               unsortedCards={cards}
-              title={"S I D E B O A R D"}
+              title={"SIDEBOARD: " + cards.length}
               cardClicked={addCardToDeck}
               loadedCards={populatedSideboard}
             />

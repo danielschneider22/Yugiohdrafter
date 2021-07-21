@@ -20,6 +20,7 @@ import { getCardSetsById } from '../../data/cardSets/selectors';
 import { addCardToDeck, addCardToExtraDeck } from '../../data/deck/actions';
 import { openNextPack, updatePlayerPosition } from '../../data/draftPod/actions';
 import {
+  getBoosterNum,
     getCardsForPositionInDraft,
     getCurrLPBooster,
     getNumPlayers,
@@ -50,6 +51,7 @@ function Draft() {
   const draftBoostersIds = useSelector(getDraftBoosterIds)
   const playerPosition = useSelector(getPlayerPosition)
   const history = useHistory();
+  const boosterNum = useSelector(getBoosterNum)
 
   const [showSidebar, toggleShowSidebar] = useState(false)
   
@@ -101,6 +103,8 @@ function Draft() {
     dispatch(updatePlayerPosition())
   }
 
+  const currSetName = currLPBooster ? cardSets[currLPBooster.cardSetName].set_name : ""
+
   return (
     <div className="maxWH">
       <div className="maxWH">
@@ -110,7 +114,8 @@ function Draft() {
         <div className={`justify-content-center maxHeight ExpandContract MainCardAreaWrapper`} style={{ width: showSidebar ? "calc(100% - 250px)" : "100%" }}>
             <MainCardArea 
               unsortedCards={cards}
-              title={"D R A F T I N G"}
+              title={"DRAFTING PACK: " + boosterNum}
+              subTitle={currSetName}
               cardClicked={draftCard}
               loadedCards={allCardSetCardsFetched}
             />

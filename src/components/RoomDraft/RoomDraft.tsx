@@ -15,6 +15,7 @@ import { isExtraDeckCard } from '../../data/cards/utils';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import { addCardToDeck, addCardToExtraDeck } from '../../data/deck/actions';
 import {
+  getBoosterNum,
     getCardsForPositionInDraft,
     getCurrLPBooster,
     getNumPlayers,
@@ -48,6 +49,7 @@ function RoomDraft() {
   const history = useHistory();
   const packViewable = useSelector(canViewPack)
   const playerInfo = useSelector(getUserPlayerInfo)
+  const boosterNum = useSelector(getBoosterNum)
 
   const [showSidebar, toggleShowSidebar] = useState(false)
   
@@ -91,6 +93,8 @@ function RoomDraft() {
     dispatch(roomMakePickFetchThunk(roomId, cardPick))
   }
 
+  const currSetName = currLPBooster ? cardSets[currLPBooster.cardSetName].set_name : ""
+
   return (
     <div className="maxWH">
       <div className="maxWH">
@@ -101,7 +105,8 @@ function RoomDraft() {
             { packViewable &&
               <MainCardArea 
                 unsortedCards={cards}
-                title={"D R A F T I N G"}
+                title={"DRAFTING PACK: " + boosterNum}
+                subTitle={currSetName}
                 cardClicked={draftCard}
                 loadedCards={allCardSetCardsFetched}
               />

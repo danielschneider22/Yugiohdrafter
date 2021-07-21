@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { getDraftBoosterIds, getDraftBoosters, getLandingPageBoosters } from '../boosters/selectors';
+import { getDraftBoosterIds, getDraftBoosters, getLandingPageBoosterIds, getLandingPageBoosters } from '../boosters/selectors';
 import { getCardsById } from '../cards/selectors';
 import { initState } from '../reducers';
 
@@ -20,4 +20,8 @@ export const getCardsForPositionInDraft = createSelector([getPositionBooster, ge
 
 export const getCurrLPBooster = createSelector([currLPBoosterId, getLandingPageBoosters], (currLPBoosterId, landingPageBoosters) => {
     return landingPageBoosters[currLPBoosterId]
+})
+
+export const getBoosterNum = createSelector([currLPBoosterId, getLandingPageBoosterIds], (currLPBoosterId, landingPageBoostersIds) => {
+    return landingPageBoostersIds.findIndex((id) => id === currLPBoosterId) + 1
 })

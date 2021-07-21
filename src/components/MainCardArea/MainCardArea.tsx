@@ -5,17 +5,17 @@ import BottomBar from '../BottomBar/BottomBar';
 import { useEffect, useRef, useState } from 'react';
 import { sortCards, SortType } from '../../data/cards/utils';
 import { scrollToggleNavVisibility } from '../NavBar/ScrollBGColorChange';
-import { isiOS } from '../../utils';
 
 interface ParentProps{
     unsortedCards: VisibleCard[],
     title: string,
+    subTitle?: string,
     cardClicked: (card: VisibleCard) => void,
     loadedCards: boolean
 }
 
 function MainCardArea(props: ParentProps) {
-  const { unsortedCards, cardClicked, loadedCards, title } = props
+  const { unsortedCards, cardClicked, loadedCards, title, subTitle } = props
   const [sortType, toggleSortType] = useState("Name" as SortType)
   const scrollCardsRef = useRef(null as unknown as HTMLDivElement)
 
@@ -33,7 +33,10 @@ function MainCardArea(props: ParentProps) {
 
   return (
     <div ref={scrollCardsRef} className={"ScrollCards"}>
-        <div className="CardDisplayAreaTitle">{title}: {cards.length}</div>
+        <div className={"CardDisplayAreaTitle " + (subTitle ? "TitleNoMargin" : "TitleMargin")}>{title}</div>
+        { subTitle &&
+          <div className="CardDisplayAreaSubTitle">{subTitle}</div>
+        }
         {cards && cards.map((card, idx) => {
             return <img className="VisibleCard" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"} onClick={() => cardClicked(card)}/>
         })}
