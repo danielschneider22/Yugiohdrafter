@@ -1,21 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { Provider, RootStateOrAny } from 'react-redux';
-import { applyMiddleware, Action, createStore, compose } from 'redux';
-import { rootReducer, initState } from './data/reducers';
+import { Action, applyMiddleware, compose, createStore } from 'redux';
 import thunkMiddleware, { ThunkMiddleware } from 'redux-thunk';
+import App from './App';
+import { initialState, rootReducer } from './data/reducers';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
 
 // undefined if browser does not have redux devtools installed
 const reduxDevtoolsCompose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 const enhancersThunk = applyMiddleware(thunkMiddleware as ThunkMiddleware<RootStateOrAny, Action>)
+const cacheReduxMiddleware = (store: any) => (next: any) => (action: any) => { 
+  const state = store.getState()
+  localStorage.setItem('yugiohdrafter.com-state', JSON.stringify(state))
+  
+  const result = next(action)
+  return result
+}
 
 const store = createStore(
   rootReducer,
-  initState as any,
-  compose(enhancersThunk, ...reduxDevtoolsCompose ? [reduxDevtoolsCompose()] : [], )
+  initialState() as any,
+  compose(
+    enhancersThunk,
+    ...reduxDevtoolsCompose ? [reduxDevtoolsCompose()] : [],
+    applyMiddleware(cacheReduxMiddleware),
+  )
 );
 
 ReactDOM.render(

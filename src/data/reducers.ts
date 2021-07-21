@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { RootState } from '../models/RootState';
 
 import boostersReducer, { boostersInitialState } from './boosters/reducer';
 import cardsReducer, { cardsInitialState } from './cards/reducer';
@@ -21,6 +22,19 @@ export const initState = {
     roomPlayers: roomsPlayersInitialState,
   },
   toasts: toastsInitialState,
+}
+
+export function initialState(): RootState {
+  const cachedStateString = localStorage.getItem('yugiohdrafter.com-state')
+  try {
+    const state = cachedStateString 
+      ? JSON.parse(cachedStateString)
+      : initState
+      return state
+  } catch (e) {
+    console.log(`Could not load cached state from localStorage: ${e}`)
+    return initState
+  }
 }
 
 export const rootReducer = combineReducers({

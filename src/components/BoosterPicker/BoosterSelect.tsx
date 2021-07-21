@@ -26,8 +26,8 @@ function BoosterSelect(props: ParentProps) {
           <div className="DeleteButton btn-sm btn-danger" onClick={dispatchRemoveBooster}><span>x</span></div>
           <div className={"BoosterText"}>Booster <br/>#{(boosterNum + 1)}</div>
           <select value={booster.cardSetName} onChange={(event) => boosterChanged(booster.id, event.target.value)}>
-            {cardSetsSorted.map((set) => {
-                return <option value={set.id} key={set.id}>{set.set_name}</option>;
+            {cardSetsSorted.map((set, i) => {
+                return <option value={set.id} key={`${set.id}-${i}`}>{set.set_name}</option>;
             })}
           </select>
       </div>
