@@ -27,8 +27,9 @@ function CustomSetPopup(props: ParentProps) {
         const cardNames = cardList.split(/\r?\n/);
         const setId = setName + "|" + ip
         dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: cardNames.length, tcg_date: Date(), custom_set: true}))
-        await fetchCardsByName(dispatch, cardNames, setId)
-        props.toggleCustomSetPopupVisiblity()
+        const successFetchCards = await fetchCardsByName(dispatch, cardNames, setId)
+        if(successFetchCards)
+            props.toggleCustomSetPopupVisiblity()
     }
 
     return (

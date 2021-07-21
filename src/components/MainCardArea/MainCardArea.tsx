@@ -49,6 +49,7 @@ function MainCardArea(props: ParentProps) {
         <BottomBar 
             sortType={sortType}
             toggleSortType={toggleSortType}
+            showExport={!title.includes("DRAFT")}
         />
     </div>
   );

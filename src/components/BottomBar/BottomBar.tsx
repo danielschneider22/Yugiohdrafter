@@ -1,33 +1,44 @@
 import './BottomBar.css';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getDeck, getSideboard } from '../../data/deck/selectors';
+import { getDeck, getExtraDeck, getSideboard } from '../../data/deck/selectors';
 import { SortType } from '../../data/cards/utils';
+import { useState } from 'react';
+import { addToast } from '../../data/toasts/actions';
+import _ from 'lodash';
+import { toastBGColorDict } from '../../constants/Toast';
 
 interface ParentProps{
   sortType: SortType
   toggleSortType: React.Dispatch<React.SetStateAction<SortType>>
-
+  showExport: boolean
 }
 
 function BottomBar(props: ParentProps) {
-  const {sortType, toggleSortType} = props
-
+  const {sortType, toggleSortType, showExport } = props
+  const dispatch = useDispatch()
   const sideboard = useSelector(getSideboard)
   const deck = useSelector(getDeck)
+  const extraDeck = useSelector(getExtraDeck)
+  const [deckName, setDeckName] = useState("")
 
   function exportToYDK() {
     const element = document.createElement("a");
     let exportString = "#main\n"
     deck.forEach((cardId) => exportString += cardId + "\n")
-    exportString+= "#extra\n!side\n"
+    exportString+= "#extra\n"
+    extraDeck.forEach((cardId) => exportString += cardId + "\n")
+    exportString+= "!side\n"
     sideboard.forEach((cardId) => exportString += cardId + "\n")
     const file = new Blob([exportString], {type: 'text/plain'});
     element.href = URL.createObjectURL(file);
-    element.download = "YugiohDeck.ydk";
+    element.download = deckName ? `${deckName}.ydk` : "YugiohDeck.ydk";
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
+    if(sideboard.length > 15) {
+      dispatch(addToast({id: _.uniqueId("sideboard-warning-"), type: "Warning", description: "Dueling Nexus has problems importing decks with sideboards/extra decks over 15 cards.", title: "Warning", backgroundColor: toastBGColorDict["Warning"]}))
+    }
   }
 
   function changeSort() {
@@ -45,15 +56,27 @@ function BottomBar(props: ParentProps) {
   }
 
   return (
-    <div className="BottomBar row">
-        <div className="col-6 justify-content-center DeckCount row">
+    <div className="BottomBar row" style={{width: showExport ? "30%" : "20%"}}>
+        <div className={"justify-content-center DeckCount row " + (showExport ? "col-6" : "col-11")}>
             <div className="col-4">Sort: </div>
             <div className="SortButton btn-secondary col-8" onClick={changeSort}>{sortType}</div>
         </div>
-        <div className="col-2"/>
-        <div className="btn-sm btn-success col-4 justify-content-center ExportButton" onClick={exportToYDK}>Export</div>
+        <div className="col-1"/>
+        { showExport &&
+          <div className="col-5 justify-content-center">
+            <div className="input-group input-group export-input-group">
+              <input type="text" onChange={(e) => setDeckName(e.currentTarget.value)} className="form-control" placeholder="Deck Name" aria-label="Small" aria-describedby="inputGroup-sizing" />
+              <div className="input-group-append">
+                <span className="input-group-text btn btn-success" id="inputGroup-sizing-sm" onClick={exportToYDK}>Export</span>
+              </div>
+            </div>
+          </div>
+        }
+        
+        
     </div>
   );
 }
 
 export default BottomBar;
+

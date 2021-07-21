@@ -23,8 +23,10 @@ export async function fetchCardsByName(dispatch: Dispatch<any>, names: string[],
     if(cards) {
         dispatch(addCards(cards.data as Card[]))
         dispatch(updateCardIds(cards.data as Card[], setId))
-        localStorage.setItem(setId, JSON.stringify(cards.data));
+        localStorage.setItem(setId, JSON.stringify(cards.data))
+        return true
     }
+    return false
     
 }
 

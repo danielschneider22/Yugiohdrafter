@@ -52,7 +52,7 @@ function App() {
       <ToastManager
         position="bottom-left"
         autoDelete={true}
-        dismissTime={6000}
+        dismissTime={7000}
       />
       <div className={"AppWrapper maxWH"}>
         <Router>
