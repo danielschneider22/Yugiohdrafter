@@ -33,6 +33,7 @@ import { makeAIPicks } from './utils';
 import { toastBGColorDict } from '../../constants/Toast';
 import { addToast } from '../../data/toasts/actions';
 import _ from 'lodash';
+import { isMobile } from "react-device-detect";
 
 function Draft() {
   const dispatch = useDispatch();
@@ -114,8 +115,8 @@ function Draft() {
         <div className={`justify-content-center maxHeight ExpandContract MainCardAreaWrapper`} style={{ width: showSidebar ? "calc(100% - 250px)" : "100%" }}>
             <MainCardArea 
               unsortedCards={cards}
-              title={"DRAFTING PACK: " + boosterNum}
-              subTitle={currSetName}
+              title={isMobile ? "DRAFTING" : "DRAFTING PACK: " + boosterNum}
+              subTitle={isMobile ? undefined : currSetName}
               cardClicked={draftCard}
               loadedCards={allCardSetCardsFetched}
             />

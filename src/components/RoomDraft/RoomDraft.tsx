@@ -30,6 +30,7 @@ import { getRoomPlayerId, roomGetFetchThunk, roomMakePickFetchThunk, roomNextRou
 import { CardPick } from '../../constants/CardPick';
 import { ip } from '../../App';
 import { getUserPlayerInfo } from '../../data/data/roomPlayers.ts/selectors';
+import { isMobile } from 'react-device-detect';
 
 function RoomDraft() {
   const dispatch = useDispatch();
@@ -105,8 +106,8 @@ function RoomDraft() {
             { packViewable &&
               <MainCardArea 
                 unsortedCards={cards}
-                title={"DRAFTING PACK: " + boosterNum}
-                subTitle={currSetName}
+                title={isMobile ? "DRAFTING" : "DRAFTING PACK: " + boosterNum}
+                subTitle={isMobile ? undefined : currSetName}
                 cardClicked={draftCard}
                 loadedCards={allCardSetCardsFetched}
               />

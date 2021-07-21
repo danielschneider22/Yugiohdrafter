@@ -5,6 +5,7 @@ import BottomBar from '../BottomBar/BottomBar';
 import { useEffect, useRef, useState } from 'react';
 import { sortCards, SortType } from '../../data/cards/utils';
 import { scrollToggleNavVisibility } from '../NavBar/ScrollBGColorChange';
+import { isMobile } from 'react-device-detect';
 
 interface ParentProps{
     unsortedCards: VisibleCard[],
@@ -28,7 +29,7 @@ function MainCardArea(props: ParentProps) {
   }, [scrollCardsRef])
 
   const safariIOSSpacingStyle: React.CSSProperties = {paddingTop: -1000}
-  safariIOSSpacingStyle.marginTop = 800
+  safariIOSSpacingStyle.marginTop = isMobile ? 400 : 800
   safariIOSSpacingStyle.color = 'transparent'
 
   return (
