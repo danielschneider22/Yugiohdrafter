@@ -1,11 +1,16 @@
 import { Card } from '../../constants/Card';
+import { CARDS_CACHE_KEY } from '../../constants/CARDS_CACHE_KEY';
+import { State } from '../../models/State';
+import { loadStateFromCache, setCache } from '../utils';
 import { CardActions } from './actions';
 import { CardTypes } from './types';
 
-export const cardsInitialState = {
+const cardsStateEmpty: State<Card> = {
     allIds: [] as string[],
     byId: {} as {[key: string]: Card}
 }
+
+export const cardsInitialState = loadStateFromCache<State<Card>>(CARDS_CACHE_KEY, cardsStateEmpty)
 
 export default function cardsReducer(state = cardsInitialState, action: CardActions) {
     switch (action.type) {
@@ -21,6 +26,7 @@ export default function cardsReducer(state = cardsInitialState, action: CardActi
           allIds: [...new Set([...state.allIds, ...allIds])],
           byId: {...state.byId, ...byId},
         }
+        setCache(CARDS_CACHE_KEY, newState)
         return newState
       }
       default:
