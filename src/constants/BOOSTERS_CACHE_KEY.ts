@@ -1,0 +1,1 @@
+export const BOOSTERS_CACHE_KEY = 'yugiohdrafter.com-boosters'

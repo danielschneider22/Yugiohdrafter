@@ -1,15 +1,20 @@
 import { Booster } from '../../constants/Booster';
+import { BOOSTERS_CACHE_KEY } from '../../constants/BOOSTERS_CACHE_KEY';
+import { State } from '../../models/State';
 import { RoomPlayerAction } from '../data/roomPlayers.ts/actions';
 import { RoomPlayersActionTypes } from '../data/roomPlayers.ts/types';
 import { RoomAction } from '../data/rooms/actions';
 import { RoomsActionTypes } from '../data/rooms/types';
-import { stateRemoveDupeState } from '../utils';
+import { clearCache, loadStateFromCache, setCache, stateRemoveDupeState } from '../utils';
 import { BoosterActions, BoosterType } from './actions';
 
-export const boostersInitialState = {
+export const boostersStateEmpty: State<Booster> = {
     allIds: [] as string[],
     byId: {} as {[key: string]: Booster}
 }
+
+export const boostersInitialState = loadStateFromCache<State<Booster>>(BOOSTERS_CACHE_KEY, boostersStateEmpty)
+
 
 export default function getBoostersReducer(boosterType: BoosterType) {
   return function boostersReducer(state = boostersInitialState, action: BoosterActions | RoomAction | RoomPlayerAction) {
@@ -32,11 +37,13 @@ export default function getBoostersReducer(boosterType: BoosterType) {
         action.boosters.forEach((booster) => {
           byId[booster.id] = booster
         })
-        return {
+        const stateNew = {
             ...state,
             allIds,
             byId,
         }
+        setCache(BOOSTERS_CACHE_KEY, stateNew)
+        return stateNew
       }
       case 'boosters/removeBooster': {
         const allIds = state.allIds.filter((id) => id !== action.id)
@@ -45,21 +52,25 @@ export default function getBoostersReducer(boosterType: BoosterType) {
           if(booster.id !== action.id) 
             byId[booster.id] = booster
         })
-        return {
+        const stateNew = {
             ...state,
             allIds,
             byId,
         }
+        setCache(BOOSTERS_CACHE_KEY, stateNew)
+        return stateNew
       }
       case 'boosters/updateBooster': {
         const byId: {[key: string]: Booster} = {}
         Object.values(state.byId).forEach((booster) => {
           byId[booster.id] = booster.id === action.id ? {...booster, ...action.booster} : booster
         })
-        return {
+        const stateNew = {
             ...state,
             byId,
         }
+        setCache(BOOSTERS_CACHE_KEY, stateNew)
+        return stateNew
       }
       case 'boosters/removeCardFromBooster': {
         const byId: {[key: string]: Booster} = {...state.byId}
@@ -70,22 +81,27 @@ export default function getBoostersReducer(boosterType: BoosterType) {
             ...byId[action.id],
             cardIds
           }
-        return {
+        const stateNew = {
             ...state,
             byId,
         }
+        setCache(BOOSTERS_CACHE_KEY, stateNew)
+        return stateNew
       }
       case 'boosters/resetBoosterCards': {
         const byId: {[key: string]: Booster} = {}
         Object.values(state.byId).forEach((booster) => {
           byId[booster.id] = {...booster, cardIds: undefined}
         })
-        return {
+        const stateNew = {
             ...state,
             byId,
         }
+        setCache(BOOSTERS_CACHE_KEY, stateNew)
+        return stateNew
       }
       case 'boosters/removeAllBoosters': {
+        clearCache(BOOSTERS_CACHE_KEY)
         return boostersInitialState
       }
       case RoomsActionTypes.ROOM_ADD_FETCH_SUCCESS:
