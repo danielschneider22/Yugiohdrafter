@@ -4,8 +4,8 @@ import { State } from '../../models/State';
 import { RoomPlayerAction } from '../data/roomPlayers.ts/actions';
 import { RoomPlayersActionTypes } from '../data/roomPlayers.ts/types';
 import { RoomAction } from '../data/rooms/actions';
-import { RoomsActionTypes } from '../data/rooms/types';
-import { clearCache, loadStateFromCache, setCache, stateRemoveDupeState } from '../utils';
+import { RoomsActionTypes } from '../data/rooms/types'
+import { stateRemoveDupeState } from '../utils';
 import { BoosterActions, BoosterType } from './actions';
 
 export const boostersStateEmpty: State<Booster> = {
@@ -13,7 +13,7 @@ export const boostersStateEmpty: State<Booster> = {
     byId: {} as {[key: string]: Booster}
 }
 
-export const boostersInitialState = loadStateFromCache<State<Booster>>(BOOSTERS_CACHE_KEY, boostersStateEmpty)
+export const boostersInitialState = boostersStateEmpty
 
 
 export default function getBoostersReducer(boosterType: BoosterType) {
@@ -25,11 +25,12 @@ export default function getBoostersReducer(boosterType: BoosterType) {
       case 'boosters/addBooster': {
         const allIds = [...state.allIds, action.booster.id]
         const byId = {...state.byId, [action.booster.id]: action.booster}
-        return {
+        const stateNew = {
             ...state,
             allIds,
             byId,
         }
+        return stateNew
       }
       case 'boosters/setBoosters': {
         const allIds = action.boosters.map((booster) => booster.id)
@@ -42,7 +43,6 @@ export default function getBoostersReducer(boosterType: BoosterType) {
             allIds,
             byId,
         }
-        setCache(BOOSTERS_CACHE_KEY, stateNew)
         return stateNew
       }
       case 'boosters/removeBooster': {
@@ -57,7 +57,6 @@ export default function getBoostersReducer(boosterType: BoosterType) {
             allIds,
             byId,
         }
-        setCache(BOOSTERS_CACHE_KEY, stateNew)
         return stateNew
       }
       case 'boosters/updateBooster': {
@@ -69,7 +68,6 @@ export default function getBoostersReducer(boosterType: BoosterType) {
             ...state,
             byId,
         }
-        setCache(BOOSTERS_CACHE_KEY, stateNew)
         return stateNew
       }
       case 'boosters/removeCardFromBooster': {
@@ -85,7 +83,6 @@ export default function getBoostersReducer(boosterType: BoosterType) {
             ...state,
             byId,
         }
-        setCache(BOOSTERS_CACHE_KEY, stateNew)
         return stateNew
       }
       case 'boosters/resetBoosterCards': {
@@ -97,11 +94,9 @@ export default function getBoostersReducer(boosterType: BoosterType) {
             ...state,
             byId,
         }
-        setCache(BOOSTERS_CACHE_KEY, stateNew)
         return stateNew
       }
       case 'boosters/removeAllBoosters': {
-        clearCache(BOOSTERS_CACHE_KEY)
         return boostersInitialState
       }
       case RoomsActionTypes.ROOM_ADD_FETCH_SUCCESS:
@@ -111,12 +106,15 @@ export default function getBoostersReducer(boosterType: BoosterType) {
       case RoomsActionTypes.ROOMS_MAKE_PICKS_FETCH_SUCCESS:
       case RoomPlayersActionTypes.ROOM_UPDATE_PLAYER_FETCH_SUCCESS:
       {
+        let stateNew
         if(boosterType === "draftBooster" && action.boostersDraft){
-          return stateRemoveDupeState<Booster>(state, action.boostersDraft)
+          stateNew = stateRemoveDupeState<Booster>(state, action.boostersDraft)
         } else if (boosterType === "landingPageBooster" && action.boostersLP) {
-          return stateRemoveDupeState<Booster>(state, action.boostersLP)
+          stateNew = stateRemoveDupeState<Booster>(state, action.boostersLP)
+        } else {
+          stateNew = state
         }
-        return state
+        return stateNew
       }
       default:
         return state

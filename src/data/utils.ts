@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { Dispatch } from "react";
-import { BOOSTERS_CACHE_KEY } from "../constants/BOOSTERS_CACHE_KEY";
 import { CacheKey } from "../constants/CacheKey";
 import { toastBGColorDict } from "../constants/Toast";
 import { State, StateItem } from "../models/State";
