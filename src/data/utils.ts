@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { Dispatch } from "react";
+import { CacheKey } from "../constants/CacheKey";
 import { toastBGColorDict } from "../constants/Toast";
 import { State, StateItem } from "../models/State";
 import { addToast } from "./toasts/actions";
@@ -43,4 +44,28 @@ export const tryCatchPromise = (dispatch: Dispatch<any>, funcArgs?: any[]) => as
     dispatch(addToast({id: _.uniqueId("error-"), type: "Danger", description: "Request failed", title: "Error", backgroundColor: toastBGColorDict["Danger"]}))
     return [null, error]
   }
+}
+
+export function loadStateFromCache<T>(cacheKey: CacheKey, fallbackState: T): T {
+  try {
+    // add empty string fallback so JSON.parse() fails, JSON.parse(null) will actually succeed + return null
+    const stateCachedStr = localStorage.getItem(cacheKey) || '' 
+    // catch will stop crash, and logic will fallthrough to return boostersInitialState if parse fails
+    const stateCached = JSON.parse(stateCachedStr as string)  
+    return stateCached
+  } catch(error) {
+    console.log(`Error: Was not able to initialize '${cacheKey}' from cache. ${error}`)
+  }
+  return fallbackState
+}
+
+export function setCache(cacheKey: CacheKey, state: any) {
+  try {
+    localStorage.setItem(cacheKey, JSON.stringify(state))
+  } catch(error) {
+    console.log(`Error: Could not set cache '${cacheKey}'. ${error}`)
+  }
+}
+export function clearCache(cacheKey: CacheKey) {
+  localStorage.removeItem(cacheKey)
 }

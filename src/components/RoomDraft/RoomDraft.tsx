@@ -26,11 +26,14 @@ import Sidebar from '../Sidebar/Sidebar';
 import { toastBGColorDict } from '../../constants/Toast';
 import { addToast } from '../../data/toasts/actions';
 import _ from 'lodash';
-import { getRoomPlayerId, roomGetFetchThunk, roomMakePickFetchThunk, roomNextRoundFetchThunk } from '../../data/data/rooms/operations';
+import { getRoomPlayerId, roomGetFetchThunk, roomJoinRoomFetchThunk, roomMakePickFetchThunk, roomNextRoundFetchThunk } from '../../data/data/rooms/operations';
 import { CardPick } from '../../constants/CardPick';
 import { ip } from '../../App';
 import { getUserPlayerInfo } from '../../data/data/roomPlayers.ts/selectors';
 import { isMobile } from 'react-device-detect';
+import { RoomResultC } from '../../contracts/RoomResultC';
+
+let updateRoomInterval: any
 
 function RoomDraft() {
   const dispatch = useDispatch();
@@ -56,14 +59,20 @@ function RoomDraft() {
   
   const sidebarRef = useRef(null as unknown as HTMLDivElement)
 
-  useEffect(() => {
-    if(landingPageBoosterIds.length === 0) {
+  async function awaitRoomFetch() {
+    const roomResultC = await dispatch(roomGetFetchThunk(roomId)) as unknown as RoomResultC
+    await dispatch(roomJoinRoomFetchThunk(roomId, false))
+    
+    if (roomResultC.boostersDraft?.allIds.length === 0) {
       history.push("/");
     }
-    const updateRoomInterval = setInterval(() => dispatch(roomGetFetchThunk(roomId)), 1000);
-    return () => {
-      clearInterval(updateRoomInterval)
-    };
+
+    updateRoomInterval = setInterval(() => dispatch(roomGetFetchThunk(roomId)), 1000);
+  }
+
+  useEffect(() => {
+    awaitRoomFetch()
+    return () => { clearInterval(updateRoomInterval) }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // go to draft complete when finished and start a new round if host and boosters are finished

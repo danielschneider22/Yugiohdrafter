@@ -84,7 +84,7 @@ async function roomAddFetchOp(boostersLP: Booster[], customSets: CardSet[], form
     throw new Error(`Fetch failure from addRoomFetchOp(). Response from '${url}': ${JSON.stringify(resp)}`)
 }
 
-export const roomGetFetchThunk = (roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
+export const roomGetFetchThunk = (roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState): Promise<RoomResultC> => {
   dispatch(roomGetFetch)
   const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [roomId])<RoomResultC>(roomGetFetchOp)
   if (roomResultC) {
@@ -101,6 +101,7 @@ export const roomGetFetchThunk = (roomId: string): ThunkAction<void, RootStateOr
   } else {
     dispatch(roomGetFetchFail(error))
   }
+  return Promise.resolve(roomResultC as RoomResultC)
 }
 async function roomGetFetchOp(roomId: string): Promise<RoomResultC> {
   const url = `${baseApiUrl}/room/${roomId}`
@@ -115,7 +116,7 @@ async function roomGetFetchOp(roomId: string): Promise<RoomResultC> {
   }
 }
 
-export const roomJoinRoomFetchThunk = (roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
+export const roomJoinRoomFetchThunk = (roomId: string, removeBoosters = true): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
   dispatch(roomJoinRoomFetch)
   const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [roomId])<RoomResultC>(roomJoinRoomFetchOp)
   if (roomResultC) {
@@ -137,7 +138,8 @@ export const roomJoinRoomFetchThunk = (roomId: string): ThunkAction<void, RootSt
         // fetch all non-custom set cards
         const nonCustomSets = boosters.filter((booster) => !customSets?.allIds.includes(booster.cardSetName))
         getSetsForBoosters(nonCustomSets, dispatch)
-        dispatch(removeAllBoosters("draftBooster"))
+        if (removeBoosters)
+          dispatch(removeAllBoosters("draftBooster"))
         dispatch(setBoosters(boosters, "landingPageBooster"))
       }
       
