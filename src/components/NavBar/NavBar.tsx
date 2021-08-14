@@ -120,7 +120,7 @@ function NavBar() {
                             
                         </ul>
                     </li>
-                    <li><a className="nav-link scrollto" href="#contact">Contact us</a></li>
+                    <li><a className="nav-link scrollto" href="/contactus">Contact us</a></li>
                     </ul>
                     <i className={"bi mobile-nav-toggle bi-list" + (mobileMenuShown ? " bi-x" : " bi-list")} onClick={toggleMobileMenu}></i>
                 </nav>
