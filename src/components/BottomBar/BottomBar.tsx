@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { addToast } from '../../data/toasts/actions';
 import _ from 'lodash';
 import { toastBGColorDict } from '../../constants/Toast';
+import { isMobile } from 'react-device-detect';
 
 interface ParentProps{
   sortType: SortType
@@ -54,9 +55,14 @@ function BottomBar(props: ParentProps) {
         break;
     }
   }
+  let width = "50%"
+  if(isMobile) 
+      width = showExport ? "90%" : "50%"
+  else
+      width = showExport ? "30%" : "20%"
 
   return (
-    <div className="BottomBar row" style={{width: showExport ? "30%" : "20%"}}>
+    <div className="BottomBar row" style={{width}}>
         <div className={"justify-content-center DeckCount row " + (showExport ? "col-6" : "col-11")}>
             <div className="col-4">Sort: </div>
             <div className="SortButton btn-secondary col-8" onClick={changeSort}>{sortType}</div>
@@ -65,7 +71,7 @@ function BottomBar(props: ParentProps) {
         { showExport &&
           <div className="col-5 justify-content-center">
             <div className="input-group input-group export-input-group">
-              <input type="text" onChange={(e) => setDeckName(e.currentTarget.value)} className="form-control" placeholder="Deck Name" aria-label="Small" aria-describedby="inputGroup-sizing" />
+              <input type="text" onChange={(e) => setDeckName(e.currentTarget.value)} className="form-control" placeholder={isMobile ? "Deck" : "Deck Name"} aria-label="Small" aria-describedby="inputGroup-sizing" />
               <div className="input-group-append">
                 <span className="input-group-text btn btn-success" id="inputGroup-sizing-sm" onClick={exportToYDK}>Export</span>
               </div>
