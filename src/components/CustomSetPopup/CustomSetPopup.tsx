@@ -36,7 +36,7 @@ function CustomSetPopup(props: ParentProps) {
         <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
             <nav id="navbar" className="navbar navbar-mobile customSet">
                 <ul className="form-group">
-                    <div className="container contact">
+                    <div className="container contactPopup">
                         <div className="row h-100">
                             <div className="col-lg-12">
                                 <form onSubmit={submit} className="contact-form h-100">
@@ -46,13 +46,13 @@ function CustomSetPopup(props: ParentProps) {
                                     <div className="form-group setName">
                                         <label className="control-label col-6" htmlFor="setName">Set Name:</label>
                                         <div className="col-6">          
-                                            <input value={setName} onChange={doUpdate(setSetName)} type="text" className="form-control" placeholder="Enter Set Name" name="setName" required/>
+                                            <input value={setName} onChange={doUpdate(setSetName)} type="text" className="form-control form-control-white" placeholder="Enter Set Name" name="setName" required/>
                                         </div>
                                     </div>
                                     <div className="form-group CreateSetTextArea cardList">
                                         <label className="control-label col-6" htmlFor="cardList">Card List:</label>
                                         <div className="col-12">
-                                            <textarea value={cardList} onChange={doUpdate(setCardList)} className="form-control" placeholder={placeHolderText} name="cardList" required></textarea>
+                                            <textarea value={cardList} onChange={doUpdate(setCardList)} className="form-control form-control-white" placeholder={placeHolderText} name="cardList" required></textarea>
                                         </div>
                                     </div>
                                     <div className="form-group submit">        

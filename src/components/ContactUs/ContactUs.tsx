@@ -1,16 +1,24 @@
 import emailjs from 'emailjs-com';
 import _ from 'lodash';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import emailkey from '../../constants/emailkey';
 import { toastBGColorDict } from '../../constants/Toast';
 import { addToast } from '../../data/toasts/actions';
+import { scrollToggleNavVisibility } from '../NavBar/ScrollBGColorChange';
 
 type loadingState = "notLoading" | "loading" | "loaded" | "failed"
 
 function ContactUs() {
-    const [loadingState, setLoadingState] = useState("notLoading" as loadingState)
     const dispatch = useDispatch();
+    const [loadingState, setLoadingState] = useState("notLoading" as loadingState)
+    const scrollCardsRef = useRef(null as unknown as HTMLDivElement)
+
+    useEffect(() => {
+        if(scrollCardsRef) {
+            scrollCardsRef.current.addEventListener('scroll', scrollToggleNavVisibility as unknown as (this: HTMLDivElement, ev: Event) => any)
+        }
+      }, [scrollCardsRef])
     
     function sendEmail(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -25,7 +33,7 @@ function ContactUs() {
         });
     }
     return (
-        <section id="contact" className="contact">
+        <section id="contact" className="contact" ref={scrollCardsRef}>
             <div className="container">
 
             <header className="section-header">

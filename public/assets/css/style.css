@@ -1954,6 +1954,25 @@ section {
   font-size: 20px !important;
 }
 
+.social {
+  display: inline;
+}
+
+.contact::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.contact {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.contact{
+  overflow: auto;
+  height: 100%;
+}
+
 .blog .blog-comments .comment h5 {
   font-size: 16px;
   margin-bottom: 2px;
