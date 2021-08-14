@@ -1585,8 +1585,11 @@ section {
 /*--------------------------------------------------------------
 # Contact
 --------------------------------------------------------------*/
+.contact{
+  padding-top: 80px;
+}
 .contact .info-box {
-  color: #444444;
+  color: #858585;
   padding: 30px;
 }
 
@@ -1941,6 +1944,14 @@ section {
 
 .blog .blog-comments .comment .comment-img img {
   width: 60px;
+}
+
+.social > a{
+  display: inline-block !important;
+}
+
+.social > a > i{
+  font-size: 20px !important;
 }
 
 .blog .blog-comments .comment h5 {

@@ -109,7 +109,7 @@ function NavBar() {
 
                 <nav id="navbar" className={"navbar" + (mobileMenuShown ? " navbar-mobile" : "")}>
                     <ul>
-                    <li><Link to="/" className="nav-link scrollto active" onClick={() => defaultClearAndClose()}>Home</Link></li>
+                    <li><Link to="/" className="nav-link scrollto" onClick={() => defaultClearAndClose()}>Home</Link></li>
                     <li><a className="nav-link scrollto" onClick={toggleCustomSetPopupVisiblity}>Create Custom Set</a></li>
                     <li className="dropdown" onClick={showQuickDraftDropdown}><a href="#"><span>Quick Draft</span> <i className="bi bi-chevron-down"></i></a>
                         <ul className={quickDraftDropdownVisible ? "dropdown-active" : ""}>
@@ -121,6 +121,9 @@ function NavBar() {
                         </ul>
                     </li>
                     <li><a className="nav-link scrollto" href="/contactus">Contact us</a></li>
+                    <li className="social"><a href="https://twitter.com/YDrafter"><i className="bi bi-twitter"></i></a></li>
+                    <li className="social"><a href="https://www.facebook.com/groups/341002234334925"><i className="bi bi-facebook"></i></a></li>
+                    <li className="social"><a href="https://github.com/danielschneider22/Yugiohdrafter"><i className="bi bi-github"></i></a></li>
                     </ul>
                     <i className={"bi mobile-nav-toggle bi-list" + (mobileMenuShown ? " bi-x" : " bi-list")} onClick={toggleMobileMenu}></i>
                 </nav>
