@@ -1,16 +1,27 @@
 import emailjs from 'emailjs-com';
-import React from 'react';
+import _ from 'lodash';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import emailkey from '../../constants/emailkey';
+import { toastBGColorDict } from '../../constants/Toast';
+import { addToast } from '../../data/toasts/actions';
+
+type loadingState = "notLoading" | "loading" | "loaded" | "failed"
 
 function ContactUs() {
-
+    const [loadingState, setLoadingState] = useState("notLoading" as loadingState)
+    const dispatch = useDispatch();
+    
     function sendEmail(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        setLoadingState("loading")
         emailjs.sendForm(emailkey.SERVICE_ID, emailkey.TEMPLATE_ID, e.target as HTMLFormElement, emailkey.USER_ID)
         .then((result) => {
-            console.log(result.text);
+            setLoadingState("loaded")
+            dispatch(addToast({id: _.uniqueId("message-sent-"), type: "Success", description: "Message Sent", title: "Success", backgroundColor: toastBGColorDict["Success"]}))
         }, (error) => {
-            console.log(error.text);
+            setLoadingState("failed")
+            dispatch(addToast({id: _.uniqueId("message-not-sent-"), type: "Danger", description: "Message Failed to Send", title: "Error", backgroundColor: toastBGColorDict["Danger"]}))
         });
     }
     return (
@@ -80,9 +91,9 @@ function ContactUs() {
                     </div>
 
                     <div className="col-md-12 text-center">
-                    <div className="loading">Loading</div>
-                    <div className="error-message"></div>
-                    <div className="sent-message">Your message has been sent. Thank you!</div>
+                    { loadingState === "loading" && 
+                        <div className="loading">Loading</div>
+                    }
 
                     <button type="submit">Send Message</button>
                     </div>
