@@ -78,7 +78,7 @@ function Draft() {
           nextBooster = landingPageBoosters[landingPageBoosterIds[landingPageBoosterIds.findIndex((id) => id === currLPBooster.id) + 1]]
         }
         dispatch(removeAllBoosters("draftBooster"))
-        const boosters = createDraftBoostersForRound(nextBooster, cardSets, cardsById, numPlayers)
+        const boosters = createDraftBoostersForRound(nextBooster, cardSets, cardsById, numPlayers,"bot")
         dispatch(setBoosters(boosters, "draftBooster" ))
         dispatch(openNextPack(nextBooster.id))
       }

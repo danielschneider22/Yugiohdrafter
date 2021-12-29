@@ -44,6 +44,7 @@ export function createBoostersForFetchedSets(
     cardSets: {[key: string]: CardSet},
     cardsById: { [key: string]: Card },
     numPlayers: number,
+    roomId: string
 ) {
     const boosters: Booster[] = []
     for(let i = 0; i < numPlayers; i++) {
@@ -51,7 +52,7 @@ export function createBoostersForFetchedSets(
         const randomCardIds = generateCardsIdsForBooster(booster, cardSets, cardsById)
         const newBooster: Booster = {
           cardSetName: booster.cardSetName,
-          id: booster.id + "(Position: " + i + ")",
+          id: `${booster.id}room-${roomId}(Position:${i}`,
           cardIds: randomCardIds
         }
         boosters.push(newBooster)

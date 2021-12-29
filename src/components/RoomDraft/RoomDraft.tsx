@@ -32,6 +32,7 @@ import { ip } from '../../App';
 import { getUserPlayerInfo } from '../../data/data/roomPlayers.ts/selectors';
 import { isMobile } from 'react-device-detect';
 import { RoomResultC } from '../../contracts/RoomResultC';
+import { checkCacheDeck } from '../../data/deck/operations';
 
 let updateRoomInterval: any
 
@@ -60,6 +61,7 @@ function RoomDraft() {
   const sidebarRef = useRef(null as unknown as HTMLDivElement)
 
   async function awaitRoomFetch() {
+    await dispatch(checkCacheDeck(roomId))
     const roomResultC = await dispatch(roomGetFetchThunk(roomId)) as unknown as RoomResultC
     await dispatch(roomJoinRoomFetchThunk(roomId, false))
     

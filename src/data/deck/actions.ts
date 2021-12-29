@@ -1,3 +1,5 @@
+import { Room } from "../../models/Room"
+
 export interface AddCardToDeck {
     type: 'deck/addCardToDeck',
     cardId: string
@@ -92,11 +94,13 @@ export function extraDeckToSideboard(cardId: string, arrayNum?: number) {
 
 export interface ResetDeckAndSideboard {
     type: 'deck/resetDeckAndSideboard',
+    room?: Room
 }
 
-export function resetDeckAndSideboard() {
+export function resetDeckAndSideboard(room?: Room) {
     return {
         type: 'deck/resetDeckAndSideboard',
+        room
     }
 }
 

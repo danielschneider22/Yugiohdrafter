@@ -8,12 +8,14 @@ interface StateDeck {
   deckIds: any[]
   sideboardIds: any[]
   extraDeckIds: any[]
+  roomId: string
 }
 
 export const deckStateEmpty: StateDeck = {
     deckIds: [],
     sideboardIds: [],
-    extraDeckIds: []
+    extraDeckIds: [],
+    roomId: ""
 }
 
 export const deckInitialState = loadStateFromCache<StateDeck>(DECK_CACHE_KEY, deckStateEmpty)
@@ -74,6 +76,7 @@ export default function deckReducer(state = deckInitialState, action: DeckAction
           deckIds: [],
           sideboardIds: [],
           extraDeckIds: [],
+          roomId: action.room ? action.room.id : undefined
         }
       }
       default:

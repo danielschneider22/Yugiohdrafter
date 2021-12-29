@@ -111,6 +111,7 @@ function NavBar() {
                     <ul>
                     <li><Link to="/" className="nav-link scrollto" onClick={() => defaultClearAndClose()}>Home</Link></li>
                     <li><a className="nav-link scrollto" onClick={toggleCustomSetPopupVisiblity}>Create Custom Set</a></li>
+                    {/* <input onChange={(event) => setIP(event.currentTarget.value)} /> */}
                     <li className="dropdown" onClick={showQuickDraftDropdown}><a href="#"><span>Quick Draft</span> <i className="bi bi-chevron-down"></i></a>
                         <ul className={quickDraftDropdownVisible ? "dropdown-active" : ""}>
                             <li><a href="#" onClick={() => quickDraft("retro_draft_custom")}>Retro Draft</a></li>

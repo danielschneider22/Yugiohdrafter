@@ -175,7 +175,8 @@ export const roomStartDraftFetchThunk = (history: History, roomId: string): Thun
   const cardSets = getCardSetsById(getState())
   const cardsById = getCardsById(getState())
   const numPlayers = getNumPlayers(getState())
-  const boostersFirstRound = createDraftBoostersForRound(firstLPBooster, cardSets, cardsById, numPlayers)
+  dispatch(removeAllBoosters("draftBooster"))
+  const boostersFirstRound = createDraftBoostersForRound(firstLPBooster, cardSets, cardsById, numPlayers, roomId)
   const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [roomId, boostersFirstRound])<RoomResultC>(roomStartDraftFetchOp)
   if (roomResultC) {
     const room = await roomContractToModel(roomResultC.room)
@@ -282,7 +283,7 @@ export const roomNextRoundFetchThunk = (roomId: string): ThunkAction<void, RootS
   const numPlayers = getNumPlayers(getState())
   const currLPBooster = getCurrLPBooster(getState())
   const nextBooster = lpBoosters[lpBoosters.findIndex((booster) => booster.id === currLPBooster.id) + 1]
-  const boostersDraft = createDraftBoostersForRound(nextBooster, cardSets, cardsById, numPlayers)
+  const boostersDraft = createDraftBoostersForRound(nextBooster, cardSets, cardsById, numPlayers, roomId)
   const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [roomId, boostersDraft])<RoomResultC>(roomNextRoundFetchOp)
   if (roomResultC) {
     const room = await roomContractToModel(roomResultC.room)

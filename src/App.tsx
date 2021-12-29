@@ -18,6 +18,10 @@ import ContactUs from './components/ContactUs/ContactUs';
 
 export let ip = ""
 
+export function setIP(newIP: string){
+  ip = newIP
+}
+
 function App() {
   const [ipLoaded, setIpLoaded] = useState(false)
   const cardSets = Object.values(useSelector(getCardSetsById))
