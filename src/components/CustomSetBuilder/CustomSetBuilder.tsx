@@ -5,11 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import { useHistory, useParams } from 'react-router-dom';
 import NavItem from '../NavItem/NavItem';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AddRemoveCards from './AddRemoveCards/AddRemoveCards';
 import BulkAddForm from './BulkAdd/BulkAddForm';
 import { fetchCardsById } from '../../data/cards/operations';
 import { getSetCards } from '../../data/cards/utils';
+import { scrollToggleNavVisibility } from '../NavBar/ScrollBGColorChange';
 
 function CustomSetBuilder() {
     const dispatch = useDispatch()
@@ -17,6 +18,15 @@ function CustomSetBuilder() {
     const cardSetsById = useSelector(getCardSetsById)
     const params: { id: string } = useParams()
     const currSet = Object.values(cardSetsById).find((set) => set.set_name === params.id)
+
+    const scrollCardsRef = useRef(null as unknown as HTMLDivElement)
+
+    useEffect(() => {
+        if(scrollCardsRef) {
+            scrollCardsRef.current.addEventListener('scroll', scrollToggleNavVisibility as unknown as (this: HTMLDivElement, ev: Event) => any)
+        }
+    }, [scrollCardsRef])
+
     if (!currSet) {
         history.push("/")
     }
@@ -49,22 +59,25 @@ function CustomSetBuilder() {
     }
 
     return (
-        <div className="maxWH setBuilderWrapper">
-            <div className="BoosterPickerWrapper d-flex justify-content-center row h-100">
-                <div className="BoosterWindowedArea bd-highlight col-sm-12">
-                    <ul className="nav nav-tabs justify-content-center">
-                        <div className="d-flex flex-row flex-wrap justify-content-center">
-                            <li className=""><div className="SetBuilderTitle">{params.id}</div></li>
-                            <NavItem text="Add/Remove Cards" activeTab={activeTab} setActiveTab={setActiveTab} />
-                            <NavItem text="Add from Sets" activeTab={activeTab} setActiveTab={setActiveTab} />
-                            <NavItem text="Bulk Add" activeTab={activeTab} setActiveTab={setActiveTab} />
-                        </div>
-                    </ul>
-                    { tabContent() }
-                </div>
+        <div className="overflowSetBuilderWrapper" ref={scrollCardsRef}>
+            <div className="setBuilderWrapper">
+                <div className="BoosterPickerWrapper d-flex justify-content-center row h-100">
+                    <div className="BoosterWindowedArea bd-highlight col-sm-12">
+                        <ul className="nav nav-tabs justify-content-center">
+                            <div className="d-flex flex-row flex-wrap justify-content-center">
+                                <li className=""><div className="SetBuilderTitle">{params.id}</div></li>
+                                <NavItem text="Add/Remove Cards" activeTab={activeTab} setActiveTab={setActiveTab} />
+                                <NavItem text="Add from Sets" activeTab={activeTab} setActiveTab={setActiveTab} />
+                                <NavItem text="Bulk Add" activeTab={activeTab} setActiveTab={setActiveTab} />
+                            </div>
+                        </ul>
+                        { tabContent() }
+                    </div>
 
+                </div>
             </div>
         </div>
+        
 
 
     );
