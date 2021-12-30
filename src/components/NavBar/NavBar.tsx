@@ -12,6 +12,7 @@ import { initialiazeDraftPod } from '../../data/draftPod/actions';
 import CustomSetPopup from '../CustomSetPopup/CustomSetPopup';
 
 import cardImage from '../../assets/logo.png';
+import CustomSetEditPopup from '../CustomSetEditPopup/CustomSetEditPopup';
 
 function NavBar() {
     /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -46,6 +47,14 @@ function NavBar() {
         }
         setIsQuickCreate(isQuickCreate)
         setCustomSetPopupVisiblity(!customSetPopupVisible)
+    }
+
+    const [customSetEditPopupVisible, setCustomSetEditPopupVisiblity] = useState(false)
+    function toggleCustomSetEditPopupVisiblity(){
+        if(customSetEditPopupVisible) {
+            setMobileMenuShown(false)
+        }
+        setCustomSetEditPopupVisiblity(!customSetEditPopupVisible)
     }
 
     function quickDraft(set_name: string) {
@@ -107,7 +116,8 @@ function NavBar() {
     return (
         <header id="header" className={"header fixed-top" + (mobileMenuShown ? " forceNavToFront" : "")}>
             {customSetPopupVisible && <CustomSetPopup isQuickCreate={isQuickCreate} toggleCustomSetPopupVisiblity={toggleCustomSetPopupVisiblity} />}
-            {!customSetPopupVisible && 
+            {customSetEditPopupVisible && <CustomSetEditPopup toggleCustomSetEditPopupVisiblity={toggleCustomSetEditPopupVisiblity} />}
+            {!customSetPopupVisible && !customSetEditPopupVisible && 
                 <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
 
                 <div className="logo d-flex align-items-center" onClick={goHome}>
@@ -119,9 +129,9 @@ function NavBar() {
                     <ul>
                         <li><Link to="/" className="nav-link scrollto" onClick={() => defaultClearAndClose()}>Home</Link></li>
                         <li className="dropdown" onClick={showCustomSetsDropdown}><a href="#"><span>Custom Sets</span> <i className="bi bi-chevron-down"></i></a>
-                            <ul className={quickDraftDropdownVisible ? "dropdown-active" : ""}>
+                            <ul className={customSetsDropdownVisible ? "dropdown-active" : ""}>
                                 <li><a href="#" onClick={() => toggleCustomSetPopupVisiblity(false)}>Create Custom Set</a></li>
-                                <li><a href="#" onClick={() => quickDraft("battle_pack_custom")}>Edit Custom Sets</a></li>
+                                <li><a href="#" onClick={toggleCustomSetEditPopupVisiblity}>Edit Custom Sets</a></li>
                                 <li><a href="#" onClick={() => toggleCustomSetPopupVisiblity(true)}>Quick Create from List</a></li>
                             </ul>
                         </li>

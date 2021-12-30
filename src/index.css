@@ -55,3 +55,7 @@ code {
   padding-top: .25rem !important;
   padding-bottom: .25rem !important;
 }
+
+.ag-center-cols-viewport{
+  overflow-x: hidden !important;
+}

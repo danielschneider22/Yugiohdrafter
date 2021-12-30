@@ -37,7 +37,7 @@ function CustomSetBuilder() {
                 <div className="BoosterWindowedArea bd-highlight col-sm-12">
                     <ul className="nav nav-tabs justify-content-center">
                         <div className="d-flex flex-row flex-wrap justify-content-center">
-                            <li className=""><div className="SetName">{params.id}</div></li>
+                            <li className=""><div className="SetBuilderTitle">{params.id}</div></li>
                             <NavItem text="Add/Remove Cards" activeTab={activeTab} setActiveTab={setActiveTab} />
                             <NavItem text="Add from Sets" activeTab={activeTab} setActiveTab={setActiveTab} />
                             <NavItem text="Bulk Add" activeTab={activeTab} setActiveTab={setActiveTab} />

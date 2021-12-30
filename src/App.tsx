@@ -16,6 +16,8 @@ import { fetchCardSets } from './data/cardSets/operations';
 import RoomDraft from './components/RoomDraft/RoomDraft';
 import ContactUs from './components/ContactUs/ContactUs';
 import CustomSetBuilder from './components/CustomSetBuilder/CustomSetBuilder';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
 export let ip = ""
 

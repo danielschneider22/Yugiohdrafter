@@ -1,11 +1,11 @@
 import React, { ChangeEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { ip } from '../../App';
 import { fetchCardsByName } from '../../data/cards/operations';
 import { addSet } from '../../data/cardSets/actions';
 import { isMobile } from 'react-device-detect';
 import './CustomSetPopup.css';
 import { useHistory } from 'react-router-dom';
+import { getSetId } from '../../data/cardSets/operations';
 
 interface ParentProps{
     toggleCustomSetPopupVisiblity: (isQuickCreate: boolean) => void
@@ -30,14 +30,13 @@ function CustomSetPopup(props: ParentProps) {
         event.preventDefault()
         if(isQuickCreate){
             const cardNames = cardList.split(/\r?\n/);
-            const setId = setName + "|" + ip
+            const setId = getSetId(setName)
             dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: cardNames.length, tcg_date: Date(), custom_set: true}))
             const successFetchCards = await fetchCardsByName(dispatch, cardNames, setId)
             if(successFetchCards)
                 toggleCustomSetPopupVisiblity(isQuickCreate)
         } else {
-            const setId = setName + "|" + ip
-            dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true}))
+            dispatch(addSet({id: getSetId(setName), set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true}))
             toggleCustomSetPopupVisiblity(isQuickCreate)
             history.push(`/CustomSetBuilder/${setName}`)
         }

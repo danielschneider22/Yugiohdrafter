@@ -40,4 +40,16 @@ export function updateCardIds(cards: Card[], set_name: string) {
     }
 }
 
-export type CardSetsActions = AddSets | UpdateCardIds | AddSet;
+interface RemoveSet {
+    type: 'cardSets/removeSet',
+    id: string
+}
+
+export function removeSet(id: string) {
+    return {
+        type: 'cardSets/removeSet',
+        id
+    }
+}
+
+export type CardSetsActions = AddSets | UpdateCardIds | AddSet | RemoveSet;
