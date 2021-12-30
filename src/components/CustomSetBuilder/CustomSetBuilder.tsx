@@ -1,15 +1,18 @@
 import './CustomSetBuilder.css';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import { useHistory, useParams } from 'react-router-dom';
 import NavItem from '../NavItem/NavItem';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddRemoveCards from './AddRemoveCards/AddRemoveCards';
+import BulkAddForm from './BulkAdd/BulkAddForm';
+import { fetchCardsById } from '../../data/cards/operations';
+import { getSetCards } from '../../data/cards/utils';
 
 function CustomSetBuilder() {
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch()
     const history = useHistory();
     const cardSetsById = useSelector(getCardSetsById)
     const params: { id: string } = useParams()
@@ -18,21 +21,35 @@ function CustomSetBuilder() {
         history.push("/")
     }
 
+    useEffect(() => {
+        if(currSet) {
+            getSetCards(currSet, dispatch)
+        }
+        
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        if(currSet?.card_ids) {
+            fetchCardsById(dispatch, currSet!.card_ids || [] , currSet!.id)
+        }
+        
+    }, [currSet?.card_ids]) // eslint-disable-line react-hooks/exhaustive-deps
+
     const [activeTab, setActiveTab] = useState("Add/Remove Cards")
 
     function tabContent() {
         switch (activeTab) {
             case "Add/Remove Cards":
-                return <AddRemoveCards />;
+                return <AddRemoveCards set={currSet!}/>;
             case "Add from Sets":
                 return 'bar';
             case "Bulk Add":
-                return 'bar';
+                return <BulkAddForm toggleCustomSetPopupVisiblity={() => null} isQuickCreate={true} set={currSet}/>;
         }
     }
 
     return (
-        <div className="maxWH">
+        <div className="maxWH setBuilderWrapper">
             <div className="BoosterPickerWrapper d-flex justify-content-center row h-100">
                 <div className="BoosterWindowedArea bd-highlight col-sm-12">
                     <ul className="nav nav-tabs justify-content-center">

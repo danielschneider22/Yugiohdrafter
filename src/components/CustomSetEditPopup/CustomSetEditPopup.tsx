@@ -8,6 +8,7 @@ import { dateFormatter } from '../../helpers/aggridhelpers';
 import { useHistory } from 'react-router-dom';
 import { renameSetThunk } from '../../data/cardSets/operations';
 import { removeSet } from '../../data/cardSets/actions';
+import { isMobile } from 'react-device-detect';
 
 interface ParentProps {
     toggleCustomSetEditPopupVisiblity: () => void
@@ -95,9 +96,9 @@ function CustomSetEditPopup(props: ParentProps) {
                                     <div className="ag-theme-alpine setGrid">
                                         <AgGridReact rowData={cardSets} gridOptions={gridOptions}>
                                             <AgGridColumn field="set_name" headerName="Name" editable={true}></AgGridColumn>
-                                            <AgGridColumn field="num_of_cards" headerName="# Cards"></AgGridColumn>
-                                            <AgGridColumn field="tcg_date" headerName="Updated Date" valueFormatter={dateFormatter}></AgGridColumn>
-                                            <AgGridColumn field="action" headerName="Action" cellRenderer={actionCellRenderer}></AgGridColumn>
+                                            {!isMobile && <AgGridColumn field="num_of_cards" headerName="# Cards"></AgGridColumn>}
+                                            {!isMobile && <AgGridColumn field="tcg_date" headerName="Updated Date" valueFormatter={dateFormatter}></AgGridColumn>}
+                                            <AgGridColumn field="action" headerName="Action" cellRenderer={actionCellRenderer} minWidth={150}></AgGridColumn>
                                         </AgGridReact>
                                     </div>
                                 </form>

@@ -1,6 +1,7 @@
 import { Dispatch } from "react";
 import { Booster } from "../../constants/Booster";
 import { Card, RarityDict, VisibleCard } from "../../constants/Card";
+import { CardSet } from "../../constants/CardSet";
 import { updateCardIds } from "../cardSets/actions";
 import { addCards } from "./actions";
 import { fetchCards } from "./operations";
@@ -77,4 +78,14 @@ export function getSetsForBoosters(boosters: Booster[], dispatch: Dispatch<any>)
       fetchedSets[booster.cardSetName] = booster.cardSetName
     }
   })
+}
+
+export function getSetCards(set: CardSet, dispatch: Dispatch<any>) {
+    const cardsOfSet = localStorage.getItem(set.id);
+    if(cardsOfSet) {
+      dispatch(addCards(JSON.parse(cardsOfSet) as Card[]))
+      dispatch(updateCardIds(JSON.parse(cardsOfSet) as Card[], set.id))
+    } else {
+      fetchCards(dispatch, set.set_name);
+    }
 }

@@ -19,7 +19,7 @@ export async function fetchCards(dispatch: Dispatch<any>, set_name: string) {
     
 }
 
-function separateIntoBlocks(names: string[]){
+function separateIntoBlocks(names: string[], delimiter?: string){
     const blocks = []
     let currBlock = ""
     names.forEach((name) => {
@@ -27,7 +27,7 @@ function separateIntoBlocks(names: string[]){
             blocks.push(currBlock)
             currBlock = name
         } else {
-            currBlock = currBlock === "" ? name : currBlock + "|" + name
+            currBlock = currBlock === "" ? name : currBlock + (delimiter || "|") + name
         }
     })
     blocks.push(currBlock)
@@ -53,7 +53,6 @@ function removeSpecialChars(names: string[]){
 export async function fetchCardsByName(dispatch: Dispatch<any>, names: string[], setId: string) {
     const namesNoSpecialChars = removeSpecialChars(names)
     const blocks = separateIntoBlocks(namesNoSpecialChars)
-    console.log(blocks)
     const fullCardList: Card[] = []
     for(const block of blocks) {
         const response = await fetch('https://db.ygoprodeck.com/api/v7/cardinfo.php?name=' + block);
@@ -72,15 +71,19 @@ export async function fetchCardsByName(dispatch: Dispatch<any>, names: string[],
     
 }
 
-export async function fetchCardsById(dispatch: Dispatch<any>, ids: (string | number)[], set_name: string) {
-    const sortedIds = ids.sort((a, b) => Number(a) - Number(b))
-    const response = await fetch('https://db.ygoprodeck.com/api/v7/cardinfo.php?id=' + sortedIds.join(","));
-    const cards = await getJSONWithErrorHandling(response, dispatch, "Please check card list", "Invalid Card Name")
-
-    if(cards) {
-        dispatch(addCards(cards.data as Card[]))
-        dispatch(updateCardIds(cards.data as Card[], set_name))
-        localStorage.setItem(set_name, JSON.stringify(cards.data));
+export async function fetchCardsById(dispatch: Dispatch<any>, ids: string[], setId: string) {
+    const blocks = separateIntoBlocks(ids, ",")
+    const fullCardList: Card[] = []
+    for(const block of blocks) {
+        const response = await fetch('https://db.ygoprodeck.com/api/v7/cardinfo.php?id=' + block);
+        const cards = await getJSONWithErrorHandling(response, dispatch, "Please check card list", "Invalid Card Name")
+        if(cards) {
+            fullCardList.push(...cards.data)
+        } else {
+            return false
+        }
     }
+    dispatch(addCards(fullCardList))
+    return true
     
 }

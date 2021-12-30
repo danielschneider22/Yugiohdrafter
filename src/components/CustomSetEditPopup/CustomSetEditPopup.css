@@ -79,8 +79,20 @@
 
 .edit-grid-button{
     background: #238b1c !important;
+    height: 38px;
+    line-height: 38px;
+}
+
+.edit-grid-button:hover{
+    background: #3e8639 !important;
 }
 
 .delete-grid-button{
     background: #c92121 !important;
+    height: 38px;
+    line-height: 38px;
+}
+
+.delete-grid-button:hover{
+    background: #942e2e !important;
 }
