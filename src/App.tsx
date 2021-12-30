@@ -15,6 +15,7 @@ import { addSets } from './data/cardSets/actions';
 import { fetchCardSets } from './data/cardSets/operations';
 import RoomDraft from './components/RoomDraft/RoomDraft';
 import ContactUs from './components/ContactUs/ContactUs';
+import CustomSetBuilder from './components/CustomSetBuilder/CustomSetBuilder';
 
 export let ip = ""
 
@@ -81,9 +82,12 @@ function App() {
               <Route path={`/room/:id`}>
                 <RoomPage />
               </Route>
-            <Route path="/">
-              <LandingPage />
-            </Route>
+              <Route path="/CustomSetBuilder/:id">
+                <CustomSetBuilder />
+              </Route>
+              <Route path="/">
+                <LandingPage />
+              </Route>
           </Switch>
         </Router>
       </div>

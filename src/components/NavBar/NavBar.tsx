@@ -32,11 +32,19 @@ function NavBar() {
             setQuickDraftDropdownVisible(!quickDraftDropdownVisible)
     }
 
+    const [customSetsDropdownVisible, setCustomSetsDropdownVisible] = useState(false)
+    function showCustomSetsDropdown(){
+        if(mobileMenuShown)
+            setCustomSetsDropdownVisible(!customSetsDropdownVisible)
+    }
+
     const [customSetPopupVisible, setCustomSetPopupVisiblity] = useState(false)
-    function toggleCustomSetPopupVisiblity(){
+    const [isQuickCreate, setIsQuickCreate] = useState(false)
+    function toggleCustomSetPopupVisiblity(isQuickCreate: boolean){
         if(customSetPopupVisible) {
             setMobileMenuShown(false)
         }
+        setIsQuickCreate(isQuickCreate)
         setCustomSetPopupVisiblity(!customSetPopupVisible)
     }
 
@@ -98,7 +106,7 @@ function NavBar() {
     
     return (
         <header id="header" className={"header fixed-top" + (mobileMenuShown ? " forceNavToFront" : "")}>
-            {customSetPopupVisible && <CustomSetPopup toggleCustomSetPopupVisiblity={toggleCustomSetPopupVisiblity} />}
+            {customSetPopupVisible && <CustomSetPopup isQuickCreate={isQuickCreate} toggleCustomSetPopupVisiblity={toggleCustomSetPopupVisiblity} />}
             {!customSetPopupVisible && 
                 <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
 
@@ -109,22 +117,28 @@ function NavBar() {
 
                 <nav id="navbar" className={"navbar" + (mobileMenuShown ? " navbar-mobile" : "")}>
                     <ul>
-                    <li><Link to="/" className="nav-link scrollto" onClick={() => defaultClearAndClose()}>Home</Link></li>
-                    <li><a className="nav-link scrollto" onClick={toggleCustomSetPopupVisiblity}>Create Custom Set</a></li>
-                    {/* <input onChange={(event) => setIP(event.currentTarget.value)} /> */}
-                    <li className="dropdown" onClick={showQuickDraftDropdown}><a href="#"><span>Quick Draft</span> <i className="bi bi-chevron-down"></i></a>
-                        <ul className={quickDraftDropdownVisible ? "dropdown-active" : ""}>
-                            <li><a href="#" onClick={() => quickDraft("retro_draft_custom")}>Retro Draft</a></li>
-                            <li><a href="#" onClick={() => quickDraft("battle_pack_custom")}>Battle Pack Draft</a></li>
-                            {latestSet && <li><a href="#" onClick={() => quickDraft(latestSet.id)}>{latestSet.id} Draft</a></li>}
-                            {customSets.map((set) => <li key={set.id}><a href="#" onClick={() => quickDraft(set.id)}>{set.set_name}</a></li>)}
-                            
-                        </ul>
-                    </li>
-                    <li><a className="nav-link scrollto" href="/contactus">Contact us</a></li>
-                    <li className="social"><a href="https://twitter.com/YDrafter"><i className="bi bi-twitter"></i></a></li>
-                    <li className="social"><a href="https://www.facebook.com/groups/341002234334925"><i className="bi bi-facebook"></i></a></li>
-                    <li className="social"><a href="https://github.com/danielschneider22/Yugiohdrafter"><i className="bi bi-github"></i></a></li>
+                        <li><Link to="/" className="nav-link scrollto" onClick={() => defaultClearAndClose()}>Home</Link></li>
+                        <li className="dropdown" onClick={showCustomSetsDropdown}><a href="#"><span>Custom Sets</span> <i className="bi bi-chevron-down"></i></a>
+                            <ul className={quickDraftDropdownVisible ? "dropdown-active" : ""}>
+                                <li><a href="#" onClick={() => toggleCustomSetPopupVisiblity(false)}>Create Custom Set</a></li>
+                                <li><a href="#" onClick={() => quickDraft("battle_pack_custom")}>Edit Custom Sets</a></li>
+                                <li><a href="#" onClick={() => toggleCustomSetPopupVisiblity(true)}>Quick Create from List</a></li>
+                            </ul>
+                        </li>
+                        {/* <input onChange={(event) => setIP(event.currentTarget.value)} /> */}
+                        <li className="dropdown" onClick={showQuickDraftDropdown}><a href="#"><span>Quick Draft</span> <i className="bi bi-chevron-down"></i></a>
+                            <ul className={quickDraftDropdownVisible ? "dropdown-active" : ""}>
+                                <li><a href="#" onClick={() => quickDraft("retro_draft_custom")}>Retro Draft</a></li>
+                                <li><a href="#" onClick={() => quickDraft("battle_pack_custom")}>Battle Pack Draft</a></li>
+                                {latestSet && <li><a href="#" onClick={() => quickDraft(latestSet.id)}>{latestSet.id} Draft</a></li>}
+                                {customSets.map((set) => <li key={set.id}><a href="#" onClick={() => quickDraft(set.id)}>{set.set_name}</a></li>)}
+                                
+                            </ul>
+                        </li>
+                        <li><a className="nav-link scrollto" href="/contactus">Contact us</a></li>
+                        <li className="social"><a href="https://twitter.com/YDrafter"><i className="bi bi-twitter"></i></a></li>
+                        <li className="social"><a href="https://www.facebook.com/groups/341002234334925"><i className="bi bi-facebook"></i></a></li>
+                        <li className="social"><a href="https://github.com/danielschneider22/Yugiohdrafter"><i className="bi bi-github"></i></a></li>
                     </ul>
                     <i className={"bi mobile-nav-toggle bi-list" + (mobileMenuShown ? " bi-x" : " bi-list")} onClick={toggleMobileMenu}></i>
                 </nav>

@@ -1,0 +1,139 @@
+.BoosterPickerWrapper{
+    height: 100%;
+    padding-top: 80px;
+}
+
+.BoosterPickerWrapper > * {
+    color: white;
+    font-family: "Nunito", sans-serif;
+}
+
+.InfoBlurb{
+    font-size: 30px;
+    text-align: center;
+    padding-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: white;
+    font-family: "Nunito", sans-serif;
+    margin-top: 3px;
+}
+
+.ToggleButton {
+    font-size: 18px;
+    text-align: center;
+    width: 100%;
+    padding-bottom: 10px;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: white;
+    font-family: "Nunito", sans-serif;
+    margin-top: 3px;
+}
+
+.FormatTypeBottom{
+    padding-bottom: 40px;
+}
+
+.ToggleButton > label > input {
+    visibility:hidden;
+}
+
+.ToggleButton > label {
+    border: 1px solid #333;
+}
+
+.BoosterSelect{
+    font-size: 18px;
+    border: .5px solid #8888885c;
+    border-left: 0px;
+    height: 52px;
+}
+.BoosterSelect > select{
+    text-shadow:0 1px 0 rgba(0,0,0,0.4);
+    width: 100%;
+    border: none;
+}
+
+.LaunchButton.btn-success{
+    text-align: center;
+    margin-top: 20px;
+    cursor: pointer;
+}
+.BackButton{
+    position: absolute;
+    top: 85%;
+    left: 85%;
+    font-size: 50px;
+    display:inline-block;
+    padding:0.3em 1.2em;
+    margin:0 0.3em 0.3em 0;
+    border-radius:5em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-weight:400;
+    color:#FFFFFF;
+    background-color:#1c5321;
+    text-align:center;
+    transition: all 0.2s;
+}
+.BackButton:hover{
+    background-color:#0e2c11;
+}
+.BoosterText{
+    width: 25%;
+    float: left;
+    font-size: 1.5vh;
+    text-align: center;
+    margin: auto;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+.BoostersWrapper{
+    overflow-y: auto;
+    height: 300px;
+}
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    [class*="BoostersWrapper"] {
+        height: 150px;
+    }
+  }
+.AddBoosterButton{
+    margin-bottom: 15px;
+}
+
+.DeleteButton.btn-danger{
+    cursor: pointer;
+    margin-right: 5px;
+    font-size: .8rem;
+    height: 50px;
+    line-height: 40px;
+}
+
+.SetName{
+    display: block;
+    padding: 0.5rem 2rem;
+    color: rgb(227, 255, 66);
+    text-decoration: none;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+}
