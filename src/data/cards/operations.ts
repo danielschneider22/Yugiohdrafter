@@ -13,7 +13,7 @@ export async function fetchCards(dispatch: Dispatch<any>, set_name: string) {
 
     if(cards) {
         dispatch(addCards(cards.data as Card[]))
-        dispatch(updateCardIds(cards.data as Card[], set_name))
+        dispatch(updateCardIds(cards.data as Card[], set_name, "overwrite"))
         localStorage.setItem(set_name, JSON.stringify(cards.data));
     }
     
@@ -50,7 +50,7 @@ function removeSpecialChars(names: string[]){
     return names.map((name) => name.replace("#", "%23"))
 }
 
-export async function fetchCardsByName(dispatch: Dispatch<any>, names: string[], setId: string) {
+export async function fetchCardsByName(dispatch: Dispatch<any>, names: string[], setId: string, addOrOverwrite: "add" | "overwrite") {
     const namesNoSpecialChars = removeSpecialChars(names)
     const blocks = separateIntoBlocks(namesNoSpecialChars)
     const fullCardList: Card[] = []
@@ -65,7 +65,7 @@ export async function fetchCardsByName(dispatch: Dispatch<any>, names: string[],
     }
     toastFailedCards(dispatch, names, fullCardList)
     dispatch(addCards(fullCardList))
-    dispatch(updateCardIds(fullCardList, setId))
+    dispatch(updateCardIds(fullCardList, setId, addOrOverwrite))
     localStorage.setItem(setId, JSON.stringify(fullCardList))
     return true
     

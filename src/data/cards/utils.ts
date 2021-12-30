@@ -71,7 +71,7 @@ export function getSetsForBoosters(boosters: Booster[], dispatch: Dispatch<any>)
       const cardsOfSet = localStorage.getItem(booster.cardSetName);
       if(cardsOfSet) {
         dispatch(addCards(JSON.parse(cardsOfSet) as Card[]))
-        dispatch(updateCardIds(JSON.parse(cardsOfSet) as Card[], booster.cardSetName))
+        dispatch(updateCardIds(JSON.parse(cardsOfSet) as Card[], booster.cardSetName, "overwrite"))
       } else {
         fetchCards(dispatch, booster.cardSetName);
       }
@@ -84,7 +84,7 @@ export function getSetCards(set: CardSet, dispatch: Dispatch<any>) {
     const cardsOfSet = localStorage.getItem(set.id);
     if(cardsOfSet) {
       dispatch(addCards(JSON.parse(cardsOfSet) as Card[]))
-      dispatch(updateCardIds(JSON.parse(cardsOfSet) as Card[], set.id))
+      dispatch(updateCardIds(JSON.parse(cardsOfSet) as Card[], set.id, "overwrite"))
     } else {
       fetchCards(dispatch, set.set_name);
     }

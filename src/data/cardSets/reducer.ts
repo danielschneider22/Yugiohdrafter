@@ -36,9 +36,13 @@ export default function cardSetsReducer(state = cardSetsInitialState, action: Ca
       case 'cardSets/updateCardIds': {
         const byId: {[key: string]: CardSet} = {}
         Object.values(state.byId).forEach((cardSet) => {
-          byId[cardSet.id] = cardSet.id !== action.set_name ? state.byId[cardSet.id] : {...state.byId[cardSet.id], card_ids: action.cards.map((card) => card.id)}
-          byId[cardSet.id].num_of_cards = byId[cardSet.id].card_ids ? byId[cardSet.id].card_ids!.length : 0
+          const currCards = cardSet.card_ids || []
+          const card_ids = action.addOrOverwrite === "overwrite" ? action.cards.map((card) => card.id) : [...new Set([...currCards,...action.cards.map((card) => card.id)])]
+          const newSet = cardSet.id === action.set_name ? {...cardSet, card_ids} : cardSet
+          newSet.num_of_cards = newSet.card_ids ? newSet.card_ids!.length : 0
+          byId[cardSet.id] = newSet
         })
+        
         return {...state, byId}
       }
       case 'cardSets/removeSet': {

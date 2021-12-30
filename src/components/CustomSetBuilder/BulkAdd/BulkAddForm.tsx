@@ -7,6 +7,9 @@ import { addSet } from '../../../data/cardSets/actions';
 import { getSetId } from '../../../data/cardSets/operations';
 import  '../../CustomSetPopup/CustomSetPopup.css';
 import { CardSet } from '../../../constants/CardSet';
+import _ from 'lodash';
+import { toastBGColorDict } from '../../../constants/Toast';
+import { addToast } from '../../../data/toasts/actions';
 
 interface ParentProps{
     toggleCustomSetPopupVisiblity: (isQuickCreate: boolean) => void
@@ -30,21 +33,26 @@ function BulkAddForm(props: ParentProps) {
 
     async function submit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
-        if(isQuickCreate){
+        if(isQuickCreate && !set){
             const cardNames = cardList.split(/\r?\n/);
             const setId = getSetId(setName)
             dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: cardNames.length, tcg_date: Date(), custom_set: true}))
-            const successFetchCards = await fetchCardsByName(dispatch, cardNames, setId)
-            if(successFetchCards)
+            const successFetchCards = await fetchCardsByName(dispatch, cardNames, setId, "add")
+            if(successFetchCards){
                 toggleCustomSetPopupVisiblity(isQuickCreate)
+                history.push(`/CustomSetBuilder/${setName}`)
+                dispatch(addToast({id: _.uniqueId("built-set-"), type: "Success", description: setName, title: "Custom Set Created", backgroundColor: toastBGColorDict["Success"]}))
+            }
         } else if(!set) {
             dispatch(addSet({id: getSetId(setName), set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true}))
             toggleCustomSetPopupVisiblity(isQuickCreate)
             history.push(`/CustomSetBuilder/${setName}`)
+            dispatch(addToast({id: _.uniqueId("built-set-"), type: "Success", description: setName, title: "Custom Set Created", backgroundColor: toastBGColorDict["Success"]}))
         } else {
             const cardNames = cardList.split(/\r?\n/);
             const setId = set!.id
-            await fetchCardsByName(dispatch, cardNames, setId)
+            await fetchCardsByName(dispatch, cardNames, setId, "add")
+            dispatch(addToast({id: _.uniqueId("built-set-"), type: "Success", description: set.set_name, title: "Cards added to Custom Set", backgroundColor: toastBGColorDict["Success"]}))
         }
         
     }

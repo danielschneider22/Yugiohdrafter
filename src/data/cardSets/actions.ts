@@ -29,14 +29,16 @@ export function addSet(cardSet: CardSet) {
 interface UpdateCardIds {
     type: 'cardSets/updateCardIds',
     cards: Card[],
-    set_name: string
+    set_name: string,
+    addOrOverwrite: "add" | "overwrite"
 }
 
-export function updateCardIds(cards: Card[], set_name: string) {
+export function updateCardIds(cards: Card[], set_name: string, addOrOverwrite: "add" | "overwrite") {
     return {
         type: 'cardSets/updateCardIds',
         cards,
-        set_name
+        set_name,
+        addOrOverwrite
     }
 }
 
