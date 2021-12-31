@@ -119,7 +119,6 @@ function NavBar() {
             {customSetEditPopupVisible && <CustomSetEditPopup toggleCustomSetEditPopupVisiblity={toggleCustomSetEditPopupVisiblity} />}
             {!customSetPopupVisible && !customSetEditPopupVisible && 
                 <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
-
                 <div className="logo d-flex align-items-center" onClick={goHome}>
                     <img src={cardImage} alt="" />
                     <span>YugiohDrafter</span>

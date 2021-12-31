@@ -11,10 +11,11 @@ import BulkAddForm from './BulkAdd/BulkAddForm';
 import { fetchCardsById } from '../../data/cards/operations';
 import { getSetCards } from '../../data/cards/utils';
 import { scrollToggleNavVisibility } from '../NavBar/ScrollBGColorChange';
+import AddFromSets from './AddFromSets/AddFromSets';
 
 function CustomSetBuilder() {
     const dispatch = useDispatch()
-    const history = useHistory();
+    const history = useHistory()
     const cardSetsById = useSelector(getCardSetsById)
     const params: { id: string } = useParams()
     const currSet = Object.values(cardSetsById).find((set) => set.set_name === params.id)
@@ -50,9 +51,9 @@ function CustomSetBuilder() {
     function tabContent() {
         switch (activeTab) {
             case "View/Edit List":
-                return <AddRemoveCards set={currSet!}/>;
+                return <AddRemoveCards setShown={currSet!} setEffected={currSet!} />;
             case "Add from Sets":
-                return 'bar';
+                return <AddFromSets setEffected={currSet!} />;
             case "Bulk Add":
                 return <BulkAddForm toggleCustomSetPopupVisiblity={() => null} isQuickCreate={true} set={currSet}/>;
         }

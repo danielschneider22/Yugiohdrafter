@@ -87,7 +87,7 @@ export function getSetCards(set: CardSet, dispatch: Dispatch<any>) {
       const cards: Card[] = JSON.parse(cardsOfSet)
       dispatch(addCards(cards))
       dispatch(updateCardIds(cards.map((card) => card.id), set.id, "overwrite"))
-    } else {
+    } else if(!set.custom_set) {
       fetchCards(dispatch, set.set_name);
     }
 }

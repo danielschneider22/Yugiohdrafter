@@ -47,33 +47,12 @@ function CustomSetEditPopup(props: ParentProps) {
 
     const gridOptions: GridOptions = {
         onRowDataChanged,
-        onCellClicked,
         onCellDoubleClicked,
         rowSelection: "single",
         onCellValueChanged,
         frameworkComponents: {
             editDeleteCellRenderer: EditDeleteCellRenderer,
         },
-    }
-
-    function onCellClicked(event: CellClickedEvent) {
-        if (event.column.getColId() === "action" && (event.event!.target! as any).dataset.action) {
-            let action = (event.event!.target! as any).dataset.action;
-
-            if (action === "delete") {
-                // eslint-disable-next-line no-restricted-globals
-                if(confirm('Are you sure you want to delete this set?')){
-                    dispatch(removeSet(event.node.data.id))
-                }
-                
-            }
-
-            if (action === "edit") {
-                toggleCustomSetEditPopupVisiblity()
-                history.push(`/CustomSetBuilder/${event.node.data["set_name"]}`)
-            }
-
-        }
     }
 
     const actionStyle = {display: "flex", justifyContent: "center", alignItems: "center"}
@@ -94,7 +73,7 @@ function CustomSetEditPopup(props: ParentProps) {
                                             <AgGridColumn field="set_name" headerName="Name" editable={true}></AgGridColumn>
                                             {!isMobile && <AgGridColumn field="num_of_cards" headerName="# Cards"></AgGridColumn>}
                                             {!isMobile && <AgGridColumn field="tcg_date" headerName="Updated Date" valueFormatter={dateFormatter}></AgGridColumn>}
-                                            <AgGridColumn field="action" headerName="" cellRenderer={"editDeleteCellRenderer"} minWidth={150} cellStyle={actionStyle}></AgGridColumn>
+                                            <AgGridColumn field="action" headerName="" cellRenderer={"editDeleteCellRenderer"} minWidth={150} cellStyle={actionStyle} cellRendererParams={{toggleCustomSetEditPopupVisiblity}}></AgGridColumn>
                                         </AgGridReact>
                                     </div>
                                 </form>

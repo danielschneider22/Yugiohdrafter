@@ -49,6 +49,7 @@
     border: .5px solid #8888885c;
     border-left: 0px;
     height: 52px;
+    margin: 0.25rem;
 }
 .BoosterSelect > select{
     text-shadow:0 1px 0 rgba(0,0,0,0.4);

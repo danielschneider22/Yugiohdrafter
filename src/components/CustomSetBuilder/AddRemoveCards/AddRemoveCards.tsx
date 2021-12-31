@@ -3,26 +3,30 @@ import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import { useSelector } from "react-redux";
 import { CardSet } from "../../../constants/CardSet";
 import { getCardsById } from "../../../data/cards/selectors";
+import AddOrRemoveCardButton from "./AddOrRemoveCardButton";
 import './AddRemoveCards.css'
-import RemoveCardButton from "./RemoveCardButton";
 
 
 interface ParentParams{
-    set: CardSet
+    setShown: CardSet,
+    setEffected: CardSet,
 }
 
 function AddRemoveCards(params: ParentParams) {
-    const {set} = {...params}
+    const {setShown, setEffected} = {...params}
     const cards = useSelector(getCardsById)
 
-    const cardsOfSet = set.card_ids ? set.card_ids!.map((id) => cards[id]) : []
+    const cardsSetShown = setShown.card_ids ? setShown.card_ids!.map((id) => cards[id]) : []
 
     const gridOptions: GridOptions = {
+        getRowNodeId: data => data.id,
         headerHeight: 30,
         floatingFiltersHeight: 40,
         frameworkComponents: {
-            removeCardRenderer: RemoveCardButton,
+            addOrRemoveRenderer: AddOrRemoveCardButton,
         },
+        immutableData: true,
+        suppressScrollOnNewData: true,
         defaultColDef: {
             cellStyle: {
                 fontSize: '14px',
@@ -35,7 +39,7 @@ function AddRemoveCards(params: ParentParams) {
             sortable: true,
             floatingFilter: true,
             filter: true,
-            resizable: true
+            resizable: true,
         },
         getRowHeight: (params: RowHeightParams) => {
             return Math.max(Math.ceil((params.data.desc.length / 87)) * 30, 45)
@@ -44,9 +48,9 @@ function AddRemoveCards(params: ParentParams) {
 
     return (
         <div className="ag-theme-alpine CardsGrid">
-            <AgGridReact rowData={cardsOfSet} gridOptions={gridOptions}>
-                <AgGridColumn field="action" headerName="" cellRenderer={"removeCardRenderer"} cellRendererParams={{set}} width={75} floatingFilter={false} filter={false}></AgGridColumn>
-                <AgGridColumn field="name" headerName="Name" cellStyle={{cursor: "pointer"}}></AgGridColumn>
+            <AgGridReact rowData={cardsSetShown} gridOptions={gridOptions}>
+                <AgGridColumn field="action" headerName="" cellRenderer={"addOrRemoveRenderer"} cellRendererParams={{set: setEffected}} width={75} floatingFilter={false} filter={false}></AgGridColumn>
+                <AgGridColumn field="name" headerName="Name" cellStyle={{cursor: "pointer"}} sort={"asc"}></AgGridColumn>
                 <AgGridColumn field="desc" headerName="Description" width={700} wrapText={true}></AgGridColumn>
                 <AgGridColumn field="type" headerName="Type" width={150}></AgGridColumn>
                 <AgGridColumn field="race" headerName="Subtype/Race" width={150}></AgGridColumn>
