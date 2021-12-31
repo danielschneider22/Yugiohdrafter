@@ -45,11 +45,11 @@ function CustomSetBuilder() {
         
     }, [currSet?.card_ids]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    const [activeTab, setActiveTab] = useState("Add/Remove Cards")
+    const [activeTab, setActiveTab] = useState("View/Edit List")
 
     function tabContent() {
         switch (activeTab) {
-            case "Add/Remove Cards":
+            case "View/Edit List":
                 return <AddRemoveCards set={currSet!}/>;
             case "Add from Sets":
                 return 'bar';
@@ -66,7 +66,7 @@ function CustomSetBuilder() {
                         <ul className="nav nav-tabs justify-content-center">
                             <div className="d-flex flex-row flex-wrap justify-content-center">
                                 <li className=""><div className="SetBuilderTitle">{params.id}</div></li>
-                                <NavItem text="Add/Remove Cards" activeTab={activeTab} setActiveTab={setActiveTab} />
+                                <NavItem text="View/Edit List" activeTab={activeTab} setActiveTab={setActiveTab} />
                                 <NavItem text="Add from Sets" activeTab={activeTab} setActiveTab={setActiveTab} />
                                 <NavItem text="Bulk Add" activeTab={activeTab} setActiveTab={setActiveTab} />
                             </div>

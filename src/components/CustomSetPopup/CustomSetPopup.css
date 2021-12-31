@@ -31,12 +31,12 @@
 .contact-form label{
     font-weight:600;
 }
-.contact-form button{
+.contact-form .submitButton{
     background: #25274d;
     color: #fff;
     font-weight: 600;
 }
-.contact-form button:focus{
+.contact-form .submitButton:focus{
     box-shadow:none;
 }
 .contact-form{

@@ -3,12 +3,13 @@ import './CustomSetEditPopup.css';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCardSetsById } from '../../data/cardSets/selectors';
-import { CellClickedEvent, CellDoubleClickedEvent, CellValueChangedEvent, GridOptions, GridReadyEvent, ICellRendererParams } from 'ag-grid-community';
+import { CellClickedEvent, CellDoubleClickedEvent, CellValueChangedEvent, GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { dateFormatter } from '../../helpers/aggridhelpers';
 import { useHistory } from 'react-router-dom';
 import { renameSetThunk } from '../../data/cardSets/operations';
 import { removeSet } from '../../data/cardSets/actions';
 import { isMobile } from 'react-device-detect';
+import EditDeleteCellRenderer from './EditDeleteCellRenderer';
 
 interface ParentProps {
     toggleCustomSetEditPopupVisiblity: () => void
@@ -49,17 +50,10 @@ function CustomSetEditPopup(props: ParentProps) {
         onCellClicked,
         onCellDoubleClicked,
         rowSelection: "single",
-        onCellValueChanged
-    }
-
-    function actionCellRenderer(event: ICellRendererParams) {
-        let eGui = document.createElement("div");
-        eGui.innerHTML = `
-            <button class="action-button edit-grid-button" data-action="edit" > edit  </button>
-            <button class="action-button delete-grid-button" data-action="delete" > delete </button>
-        `;
-
-        return eGui;
+        onCellValueChanged,
+        frameworkComponents: {
+            editDeleteCellRenderer: EditDeleteCellRenderer,
+        },
     }
 
     function onCellClicked(event: CellClickedEvent) {
@@ -82,6 +76,8 @@ function CustomSetEditPopup(props: ParentProps) {
         }
     }
 
+    const actionStyle = {display: "flex", justifyContent: "center", alignItems: "center"}
+
     return (
         <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
             <nav id="navbar" className="navbar navbar-mobile navbar-mobile-wide customSet">
@@ -98,7 +94,7 @@ function CustomSetEditPopup(props: ParentProps) {
                                             <AgGridColumn field="set_name" headerName="Name" editable={true}></AgGridColumn>
                                             {!isMobile && <AgGridColumn field="num_of_cards" headerName="# Cards"></AgGridColumn>}
                                             {!isMobile && <AgGridColumn field="tcg_date" headerName="Updated Date" valueFormatter={dateFormatter}></AgGridColumn>}
-                                            <AgGridColumn field="action" headerName="Action" cellRenderer={actionCellRenderer} minWidth={150}></AgGridColumn>
+                                            <AgGridColumn field="action" headerName="" cellRenderer={"editDeleteCellRenderer"} minWidth={150} cellStyle={actionStyle}></AgGridColumn>
                                         </AgGridReact>
                                     </div>
                                 </form>

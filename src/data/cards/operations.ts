@@ -9,12 +9,13 @@ import { addCards } from "./actions";
 
 export async function fetchCards(dispatch: Dispatch<any>, set_name: string) {
     const response = await fetch('https://db.ygoprodeck.com/api/v7/cardinfo.php?cardset=' + set_name)
-    const cards = await getJSONWithErrorHandling(response, dispatch, "Please try a Different Set", "Set Selection Failed")
+    const cardsC = await getJSONWithErrorHandling(response, dispatch, "Please try a Different Set", "Set Selection Failed")
 
-    if(cards) {
-        dispatch(addCards(cards.data as Card[]))
-        dispatch(updateCardIds(cards.data as Card[], set_name, "overwrite"))
-        localStorage.setItem(set_name, JSON.stringify(cards.data));
+    if(cardsC) {
+        const cards: Card[] = cardsC.data
+        dispatch(addCards(cards))
+        dispatch(updateCardIds(cards.map((card) => card.id), set_name, "overwrite"))
+        localStorage.setItem(set_name, JSON.stringify(cards));
     }
     
 }
@@ -65,7 +66,7 @@ export async function fetchCardsByName(dispatch: Dispatch<any>, names: string[],
     }
     toastFailedCards(dispatch, names, fullCardList)
     dispatch(addCards(fullCardList))
-    dispatch(updateCardIds(fullCardList, setId, addOrOverwrite))
+    dispatch(updateCardIds(fullCardList.map((card) => card.id), setId, addOrOverwrite))
     localStorage.setItem(setId, JSON.stringify(fullCardList))
     return true
     

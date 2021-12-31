@@ -1,6 +1,4 @@
-import { Card } from "../../constants/Card";
 import { CardSet } from "../../constants/CardSet";
-
 
 interface AddSets {
     type: 'cardSets/addSets',
@@ -28,15 +26,15 @@ export function addSet(cardSet: CardSet) {
 
 interface UpdateCardIds {
     type: 'cardSets/updateCardIds',
-    cards: Card[],
+    cardsIds: string[],
     set_name: string,
     addOrOverwrite: "add" | "overwrite"
 }
 
-export function updateCardIds(cards: Card[], set_name: string, addOrOverwrite: "add" | "overwrite") {
+export function updateCardIds(cardsIds: string[], set_name: string, addOrOverwrite: "add" | "overwrite") {
     return {
         type: 'cardSets/updateCardIds',
-        cards,
+        cardsIds,
         set_name,
         addOrOverwrite
     }

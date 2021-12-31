@@ -80,7 +80,7 @@ function BulkAddForm(props: ParentProps) {
             }
             
             <div className="form-group submit">        
-                <button type="submit" className="btn-lg btn-default">Submit</button>
+                <button type="submit" className="btn-lg btn-default submitButton">Submit</button>
             </div>
         </form>
     );
