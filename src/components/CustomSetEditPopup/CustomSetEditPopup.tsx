@@ -3,11 +3,10 @@ import './CustomSetEditPopup.css';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCardSetsById } from '../../data/cardSets/selectors';
-import { CellClickedEvent, CellDoubleClickedEvent, CellValueChangedEvent, GridOptions, GridReadyEvent } from 'ag-grid-community';
+import { CellDoubleClickedEvent, CellValueChangedEvent, GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { dateFormatter } from '../../helpers/aggridhelpers';
 import { useHistory } from 'react-router-dom';
 import { renameSetThunk } from '../../data/cardSets/operations';
-import { removeSet } from '../../data/cardSets/actions';
 import { isMobile } from 'react-device-detect';
 import EditDeleteCellRenderer from './EditDeleteCellRenderer';
 

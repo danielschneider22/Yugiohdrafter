@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Booster } from "../../../constants/Booster";
 import { CardSet } from "../../../constants/CardSet";
 import { getCardSetsById } from "../../../data/cardSets/selectors";
-import { sortCardSet } from "../../../data/cardSets/utils";
 import BoosterSelect from "../../BoosterPicker/BoosterSelect";
 import { v4 as uuidv4 } from 'uuid';
 import AddRemoveCards from "../AddRemoveCards/AddRemoveCards";
