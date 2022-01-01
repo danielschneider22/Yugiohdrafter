@@ -17,6 +17,7 @@ function ViewEditList(params: ParentParams) {
 
     const [removeActiveOption, setRemoveActiveOption] = useState<AutocompleteOption | null>(null);
     const [addActiveOption, setAddActiveOption] = useState<AutocompleteOption | null>(null);
+    const [addInputVal, setAddInputVal] = useState<string>("");
 
     const options = currSet!.card_ids
         ? currSet!.card_ids.map((id) => {
@@ -51,6 +52,7 @@ function ViewEditList(params: ParentParams) {
                 setActiveOption={setAddActiveOption}
                 activeOption={addActiveOption}
                 margin={"10 5 2 0"}
+                setCurrInputVal={setAddInputVal}
             />
             <span
                 className="input-group-text btn btn-success add-card-button"

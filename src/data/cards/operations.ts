@@ -69,7 +69,6 @@ export async function fetchCardsByName(dispatch: Dispatch<any>, names: string[],
     dispatch(updateCardIds(fullCardList.map((card) => card.id), setId, addOrOverwrite))
     localStorage.setItem(setId, JSON.stringify(fullCardList))
     return true
-    
 }
 
 export async function fetchCardsById(dispatch: Dispatch<any>, ids: string[], setId: string) {
@@ -86,5 +85,18 @@ export async function fetchCardsById(dispatch: Dispatch<any>, ids: string[], set
     }
     dispatch(addCards(fullCardList))
     return true
+    
+}
+
+export async function fetchCardsByFuzzyName(dispatch: Dispatch<any>, fuzzyName: string) {
+    const response = await fetch('https://db.ygoprodeck.com/api/v7/cardinfo.php?fname=' + fuzzyName)
+    const cardsC = await getJSONWithErrorHandling(response, dispatch, "Please try a Different Set", "Set Selection Failed")
+
+    if(cardsC) {
+        const cards: Card[] = cardsC.data
+        dispatch(addCards(cards))
+        // dispatch(updateCardIds(cards.map((card) => card.id), set_name, "overwrite"))
+        // localStorage.setItem(set_name, JSON.stringify(cards));
+    }
     
 }

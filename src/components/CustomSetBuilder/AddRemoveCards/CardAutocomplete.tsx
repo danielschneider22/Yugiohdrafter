@@ -7,6 +7,7 @@ interface ParentParams {
   options: AutocompleteOption[];
   setActiveOption: React.Dispatch<React.SetStateAction<AutocompleteOption | null>>
   activeOption: AutocompleteOption | null
+  setCurrInputVal?: React.Dispatch<React.SetStateAction<string>>
   margin?: string
 }
 
@@ -16,10 +17,15 @@ export type AutocompleteOption = {
 }
 
 export default function CardAutocomplete(params: ParentParams) {
-  const { id, label, options, setActiveOption, activeOption, margin } = { ...params };
+  const { id, label, options, setActiveOption, activeOption, margin, setCurrInputVal } = { ...params };
 
   function onChange(event: React.SyntheticEvent, option: AutocompleteOption){
     setActiveOption(option)
+  }
+
+  function onInputChange(event: React.SyntheticEvent<Element, Event>, value: string){
+    if(setCurrInputVal)
+      setCurrInputVal(value)
   }
 
   return (
@@ -29,6 +35,7 @@ export default function CardAutocomplete(params: ParentParams) {
       options={options}
       blurOnSelect={true}
       onChange={(onChange as any)}
+      onInputChange={onInputChange}
       value={activeOption}
       sx={{
         display: "inline-flex",
