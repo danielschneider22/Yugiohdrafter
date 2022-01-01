@@ -1,0 +1,7 @@
+export enum CardSetActionTypes 
+{
+  // - CardSet publish fetch (save to database)
+  CARD_SET_ADD_FETCH = 'CARD_SET/CARD_SET_ADD_FETCH',
+  CARD_SET_ADD_FETCH_FAIL = 'CARD_SET/CARD_SET_ADD_FETCH_FAIL',
+  CARD_SET_ADD_FETCH_SUCCESS = 'CARD_SET/CARD_SET_ADD_FETCH_SUCCESS',
+}

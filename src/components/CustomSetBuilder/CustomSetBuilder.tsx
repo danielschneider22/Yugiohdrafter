@@ -12,6 +12,7 @@ import { fetchCardsById } from '../../data/cards/operations';
 import { getSetCards } from '../../data/cards/utils';
 import { scrollToggleNavVisibility } from '../NavBar/ScrollBGColorChange';
 import AddFromSets from './AddFromSets/AddFromSets';
+import { publishCardSetFetchThunk } from '../../data/cardSets/operations';
 
 function CustomSetBuilder() {
     const dispatch = useDispatch()
@@ -59,18 +60,33 @@ function CustomSetBuilder() {
         }
     }
 
+    const isPublishDisabled = currSet?.num_of_cards === 0 // do NOT allow publish of empty sets
+
     return (
         <div className="overflowSetBuilderWrapper" ref={scrollCardsRef}>
             <div className="setBuilderWrapper">
                 <div className="BoosterPickerWrapper d-flex justify-content-center row h-100">
                     <div className="BoosterWindowedArea bd-highlight col-sm-12">
-                        <ul className="nav nav-tabs justify-content-center">
-                            <div className="d-flex flex-row flex-wrap justify-content-center">
-                                <li className=""><div className="SetBuilderTitle">{params.id}</div></li>
+                        <ul className="nav nav-tabs d-flex justify-content-around">
+                            <li className="">
+                                <div className="SetBuilderTitle">{params.id}</div>
+                            </li>
+                            <li className="d-flex flex-row flex-wrap justify-content-center">
                                 <NavItem text="View/Edit List" activeTab={activeTab} setActiveTab={setActiveTab} />
                                 <NavItem text="Add from Sets" activeTab={activeTab} setActiveTab={setActiveTab} />
                                 <NavItem text="Bulk Add" activeTab={activeTab} setActiveTab={setActiveTab} />
+                            </li>
+                            <li>
+                            <div className="d-flex justify-content-center">
+                                <button 
+                                    className={"btn-lg btn-purple "}
+                                    disabled={isPublishDisabled}
+                                    onClick={() => {dispatch(publishCardSetFetchThunk(currSet!))}}
+                                >
+                                    Publish
+                                </button>
                             </div>
+                            </li>
                         </ul>
                         { tabContent() }
                     </div>
