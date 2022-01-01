@@ -39,3 +39,7 @@
     width: 0;  /* Remove scrollbar space */
     background: transparent;  /* Optional: just make scrollbar invisible */
 }
+
+.add-card-button{
+    margin-right: 10px;
+}

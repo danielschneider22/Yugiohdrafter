@@ -1,11 +1,17 @@
 import { TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 
-export default function AddCardsAutocomplete() {
+interface ParentParams {
+  id: string;
+  label: string;
+}
+
+export default function CardAutocomplete(params: ParentParams) {
+  const { id, label } = { ...params };
   return (
     <Autocomplete
       disablePortal
-      id="add-cards-autocomplete"
+      id={id}
       options={top100Films}
       sx={{
         display: "inline-flex",
@@ -15,19 +21,18 @@ export default function AddCardsAutocomplete() {
           color: "white",
         },
         "& .MuiOutlinedInput-input": {
-            color: "grey",
-            backgroundColor: "white",
-          },
-          "& MuiInputLabel-root": {
-              color: "grey"
-          }
+          color: "grey",
+          backgroundColor: "white",
+        },
+        "& MuiInputLabel-root": {
+          color: "grey",
+        },
       }}
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Card to Add"
-          placeholder="Card to Add"
-        //   sx={{ "& ::placeholder": { color: "white", opacity: "1!important" } }}
+          label={label}
+          placeholder={label}
         />
       )}
     />
