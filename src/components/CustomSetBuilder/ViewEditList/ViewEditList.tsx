@@ -43,6 +43,7 @@ function ViewEditList(params: ParentParams) {
 
     return (
         <>
+            <span style={{marginTop: "30px"}} />
             <CardAutocomplete
                 id={"add-autocomplete"}
                 label={"Card to Add"}

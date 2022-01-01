@@ -40,8 +40,8 @@ export default function CardAutocomplete(params: ParentParams) {
           color: "white",
           backgroundColor: "rgba(0,0,0,0.75)",
         },
-        "& MuiInputLabel-root": {
-          color: "white",
+        "& .MuiInputLabel-root": {
+          color: "lightgrey",
         },
       }}
       renderInput={(params) => (
