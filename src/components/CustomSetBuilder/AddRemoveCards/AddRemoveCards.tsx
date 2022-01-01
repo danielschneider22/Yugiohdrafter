@@ -36,7 +36,7 @@ function AddRemoveCards(params: ParentParams) {
             },
             editable: false,
             sortable: true,
-            floatingFilter: true,
+            // floatingFilter: true,
             filter: true,
             resizable: true,
         },
@@ -46,7 +46,7 @@ function AddRemoveCards(params: ParentParams) {
     }
 
     return (
-        <div className="ag-theme-alpine CardsGrid">
+        <div className="ag-theme-alpine-dark CardsGrid">
             <AgGridReact rowData={cardsSetShown} gridOptions={gridOptions}>
                 <AgGridColumn field="action" headerName="" cellRenderer={"addOrRemoveRenderer"} cellRendererParams={{set: setEffected}} width={75} floatingFilter={false} filter={false}></AgGridColumn>
                 <AgGridColumn field="name" headerName="Name" cellStyle={{cursor: "pointer"}} sort={"asc"}></AgGridColumn>
