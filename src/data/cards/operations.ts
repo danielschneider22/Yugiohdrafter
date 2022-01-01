@@ -90,13 +90,11 @@ export async function fetchCardsById(dispatch: Dispatch<any>, ids: string[], set
 
 export async function fetchCardsByFuzzyName(dispatch: Dispatch<any>, fuzzyName: string) {
     const response = await fetch('https://db.ygoprodeck.com/api/v7/cardinfo.php?fname=' + fuzzyName)
-    const cardsC = await getJSONWithErrorHandling(response, dispatch, "Please try a Different Set", "Set Selection Failed")
+    const cardsC = await getJSONWithErrorHandling(response, dispatch, "Fuzzy Search Fail", "Set Selection Failed")
 
     if(cardsC) {
         const cards: Card[] = cardsC.data
         dispatch(addCards(cards))
-        // dispatch(updateCardIds(cards.map((card) => card.id), set_name, "overwrite"))
-        // localStorage.setItem(set_name, JSON.stringify(cards));
     }
     
 }

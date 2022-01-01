@@ -43,7 +43,13 @@ export default function cardSetsReducer(state = cardSetsInitialState, action: Ca
           byId[cardSet.id] = newSet
         })
         
+        if(byId[action.set_name].custom_set && action.cards) {
+          const setCards = byId[action.set_name].card_ids?.map((id) => action.cards![id])
+          localStorage.setItem(action.set_name, JSON.stringify(setCards))
+        }
+        
         localStorage.setItem("cardSets", JSON.stringify(Object.values(byId)));
+
         return {...state, byId}
       }
       case 'cardSets/removeSet': {
