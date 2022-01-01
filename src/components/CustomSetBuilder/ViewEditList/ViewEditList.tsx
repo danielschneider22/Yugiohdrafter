@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CardSet } from "../../../constants/CardSet";
 import { getCardsById } from "../../../data/cards/selectors";
@@ -18,6 +18,17 @@ function ViewEditList(params: ParentParams) {
     const [removeActiveOption, setRemoveActiveOption] = useState<AutocompleteOption | null>(null);
     const [addActiveOption, setAddActiveOption] = useState<AutocompleteOption | null>(null);
     const [addInputVal, setAddInputVal] = useState<string>("");
+    const prevValidSearches = new Set<string>();
+
+    useEffect(() => {
+        if(addInputVal.length > 2) {
+            const firstThreeLetters = addInputVal.substring(0, 3)
+            if(!prevValidSearches.has(firstThreeLetters)) {
+                prevValidSearches.add(addInputVal)
+            }
+            
+        }
+    }, [addInputVal])
 
     const options = currSet!.card_ids
         ? currSet!.card_ids.map((id) => {
