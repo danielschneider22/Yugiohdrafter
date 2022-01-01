@@ -6,7 +6,6 @@ import { getCardsById } from "../../../data/cards/selectors";
 import AddOrRemoveCardButton from "./AddOrRemoveCardButton";
 import './AddRemoveCards.css'
 
-
 interface ParentParams{
     setShown: CardSet,
     setEffected: CardSet,
