@@ -12,6 +12,7 @@ import { fetchCardsById } from '../../data/cards/operations';
 import { getSetCards } from '../../data/cards/utils';
 import { scrollToggleNavVisibility } from '../NavBar/ScrollBGColorChange';
 import AddFromSets from './AddFromSets/AddFromSets';
+import AddCardsAutocomplete from './AddRemoveCards/AddCardsAutocomplete';
 
 function CustomSetBuilder() {
     const dispatch = useDispatch()
@@ -51,7 +52,12 @@ function CustomSetBuilder() {
     function tabContent() {
         switch (activeTab) {
             case "View/Edit List":
-                return <AddRemoveCards setShown={currSet!} setEffected={currSet!} />;
+                return (<>
+                    <AddCardsAutocomplete />
+                    <span className="input-group-text btn btn-success" id="inputGroup-sizing-sm">Add Card</span>
+                    <AddRemoveCards setShown={currSet!} setEffected={currSet!} />
+                </>
+                )
             case "Add from Sets":
                 return <AddFromSets setEffected={currSet!} />;
             case "Bulk Add":
