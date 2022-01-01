@@ -37,11 +37,11 @@ export default function CardAutocomplete(params: ParentParams) {
           color: "white",
         },
         "& .MuiOutlinedInput-input": {
-          color: "grey",
-          backgroundColor: "white",
+          color: "white",
+          backgroundColor: "rgba(0,0,0,0.75)",
         },
         "& MuiInputLabel-root": {
-          color: "grey",
+          color: "white",
         },
       }}
       renderInput={(params) => (
