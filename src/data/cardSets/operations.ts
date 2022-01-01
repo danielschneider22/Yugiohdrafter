@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Dispatch } from "react";
 import { RootStateOrAny } from "react-redux";
 import { Action } from "redux";
@@ -5,8 +6,10 @@ import { ThunkAction } from "redux-thunk";
 import { ip } from "../../App";
 import { baseApiUrl } from "../../constants/baseApiUrl";
 import { CardSet } from "../../constants/CardSet";
+import { toastBGColorDict } from "../../constants/Toast";
 import { getJSONWithErrorHandling } from "../../helpers/errorHandling";
 import { Monad } from "../../utils";
+import { addToast } from "../toasts/actions";
 import { tryCatchPromise } from "../utils";
 import { addSet, addSets, publishSetFetch, publishSetFetchFail, publishSetFetchSuccess, removeSet } from "./actions";
 
@@ -40,8 +43,10 @@ export const publishCardSetFetchThunk = (cardSet: CardSet): ThunkAction<void, Ro
     const [cardSetResult, error]: Monad<CardSet> = await tryCatchPromise(dispatch, [cardSet])<CardSet>(publishCardSetFetchOp)
     if (cardSetResult) {
       const cardSet = cardSetResult // no contract-to-model mapping needed, all fields are basic JSON types
-      if (cardSet) 
+      if (cardSet) {
         await dispatch(publishSetFetchSuccess(cardSet.set_name))
+        dispatch(addToast({id: _.uniqueId("message-sent-"), type: "Success", description: "Set published", title: "Success", backgroundColor: toastBGColorDict["Success"]}))
+      }
       else
         dispatch(publishSetFetchFail(error))  
     } else {
