@@ -50,6 +50,7 @@ function ViewEditList(params: ParentParams) {
                 options={[]}
                 setActiveOption={setAddActiveOption}
                 activeOption={addActiveOption}
+                margin={"10 5 2 0"}
             />
             <span
                 className="input-group-text btn btn-success add-card-button"

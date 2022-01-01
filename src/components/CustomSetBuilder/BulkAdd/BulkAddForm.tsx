@@ -15,10 +15,11 @@ interface ParentProps{
     toggleCustomSetPopupVisiblity: (isQuickCreate: boolean) => void
     isQuickCreate: boolean
     set?: CardSet
+    isDarkTheme?: boolean
 }
 
 function BulkAddForm(props: ParentProps) {
-    const {isQuickCreate, toggleCustomSetPopupVisiblity, set} = {...props}
+    const {isQuickCreate, toggleCustomSetPopupVisiblity, set, isDarkTheme} = {...props}
     const placeHolderText = isMobile ? "Card List (one card per line)" :`Jinzo\nDark Magician\nBlue-Eyes White Dragon
   `;
 
@@ -74,7 +75,7 @@ function BulkAddForm(props: ParentProps) {
                 <div className="form-group CreateSetTextArea cardList">
                 <label className="control-label col-6" htmlFor="cardList">Card List:</label>
                 <div className="col-12">
-                    <textarea value={cardList} onChange={doUpdate(setCardList)} className="form-control form-control-white" placeholder={placeHolderText} name="cardList" required></textarea>
+                    <textarea value={cardList} onChange={doUpdate(setCardList)} className={`form-control form-control-white ${isDarkTheme ? "dark-themed-textarea" : ""}`} placeholder={placeHolderText} name="cardList" required></textarea>
                 </div>
             </div>
             }

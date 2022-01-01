@@ -66,6 +66,7 @@ function CustomSetBuilder() {
             toggleCustomSetPopupVisiblity={() => null}
             isQuickCreate={true}
             set={currSet}
+            isDarkTheme={true}
           />
         );
     }
