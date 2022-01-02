@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import './CustomSetEditPopup.css';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,9 +6,10 @@ import { getCardSetsById } from '../../data/cardSets/selectors';
 import { CellDoubleClickedEvent, CellValueChangedEvent, GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { dateFormatter } from '../../helpers/aggridhelpers';
 import { useHistory } from 'react-router-dom';
-import { renameSetThunk } from '../../data/cardSets/operations';
+import { getSetId, renameSetThunk } from '../../data/cardSets/operations';
 import { isMobile } from 'react-device-detect';
 import EditDeleteCellRenderer from './EditDeleteCellRenderer';
+import { addSet } from '../../data/cardSets/actions';
 
 interface ParentProps {
     toggleCustomSetEditPopupVisiblity: () => void
@@ -25,10 +26,6 @@ function CustomSetEditPopup(props: ParentProps) {
     }, [cardSetsById])
     const cardSets = Object.values(cardSetsById).filter((set) => set.custom_set)
 
-    async function submit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-    }
-
     function onRowDataChanged(event: GridReadyEvent) {
         event.api.sizeColumnsToFit()
     }
@@ -42,6 +39,25 @@ function CustomSetEditPopup(props: ParentProps) {
 
     function onCellValueChanged(event: CellValueChangedEvent) {
         dispatch(renameSetThunk(cardsSetByIdRef.current[event.node.data.id], event.newValue))
+    }
+
+    function getSetName() {
+        let setName = ""
+        let idx = 1
+        while(!setName) {
+            const testSetName = "New Set " + idx
+            if(!cardSetsById[testSetName]) {
+                setName = testSetName
+            }
+            idx++
+        }
+        return setName
+    }
+
+    function addNewSet() {
+        const setName = getSetName()
+        const setId = getSetId(getSetName())
+        dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true}))
     }
 
     const gridOptions: GridOptions = {
@@ -63,7 +79,7 @@ function CustomSetEditPopup(props: ParentProps) {
                     <div className="container contactPopup">
                         <div className="row h-100">
                             <div className="col-lg-12">
-                                <form onSubmit={submit} className="contact-form h-100">
+                                <div className="contact-form h-100">
                                     <div className="CreateCustomSetTitle">
                                         Edit Custom Sets
                                     </div>
@@ -75,7 +91,10 @@ function CustomSetEditPopup(props: ParentProps) {
                                             <AgGridColumn field="action" headerName="" cellRenderer={"editDeleteCellRenderer"} minWidth={150} cellStyle={actionStyle} cellRendererParams={{toggleCustomSetEditPopupVisiblity}}></AgGridColumn>
                                         </AgGridReact>
                                     </div>
-                                </form>
+                                    <div className="form-group submit">        
+                                        <button type="submit" onClick={addNewSet} className="btn-lg btn-success">Add Set</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

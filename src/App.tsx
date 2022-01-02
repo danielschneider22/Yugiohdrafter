@@ -18,7 +18,7 @@ import CustomSetBuilder from './components/CustomSetBuilder/CustomSetBuilder';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
-import { fetchOfficialCardSetsOp, getCardSetsFetchThunk } from './data/cardSets/operations';
+import { getCardSetsFetchThunk } from './data/cardSets/operations';
 
 export let ip = ""
 

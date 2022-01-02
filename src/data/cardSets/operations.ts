@@ -21,8 +21,8 @@ export const getCardSetsFetchThunk = (): ThunkAction<void, RootStateOrAny, unkno
   const officalCardSetsPromise = tryCatchPromise(dispatch)<CardSet[]>(fetchOfficialCardSetsOp)
   const customCardSetsPromise = tryCatchPromise(dispatch)<CardSet[]>(customSetsFetchOp)
   const [officalCardSetsResult, customCardSetsResult] = await Promise.all([officalCardSetsPromise, customCardSetsPromise])
-  const [officialCardSets, errorOfficalCardSets]: Monad<CardSet[]> = officalCardSetsResult 
-  const [customCardSets, errorCustomCardSets]: Monad<CardSet[]> = customCardSetsResult 
+  const [officialCardSets]: Monad<CardSet[]> = officalCardSetsResult 
+  const [customCardSets]: Monad<CardSet[]> = customCardSetsResult 
   
   const failToFetchSetToast = () => dispatch(addToast({id: _.uniqueId("message-sent-"), type: "Danger", description: "Could not fetch sets.", title: "Failure", backgroundColor: toastBGColorDict["Danger"]}))
   if (officialCardSets && customCardSets) {
