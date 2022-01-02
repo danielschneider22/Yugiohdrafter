@@ -12,13 +12,13 @@ import { getClientIp } from './data/data/rooms/utils';
 import RoomPage from './components/RoomPage/RoomPage';
 import { getCardSetsById } from './data/cardSets/selectors';
 import { addSets } from './data/cardSets/actions';
-import { fetchCardSets } from './data/cardSets/operations';
 import RoomDraft from './components/RoomDraft/RoomDraft';
 import ContactUs from './components/ContactUs/ContactUs';
 import CustomSetBuilder from './components/CustomSetBuilder/CustomSetBuilder';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
+import { fetchOfficialCardSetsOp, getCardSetsFetchThunk } from './data/cardSets/operations';
 
 export let ip = ""
 
@@ -48,9 +48,8 @@ function App() {
     const sets = localStorage.getItem("cardSets");
     if(cardSets.length === 0 && sets) {
         dispatch(addSets(JSON.parse(sets)))
-    } else if (cardSets.length === 0) {
-        fetchCardSets(dispatch);
-    }
+    } 
+    dispatch(getCardSetsFetchThunk())
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   if(!ipLoaded || cardSets.length === 0) {

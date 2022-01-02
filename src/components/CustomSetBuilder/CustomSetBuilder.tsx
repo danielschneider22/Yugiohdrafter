@@ -12,6 +12,7 @@ import { getSetCards } from "../../data/cards/utils";
 import { scrollToggleNavVisibility } from "../NavBar/ScrollBGColorChange";
 import AddFromSets from "./AddFromSets/AddFromSets";
 import ViewEditList from "./ViewEditList/ViewEditList";
+import { publishCardSetFetchThunk } from "../../data/cardSets/operations";
 
 function CustomSetBuilder() {
   const dispatch = useDispatch();
@@ -77,11 +78,11 @@ function CustomSetBuilder() {
       <div className="setBuilderWrapper">
         <div className="BoosterPickerWrapper d-flex justify-content-center row h-100">
           <div className="BoosterWindowedArea bd-highlight col-sm-12">
-            <ul className="nav nav-tabs justify-content-center">
-              <div className="d-flex flex-row flex-wrap justify-content-center">
-                <li className="">
+            <ul className="nav nav-tabs justify-content-around">
+              <li className="">
                   <div className="SetBuilderTitle">{params.id}</div>
-                </li>
+              </li>
+              <li className="d-flex flex-row flex-wrap justify-content-center">
                 <NavItem
                   text="View/Edit List"
                   activeTab={activeTab}
@@ -97,7 +98,16 @@ function CustomSetBuilder() {
                   activeTab={activeTab}
                   setActiveTab={setActiveTab}
                 />
-              </div>
+              </li>
+              <li>
+                  <span
+                    className="input-group-text btn btn-primary add-card-button"
+                    id="inputGroup-sizing-sm"
+                    onClick={() => {dispatch(publishCardSetFetchThunk(currSet!))}}
+                  >
+                    Publish Set
+                </span>
+              </li>
             </ul>
             {tabContent()}
           </div>

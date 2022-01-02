@@ -1,5 +1,6 @@
 import { Card } from "../../constants/Card";
 import { CardSet } from "../../constants/CardSet";
+import { CardSetActionTypes as types } from './types'
 
 interface AddSets {
     type: 'cardSets/addSets',
@@ -55,4 +56,46 @@ export function removeSet(id: string) {
     }
 }
 
-export type CardSetsActions = AddSets | UpdateCardIds | AddSet | RemoveSet;
+// publish card set fetch actions
+interface PublishSetFetch {
+    name: string
+    type: types.CARD_SET_ADD_FETCH
+}
+export function publishSetFetch(name: string): PublishSetFetch {
+    return {
+        name,
+        type: types.CARD_SET_ADD_FETCH,
+    }
+}
+
+// publish card set fetch actions
+interface PublishSetFetchFail {
+    error: any
+    type: types.CARD_SET_ADD_FETCH_FAIL
+}
+export function publishSetFetchFail(error: any): PublishSetFetchFail {
+    return {
+        error,
+        type: types.CARD_SET_ADD_FETCH_FAIL,
+    }
+}
+
+// publish card set fetch actions
+interface PublishSetFetchSuccess {
+    name: string
+    type: types.CARD_SET_ADD_FETCH_SUCCESS
+}
+export function publishSetFetchSuccess(name: string): PublishSetFetchSuccess {
+    return {
+        name,
+        type: types.CARD_SET_ADD_FETCH_SUCCESS,
+    }
+}
+
+export type CardSetsActions = AddSets
+    | UpdateCardIds
+    | AddSet
+    | RemoveSet
+    | PublishSetFetch
+    | PublishSetFetchFail
+    | PublishSetFetchSuccess;
