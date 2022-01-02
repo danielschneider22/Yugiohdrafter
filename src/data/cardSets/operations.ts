@@ -13,7 +13,32 @@ import { addToast } from "../toasts/actions";
 import { tryCatchPromise } from "../utils";
 import { addSet, addSets, publishSetFetch, publishSetFetchFail, publishSetFetchSuccess, removeSet } from "./actions";
 
-export async function fetchCardSets(dispatch: Dispatch<any>) {
+// - get custom + offical card sets
+export const getCardSetsFetchThunk = (): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
+  // fetchOfficialCardSets(dispatch)
+
+  // fetch official + custom sets from two apis in parallel
+  const officalCardSetsPromise = tryCatchPromise(dispatch)<CardSet[]>(fetchOfficialCardSetsOp)
+  const customCardSetsPromise = tryCatchPromise(dispatch)<CardSet[]>(customSetsFetchOp)
+  const [officalCardSetsResult, customCardSetsResult] = await Promise.all([officalCardSetsPromise, customCardSetsPromise])
+  const [officialCardSets, errorOfficalCardSets]: Monad<CardSet[]> = officalCardSetsResult 
+  const [customCardSets, errorCustomCardSets]: Monad<CardSet[]> = customCardSetsResult 
+  
+  const failToFetchSetToast = () => dispatch(addToast({id: _.uniqueId("message-sent-"), type: "Danger", description: "Could not fetch sets.", title: "Failure", backgroundColor: toastBGColorDict["Danger"]}))
+  if (officialCardSets && customCardSets) {
+    const cardSets = officialCardSets.concat(customCardSets) // no contract-to-model mapping needed, all fields are basic JSON types
+    if (cardSets) {
+      dispatch(addSets(cardSets))
+    }
+    else
+      failToFetchSetToast()
+  } else {
+    failToFetchSetToast()
+  }
+}
+
+// get official card sets
+export async function fetchOfficialCardSetsOp(dispatch: Dispatch<any>) {
     const response = await fetch('https://db.ygoprodeck.com/api/v7/cardsets.php');
     let sets: CardSet[] = await getJSONWithErrorHandling(response, dispatch, "Card Sets Could Not Be Pulled", "Error")
 
@@ -25,7 +50,22 @@ export async function fetchCardSets(dispatch: Dispatch<any>) {
             id: set.set_name
         }
     })
-    dispatch(addSets(sets))
+
+    return sets
+}
+
+// get custom sets from yugiohdrafter-backend database
+async function customSetsFetchOp(roomId: string): Promise<CardSet[]> {
+  const url = `${baseApiUrl}/cardSet`
+  const resp = await fetch(url, {
+    headers: {'Content-Type': 'application/json'},
+    method: 'GET',
+  })
+  if (resp.ok) 
+    return resp.json()
+  else{
+    throw new Error(`Fetch failure from getRoomFetchOp(). Response from '${url}': ${JSON.stringify(resp)}`)
+  }
 }
 
 export const renameSetThunk = (set: CardSet, newName: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
