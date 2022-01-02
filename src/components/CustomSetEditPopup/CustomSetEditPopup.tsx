@@ -57,7 +57,7 @@ function CustomSetEditPopup(props: ParentProps) {
     function addNewSet() {
         const setName = getSetName()
         const setId = getSetId(getSetName())
-        dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true}))
+        dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true, card_ids: []}))
     }
 
     const gridOptions: GridOptions = {

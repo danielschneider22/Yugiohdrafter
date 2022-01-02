@@ -36,7 +36,7 @@ function AddRemoveCards(params: ParentParams) {
             },
             editable: false,
             sortable: true,
-            // floatingFilter: true,
+            floatingFilter: true,
             filter: true,
             resizable: true,
         },

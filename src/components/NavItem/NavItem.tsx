@@ -7,11 +7,11 @@ interface NavItemProps{
 function NavItem(props: NavItemProps) {
     const {text, activeTab, setActiveTab} = {...props}
     return (
-        <li className="nav-item">
+        <div className="nav-item">
             <div onClick={() => setActiveTab(text)} className={`nav-link ${activeTab === text ? "active" : ""}`}>
                 {text}
             </div>
-        </li>
+        </div>
     );
 }
 
