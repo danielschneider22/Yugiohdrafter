@@ -5,6 +5,7 @@ import { CardSet } from "../../../constants/CardSet";
 import { getCardsById } from "../../../data/cards/selectors";
 import AddOrRemoveCardButton from "./AddOrRemoveCardButton";
 import './AddRemoveCards.css'
+import HoverShowCardImage from "./HoverShowCardImage";
 
 interface ParentParams{
     setShown: CardSet,
@@ -21,8 +22,10 @@ function AddRemoveCards(params: ParentParams) {
         getRowNodeId: data => data.id,
         headerHeight: 30,
         floatingFiltersHeight: 40,
+        tooltipShowDelay: 0,
         frameworkComponents: {
             addOrRemoveRenderer: AddOrRemoveCardButton,
+            hoverShowCardImage: HoverShowCardImage,
         },
         immutableData: true,
         suppressScrollOnNewData: true,
@@ -49,7 +52,7 @@ function AddRemoveCards(params: ParentParams) {
         <div className="ag-theme-alpine-dark CardsGrid">
             <AgGridReact rowData={cardsSetShown} gridOptions={gridOptions}>
                 <AgGridColumn field="action" headerName="" cellRenderer={"addOrRemoveRenderer"} cellRendererParams={{set: setEffected}} width={75} floatingFilter={false} filter={false}></AgGridColumn>
-                <AgGridColumn field="name" headerName="Name" cellStyle={{cursor: "pointer"}} sort={"asc"}></AgGridColumn>
+                <AgGridColumn field="name" headerName="Name" cellStyle={{cursor: "pointer"}} sort={"asc"} tooltipComponent={"hoverShowCardImage"} tooltipField="name"></AgGridColumn>
                 <AgGridColumn field="desc" headerName="Description" width={700} wrapText={true}></AgGridColumn>
                 <AgGridColumn field="type" headerName="Type" width={150}></AgGridColumn>
                 <AgGridColumn field="race" headerName="Subtype/Race" width={150}></AgGridColumn>

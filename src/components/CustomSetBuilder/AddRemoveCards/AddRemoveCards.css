@@ -1,3 +1,9 @@
 .CardsGrid{
     height: calc(85% - 40px);
 }
+
+.custom-tooltip{
+    position: absolute;
+    pointer-events: none;
+    transition: opacity 1s;
+}
