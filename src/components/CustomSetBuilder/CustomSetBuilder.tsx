@@ -24,7 +24,7 @@ function CustomSetBuilder() {
     (set) => set.set_name === params.id
   );
   const cards = useSelector(getCardsById)
-  const cardsSet = currSet ? currSet.card_ids!.map((id) => cards[id]) : []
+  const cardsSet = currSet && currSet.card_ids ? currSet.card_ids.map((id) => cards[id]) : []
 
   const scrollCardsRef = useRef(null as unknown as HTMLDivElement);
 
