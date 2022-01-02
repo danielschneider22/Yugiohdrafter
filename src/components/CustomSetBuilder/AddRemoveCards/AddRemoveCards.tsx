@@ -52,7 +52,7 @@ function AddRemoveCards(params: ParentParams) {
         <div className="ag-theme-alpine-dark CardsGrid">
             <AgGridReact rowData={cardsSetShown} gridOptions={gridOptions}>
                 <AgGridColumn field="action" headerName="" cellRenderer={"addOrRemoveRenderer"} cellRendererParams={{set: setEffected}} width={75} floatingFilter={false} filter={false}></AgGridColumn>
-                <AgGridColumn field="name" headerName="Name" cellStyle={{cursor: "pointer"}} sort={"asc"} tooltipComponent={"hoverShowCardImage"} tooltipField="name"></AgGridColumn>
+                <AgGridColumn field="name" headerName="Name" cellStyle={{cursor: "pointer", fontWeight: "bold", color: "#b1b100", textDecoration: "underline"}} sort={"asc"} tooltipComponent={"hoverShowCardImage"} tooltipField="name"></AgGridColumn>
                 <AgGridColumn field="desc" headerName="Description" width={700} wrapText={true}></AgGridColumn>
                 <AgGridColumn field="type" headerName="Type" width={150}></AgGridColumn>
                 <AgGridColumn field="race" headerName="Subtype/Race" width={150}></AgGridColumn>

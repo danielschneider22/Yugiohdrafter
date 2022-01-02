@@ -13,6 +13,7 @@ import { scrollToggleNavVisibility } from "../NavBar/ScrollBGColorChange";
 import AddFromSets from "./AddFromSets/AddFromSets";
 import ViewEditList from "./ViewEditList/ViewEditList";
 import { publishCardSetFetchThunk } from "../../data/cardSets/operations";
+import { getCardsById } from "../../data/cards/selectors";
 
 function CustomSetBuilder() {
   const dispatch = useDispatch();
@@ -22,6 +23,8 @@ function CustomSetBuilder() {
   const currSet = Object.values(cardSetsById).find(
     (set) => set.set_name === params.id
   );
+  const cards = useSelector(getCardsById)
+  const cardsSet = currSet ? currSet.card_ids!.map((id) => cards[id]) : []
 
   const scrollCardsRef = useRef(null as unknown as HTMLDivElement);
 
@@ -73,6 +76,17 @@ function CustomSetBuilder() {
     }
   }
 
+  function exportSet() {
+    const element = document.createElement("a");
+    let exportString = ""
+    cardsSet.forEach((card) => exportString = exportString + "\n" + card.name)
+    const file = new Blob([exportString.substring(1)], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = currSet?.set_name + ".txt"
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+  }
+
   return (
     <div className="overflowSetBuilderWrapper" ref={scrollCardsRef}>
       <div className="setBuilderWrapper">
@@ -80,7 +94,7 @@ function CustomSetBuilder() {
           <div className="BoosterWindowedArea bd-highlight col-sm-12">
             <ul className="nav nav-tabs justify-content-around">
               <li className="">
-                  <div className="SetBuilderTitle">{params.id}</div>
+                <div className="SetBuilderTitle">{params.id}</div>
               </li>
               <li className="d-flex flex-row flex-wrap justify-content-center">
                 <NavItem
@@ -100,12 +114,19 @@ function CustomSetBuilder() {
                 />
               </li>
               <li>
-                  <span
-                    className="input-group-text btn btn-primary add-card-button"
-                    id="inputGroup-sizing-sm"
-                    onClick={() => {dispatch(publishCardSetFetchThunk(currSet!))}}
-                  >
-                    Publish Set
+                <span
+                  className="input-group-text btn btn-primary add-card-button"
+                  id="inputGroup-sizing-sm"
+                  onClick={() => { dispatch(publishCardSetFetchThunk(currSet!)) }}
+                >
+                  Publish Set
+                </span>
+                <span
+                  className="input-group-text btn btn-secondary add-card-button"
+                  id="inputGroup-sizing-sm"
+                  onClick={ exportSet }
+                >
+                  Export Set
                 </span>
               </li>
             </ul>
