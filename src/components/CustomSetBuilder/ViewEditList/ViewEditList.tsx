@@ -18,11 +18,9 @@ function ViewEditList(params: ParentParams) {
     const [removeActiveOption, setRemoveActiveOption] = useState<AutocompleteOption | null>(null);
     const [addActiveOption, setAddActiveOption] = useState<AutocompleteOption | null>(null);
 
-    const options = currSet!.card_ids
-        ? currSet!.card_ids.map((id) => {
-            return { id, label: cards[id].name };
-        })
-        : [];
+    const options = currSet?.card_ids?.map((id) => {
+        return { id, label: cards[id].name };
+    }) || []
 
     function addCardtoSet() {
         if (addActiveOption) {

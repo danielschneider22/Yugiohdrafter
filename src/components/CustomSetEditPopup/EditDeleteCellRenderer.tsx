@@ -2,7 +2,7 @@ import { ICellRendererParams } from 'ag-grid-community';
 import { FaTrash, FaEdit } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { removeSet } from '../../data/cardSets/actions';
+import { deleteCardSetsFetchThunk } from '../../data/cardSets/operations';
 
 const EditDeleteCellRenderer = (params: ICellRendererParams & {toggleCustomSetEditPopupVisiblity: () => void}) => {
     const dispatch = useDispatch();
@@ -11,7 +11,8 @@ const EditDeleteCellRenderer = (params: ICellRendererParams & {toggleCustomSetEd
     function deleteButtonClicked() {
         // eslint-disable-next-line no-restricted-globals
         if (confirm('Are you sure you want to delete this set?')) {
-            dispatch(removeSet(params.node.data.id))
+            const id = params.node.data.id
+            dispatch(deleteCardSetsFetchThunk([id]))
         }
     }
 
