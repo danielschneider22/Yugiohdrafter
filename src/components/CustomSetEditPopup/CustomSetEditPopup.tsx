@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import { renameSetThunk } from '../../data/cardSets/operations';
 import { isMobile } from 'react-device-detect';
 import EditDeleteCellRenderer from './EditDeleteCellRenderer';
+import { ip } from '../../App';
 
 interface ParentProps {
     toggleCustomSetEditPopupVisiblity: () => void
@@ -23,7 +24,7 @@ function CustomSetEditPopup(props: ParentProps) {
     useEffect(() => {
         cardsSetByIdRef.current = cardSetsById
     }, [cardSetsById])
-    const cardSets = Object.values(cardSetsById).filter((set) => set.custom_set)
+    const cardSets = Object.values(cardSetsById).filter((set) => set.custom_set && set.author === ip)
 
     async function submit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()

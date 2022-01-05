@@ -74,7 +74,7 @@ async function customSetsFetchOp(roomId: string): Promise<CardSet[]> {
 }
 
 export const renameSetThunk = (set: CardSet, newName: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch) => {
-    dispatch(addSet({...set, set_name: newName, id: getSetId(newName)}))
+    dispatch(addSet({...set, set_name: newName, id: getSetId(newName), author: ip}))
     dispatch(removeSets([set.id]))
 }
 
@@ -85,7 +85,9 @@ export function getSetId(set_name: string) {
 // - card set publishing
 export const publishCardSetFetchThunk = (cardSet: CardSet): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch) => {
     dispatch(publishSetFetch(cardSet.set_name))
-    const [cardSetResult, error]: Monad<CardSet> = await tryCatchPromise(dispatch, [cardSet])<CardSet>(publishCardSetFetchOp)
+
+    const cardSetWithAuthor = {...cardSet, author: ip}
+    const [cardSetResult, error]: Monad<CardSet> = await tryCatchPromise(dispatch, [cardSetWithAuthor])<CardSet>(publishCardSetFetchOp)
     if (cardSetResult) {
       const cardSet = cardSetResult // no contract-to-model mapping needed, all fields are basic JSON types
       if (cardSet) {
