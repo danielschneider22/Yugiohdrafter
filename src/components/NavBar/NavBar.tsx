@@ -145,6 +145,7 @@ function NavBar() {
                             </ul>
                         </li>
                         <li><a className="nav-link scrollto" href="/contactus">Contact us</a></li>
+                        <li><a className="nav-link scrollto" href="/login">Login</a></li>
                         <li className="social"><a href="https://twitter.com/YDrafter"><i className="bi bi-twitter"></i></a></li>
                         <li className="social"><a href="https://www.facebook.com/groups/341002234334925"><i className="bi bi-facebook"></i></a></li>
                         <li className="social"><a href="https://github.com/danielschneider22/Yugiohdrafter"><i className="bi bi-github"></i></a></li>

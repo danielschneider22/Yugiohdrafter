@@ -19,6 +19,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
 import { getCardSetsFetchThunk } from './data/cardSets/operations';
+import LoginPage from './components/LoginPage/Login';
 
 export let ip = ""
 
@@ -77,6 +78,9 @@ function App() {
               </Route>
               <Route path="/contactus">
                 <ContactUs />
+              </Route>
+              <Route path="/login">
+                <LoginPage />
               </Route>
               <Route path={`/room/draft/:id`}>
                 <RoomDraft />

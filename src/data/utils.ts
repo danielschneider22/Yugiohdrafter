@@ -41,7 +41,8 @@ export const tryCatchPromise = (dispatch: Dispatch<any>, funcArgs?: any[]) => as
     const data = await (funcArgs ? func(...funcArgs as any[]) : func(funcArgs))
     return [data, null]
   } catch (error: any) {
-    dispatch(addToast({id: _.uniqueId("error-"), type: "Danger", description: "Request failed", title: "Error", backgroundColor: toastBGColorDict["Danger"]}))
+    const description = (error + "").replace("Error: ", "")
+    dispatch(addToast({id: _.uniqueId("error-"), type: "Danger", description, title: "Error", backgroundColor: toastBGColorDict["Danger"]}))
     return [null, error]
   }
 }

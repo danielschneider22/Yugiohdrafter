@@ -1,0 +1,7 @@
+.dark-themed-textarea{
+    background-color: #000000cc !important;
+    color: white;
+}
+.dark-themed-textarea:focus{
+    color: white !important;
+}
