@@ -21,6 +21,8 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
 import { getCardSetsFetchThunk } from './data/cardSets/operations';
 import LoginPage from './components/LoginPage/Login';
 import { getUserIfActiveSessionThunk } from './data/login/operations';
+import ForgotPassword from './components/LoginPage/ForgotPassword';
+import ResetPasswordPage from './components/ResetPasswordPage/ResetPassword';
 
 export let ip = ""
 
@@ -89,6 +91,12 @@ function App() {
               </Route>
               <Route path="/login">
                 <LoginPage />
+              </Route>
+              <Route path="/forgotPassword">
+                <ForgotPassword />
+              </Route>
+              <Route path="/resetPassword/:newPasswordId">
+                <ResetPasswordPage />
               </Route>
               <Route path={`/room/draft/:id`}>
                 <RoomDraft />
