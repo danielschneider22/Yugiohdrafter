@@ -15,6 +15,8 @@ import cardImage from '../../assets/logo.png';
 import CustomSetEditPopup from '../CustomSetEditPopup/CustomSetEditPopup';
 import { getUserEmail } from '../../data/login/selectors';
 import { logoutThunk } from '../../data/login/operations';
+import { toastBGColorDict } from '../../constants/Toast';
+import { addToast } from '../../data/toasts/actions';
 
 function NavBar() {
     /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -32,50 +34,65 @@ function NavBar() {
     }
 
     const [quickDraftDropdownVisible, setQuickDraftDropdownVisible] = useState(false)
-    function showQuickDraftDropdown(){
-        if(mobileMenuShown)
+    function showQuickDraftDropdown() {
+        if (mobileMenuShown)
             setQuickDraftDropdownVisible(!quickDraftDropdownVisible)
     }
 
     const [customSetsDropdownVisible, setCustomSetsDropdownVisible] = useState(false)
-    function showCustomSetsDropdown(){
-        if(mobileMenuShown)
+    function showCustomSetsDropdown() {
+        if (mobileMenuShown)
             setCustomSetsDropdownVisible(!customSetsDropdownVisible)
+    }
+
+    function redirectToLoginPageIfNotLoggedIn() {
+        if (!loggedIn) {
+            dispatch(addToast({ id: _.uniqueId("message-sent-"), type: "Warning", description: "Login to View and Edit Custom Sets", title: "Login", backgroundColor: toastBGColorDict["Warning"] }))
+            history.push("/login")
+            return false
+        }
+        return true
     }
 
     const [customSetPopupVisible, setCustomSetPopupVisiblity] = useState(false)
     const [isQuickCreate, setIsQuickCreate] = useState(false)
-    function toggleCustomSetPopupVisiblity(isQuickCreate: boolean){
-        if(customSetPopupVisible) {
-            setMobileMenuShown(false)
+    function toggleCustomSetPopupVisiblity(isQuickCreate: boolean) {
+        if (redirectToLoginPageIfNotLoggedIn()) {
+            if (customSetPopupVisible) {
+                setMobileMenuShown(false)
+            }
+            setIsQuickCreate(isQuickCreate)
+            setCustomSetPopupVisiblity(!customSetPopupVisible)
         }
-        setIsQuickCreate(isQuickCreate)
-        setCustomSetPopupVisiblity(!customSetPopupVisible)
+
     }
 
     const [customSetEditPopupVisible, setCustomSetEditPopupVisiblity] = useState(false)
-    function toggleCustomSetEditPopupVisiblity(){
-        if(customSetEditPopupVisible) {
-            setMobileMenuShown(false)
+    function toggleCustomSetEditPopupVisiblity() {
+        if (redirectToLoginPageIfNotLoggedIn()) {
+            if (customSetEditPopupVisible) {
+                setMobileMenuShown(false)
+            }
+            setCustomSetEditPopupVisiblity(!customSetEditPopupVisible)
         }
-        setCustomSetEditPopupVisiblity(!customSetEditPopupVisible)
+        
     }
 
     function quickDraft(set_name: string) {
         const boosters: Booster[] = []
-        if(set_name === "retro_draft_custom") {
-            for ( let i = 0; i <= 4; i++ ) { 
-                boosters.push({cardSetName: "Retro Pack", id: _.uniqueId("booster-")})
+        if (set_name === "retro_draft_custom") {
+            for (let i = 0; i <= 4; i++) {
+                boosters.push({ cardSetName: "Retro Pack", id: _.uniqueId("booster-") })
             }
-            for ( let i = 0; i <= 4; i++ ) { 
-                boosters.push({cardSetName: "Retro Pack 2", id: _.uniqueId("booster-")})
+            for (let i = 0; i <= 4; i++) {
+                boosters.push({ cardSetName: "Retro Pack 2", id: _.uniqueId("booster-") })
             }
-            
+
         } else if (set_name === "battle_pack_custom") {
-            for ( let i = 0; i <= 8; i++ ) {
+            for (let i = 0; i <= 8; i++) {
                 const randomType = Math.floor(Math.random() * 3);
                 let battlePackType = ""
-                switch(randomType){
+                switch (randomType) {
                     case 0:
                         battlePackType = "Battle Pack: Epic Dawn"
                         break;
@@ -86,14 +103,14 @@ function NavBar() {
                         battlePackType = "Battle Pack 3: Monster League"
                         break;
                 }
-                boosters.push({cardSetName: battlePackType, id: _.uniqueId("booster-")})
+                boosters.push({ cardSetName: battlePackType, id: _.uniqueId("booster-") })
             }
         } else {
-            for ( let i = 0; i <= 8; i++ ) {
-                boosters.push({cardSetName: set_name, id: _.uniqueId("booster-")})
+            for (let i = 0; i <= 8; i++) {
+                boosters.push({ cardSetName: set_name, id: _.uniqueId("booster-") })
             }
         }
-        
+
         dispatch(initialiazeDraftPod(8, 5, 9, ""))
         dispatch(removeAllBoosters("draftBooster"))
         dispatch(setBoosters(boosters, "landingPageBooster"))
@@ -120,56 +137,56 @@ function NavBar() {
     function logout() {
         dispatch(logoutThunk())
     }
-    
+
     return (
         <header id="header" className={"header fixed-top" + (mobileMenuShown ? " forceNavToFront" : "")}>
             {customSetPopupVisible && <CustomSetPopup isQuickCreate={isQuickCreate} toggleCustomSetPopupVisiblity={toggleCustomSetPopupVisiblity} />}
             {customSetEditPopupVisible && <CustomSetEditPopup toggleCustomSetEditPopupVisiblity={toggleCustomSetEditPopupVisiblity} />}
-            {!customSetPopupVisible && !customSetEditPopupVisible && 
+            {!customSetPopupVisible && !customSetEditPopupVisible &&
                 <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
-                <div className="logo d-flex align-items-center" onClick={goHome}>
-                    <img src={cardImage} alt="" />
-                    <span>YugiohDrafter</span>
-                </div>
+                    <div className="logo d-flex align-items-center" onClick={goHome}>
+                        <img src={cardImage} alt="" />
+                        <span>YugiohDrafter</span>
+                    </div>
 
-                <nav id="navbar" className={"navbar" + (mobileMenuShown ? " navbar-mobile" : "")}>
-                    <ul>
-                        <li><Link to="/" className="nav-link scrollto" onClick={() => defaultClearAndClose()}>Home</Link></li>
-                        <li className="dropdown" onClick={showCustomSetsDropdown}><a href="#"><span>Custom Sets</span> <i className="bi bi-chevron-down"></i></a>
-                            <ul className={customSetsDropdownVisible ? "dropdown-active" : ""}>
-                                <li><a href="#" onClick={() => toggleCustomSetPopupVisiblity(false)}>Create Custom Set</a></li>
-                                <li><a href="#" onClick={toggleCustomSetEditPopupVisiblity}>Edit Custom Sets</a></li>
-                                <li><a href="#" onClick={() => toggleCustomSetPopupVisiblity(true)}>Quick Create from List</a></li>
-                            </ul>
-                        </li>
-                        {/* <input onChange={(event) => setIP(event.currentTarget.value)} /> */}
-                        <li className="dropdown" onClick={showQuickDraftDropdown}><a href="#"><span>Quick Draft</span> <i className="bi bi-chevron-down"></i></a>
-                            <ul className={quickDraftDropdownVisible ? "dropdown-active" : ""}>
-                                <li><a href="#" onClick={() => quickDraft("retro_draft_custom")}>Retro Draft</a></li>
-                                <li><a href="#" onClick={() => quickDraft("battle_pack_custom")}>Battle Pack Draft</a></li>
-                                {latestSet && <li><a href="#" onClick={() => quickDraft(latestSet.id)}>{latestSet.id} Draft</a></li>}
-                                {customSets.map((set) => <li key={set.id}><a href="#" onClick={() => quickDraft(set.id)}>{set.set_name}</a></li>)}
-                                
-                            </ul>
-                        </li>
-                        <li><a className="nav-link scrollto" href="/contactus">Contact us</a></li>
-                        { !loggedIn &&
-                            <li><a className="nav-link scrollto" href="/login">Login</a></li>
-                        }
-                        { loggedIn &&
-                            <li><a className="nav-link scrollto" href="#" onClick={() => logout()}>Logout</a></li>
-                        }
-                        
-                        <li className="social"><a href="https://twitter.com/YDrafter"><i className="bi bi-twitter"></i></a></li>
-                        <li className="social"><a href="https://www.facebook.com/groups/341002234334925"><i className="bi bi-facebook"></i></a></li>
-                        <li className="social"><a href="https://github.com/danielschneider22/Yugiohdrafter"><i className="bi bi-github"></i></a></li>
-                    </ul>
-                    <i className={"bi mobile-nav-toggle bi-list" + (mobileMenuShown ? " bi-x" : " bi-list")} onClick={toggleMobileMenu}></i>
-                </nav>
+                    <nav id="navbar" className={"navbar" + (mobileMenuShown ? " navbar-mobile" : "")}>
+                        <ul>
+                            <li><Link to="/" className="nav-link scrollto" onClick={() => defaultClearAndClose()}>Home</Link></li>
+                            <li className="dropdown" onClick={showCustomSetsDropdown}><a href="#"><span>Custom Sets</span> <i className="bi bi-chevron-down"></i></a>
+                                <ul className={customSetsDropdownVisible ? "dropdown-active" : ""}>
+                                    <li><a href="#" onClick={() => toggleCustomSetPopupVisiblity(false)}>Create Custom Set</a></li>
+                                    <li><a href="#" onClick={toggleCustomSetEditPopupVisiblity}>Edit Custom Sets</a></li>
+                                    <li><a href="#" onClick={() => toggleCustomSetPopupVisiblity(true)}>Quick Create from List</a></li>
+                                </ul>
+                            </li>
+                            {/* <input onChange={(event) => setIP(event.currentTarget.value)} /> */}
+                            <li className="dropdown" onClick={showQuickDraftDropdown}><a href="#"><span>Quick Draft</span> <i className="bi bi-chevron-down"></i></a>
+                                <ul className={quickDraftDropdownVisible ? "dropdown-active" : ""}>
+                                    <li><a href="#" onClick={() => quickDraft("retro_draft_custom")}>Retro Draft</a></li>
+                                    <li><a href="#" onClick={() => quickDraft("battle_pack_custom")}>Battle Pack Draft</a></li>
+                                    {latestSet && <li><a href="#" onClick={() => quickDraft(latestSet.id)}>{latestSet.id} Draft</a></li>}
+                                    {customSets.map((set) => <li key={set.id}><a href="#" onClick={() => quickDraft(set.id)}>{set.set_name}</a></li>)}
+
+                                </ul>
+                            </li>
+                            <li><a className="nav-link scrollto" href="/contactus">Contact us</a></li>
+                            {!loggedIn &&
+                                <li><a className="nav-link scrollto" href="/login">Login</a></li>
+                            }
+                            {loggedIn &&
+                                <li><a className="nav-link scrollto" href="#" onClick={() => logout()}>Logout</a></li>
+                            }
+
+                            <li className="social"><a href="https://twitter.com/YDrafter"><i className="bi bi-twitter"></i></a></li>
+                            <li className="social"><a href="https://www.facebook.com/groups/341002234334925"><i className="bi bi-facebook"></i></a></li>
+                            <li className="social"><a href="https://github.com/danielschneider22/Yugiohdrafter"><i className="bi bi-github"></i></a></li>
+                        </ul>
+                        <i className={"bi mobile-nav-toggle bi-list" + (mobileMenuShown ? " bi-x" : " bi-list")} onClick={toggleMobileMenu}></i>
+                    </nav>
 
                 </div>
             }
-            
+
         </header>
     );
 }
