@@ -44,58 +44,95 @@ export function updateCardIds(cardsIds: string[], set_name: string, addOrOverwri
     }
 }
 
-interface RemoveSet {
-    type: 'cardSets/removeSet',
-    id: string
+interface RemoveSets {
+    type: 'cardSets/removeSets',
+    ids: string[]
 }
 
-export function removeSet(id: string) {
+export function removeSets(ids: string[]): RemoveSets {
     return {
-        type: 'cardSets/removeSet',
-        id
+        type: 'cardSets/removeSets',
+        ids
     }
 }
 
-// publish card set fetch actions
+// - publish card set fetch actions
 interface PublishSetFetch {
     name: string
-    type: types.CARD_SET_ADD_FETCH
+    type: types.CARD_SET_PUBLISH_FETCH
 }
 export function publishSetFetch(name: string): PublishSetFetch {
     return {
         name,
-        type: types.CARD_SET_ADD_FETCH,
+        type: types.CARD_SET_PUBLISH_FETCH,
     }
 }
 
 // publish card set fetch actions
 interface PublishSetFetchFail {
     error: any
-    type: types.CARD_SET_ADD_FETCH_FAIL
+    type: types.CARD_SET_PUBLISH_FETCH_FAIL
 }
 export function publishSetFetchFail(error: any): PublishSetFetchFail {
     return {
         error,
-        type: types.CARD_SET_ADD_FETCH_FAIL,
+        type: types.CARD_SET_PUBLISH_FETCH_FAIL,
     }
 }
 
 // publish card set fetch actions
 interface PublishSetFetchSuccess {
     name: string
-    type: types.CARD_SET_ADD_FETCH_SUCCESS
+    type: types.CARD_SET_PUBLISH_FETCH_SUCCESS
 }
 export function publishSetFetchSuccess(name: string): PublishSetFetchSuccess {
     return {
         name,
-        type: types.CARD_SET_ADD_FETCH_SUCCESS,
+        type: types.CARD_SET_PUBLISH_FETCH_SUCCESS,
+    }
+}
+
+// - delete card sets fetch actions
+interface DeleteSetsFetch {
+    ids: string[]
+    type: types.CARD_SETS_DELETE_FETCH
+}
+export function deleteSetsFetch(ids: string[]): DeleteSetsFetch {
+    return {
+        ids,
+        type: types.CARD_SETS_DELETE_FETCH,
+    }
+}
+
+interface DeleteSetsFetchFail {
+    error: any
+    type: types.CARD_SETS_DELETE_FETCH_FAIL
+}
+export function deleteSetsFetchFail(error: any): DeleteSetsFetchFail {
+    return {
+        error,
+        type: types.CARD_SETS_DELETE_FETCH_FAIL,
+    }
+}
+
+interface DeleteSetsFetchSuccess {
+    ids: string[]
+    type: types.CARD_SETS_DELETE_FETCH_SUCCESS
+}
+export function deleteSetsFetchSuccess(ids: string[]): DeleteSetsFetchSuccess {
+    return {
+        ids,
+        type: types.CARD_SETS_DELETE_FETCH_SUCCESS,
     }
 }
 
 export type CardSetsActions = AddSets
     | UpdateCardIds
     | AddSet
-    | RemoveSet
+    | RemoveSets
     | PublishSetFetch
     | PublishSetFetchFail
-    | PublishSetFetchSuccess;
+    | PublishSetFetchSuccess
+    | DeleteSetsFetch
+    | DeleteSetsFetchFail
+    | DeleteSetsFetchSuccess

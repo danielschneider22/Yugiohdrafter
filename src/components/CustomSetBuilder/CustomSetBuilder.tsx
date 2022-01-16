@@ -12,7 +12,7 @@ import { getSetCards } from "../../data/cards/utils";
 import { scrollToggleNavVisibility } from "../NavBar/ScrollBGColorChange";
 import AddFromSets from "./AddFromSets/AddFromSets";
 import ViewEditList from "./ViewEditList/ViewEditList";
-import { publishCardSetFetchThunk } from "../../data/cardSets/operations";
+import { deleteCardSetsFetchThunk, publishCardSetFetchThunk } from "../../data/cardSets/operations";
 import { getCardsById } from "../../data/cards/selectors";
 
 function CustomSetBuilder() {
@@ -127,6 +127,13 @@ function CustomSetBuilder() {
                   onClick={ exportSet }
                 >
                   Export Set
+                </span>
+                <span
+                    className="input-group-text btn btn-danger add-card-button"
+                    id="inputGroup-sizing-sm"
+                    onClick={() => {dispatch(deleteCardSetsFetchThunk([currSet!.id]))}}
+                  >
+                    Delete Set
                 </span>
               </li>
             </ul>

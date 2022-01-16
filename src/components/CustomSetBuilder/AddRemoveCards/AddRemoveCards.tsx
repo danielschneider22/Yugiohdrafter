@@ -16,7 +16,7 @@ function AddRemoveCards(params: ParentParams) {
     const {setShown, setEffected} = {...params}
     const cards = useSelector(getCardsById)
 
-    const cardsSetShown = setShown.card_ids ? setShown.card_ids!.map((id) => cards[id]) : []
+    const cardsSetShown = setShown?.card_ids?.map((id) => cards[id]) || []
 
     const gridOptions: GridOptions = {
         getRowNodeId: data => data.id,

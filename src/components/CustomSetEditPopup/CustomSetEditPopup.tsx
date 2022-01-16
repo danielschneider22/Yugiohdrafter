@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import './CustomSetEditPopup.css';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCardSetsById } from '../../data/cardSets/selectors';
+import { getCardSetsAuthoredByCurrUser, getCardSetsById } from '../../data/cardSets/selectors';
 import { CellDoubleClickedEvent, CellValueChangedEvent, GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { dateFormatter } from '../../helpers/aggridhelpers';
 import { useHistory } from 'react-router-dom';
@@ -24,7 +24,7 @@ function CustomSetEditPopup(props: ParentProps) {
     useEffect(() => {
         cardsSetByIdRef.current = cardSetsById
     }, [cardSetsById])
-    const cardSets = Object.values(cardSetsById).filter((set) => set.custom_set)
+    const cardSets = useSelector(getCardSetsAuthoredByCurrUser)
 
     function onRowDataChanged(event: GridReadyEvent) {
         event.api.sizeColumnsToFit()

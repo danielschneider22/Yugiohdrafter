@@ -35,11 +35,9 @@ function ViewEditList(params: ParentParams) {
         }
     }, [addInputVal, dispatch, prevValidSearches])
 
-    const options = currSet!.card_ids
-        ? currSet!.card_ids.map((id) => {
-            return { id, label: cards[id].name };
-        })
-        : [];
+    const options = currSet?.card_ids?.map((id) => {
+        return { id, label: cards[id].name };
+    }) || []
 
     function addCardtoSet() {
         if (addActiveOption) {
