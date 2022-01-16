@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { createAccountThunk, loginThunk } from "../../data/login/operations";
+import { createAccountThunk, loginThunk, resetPasswordThunk } from "../../data/login/operations";
 import "./Login.css"
 
 function LoginPage() {
@@ -18,6 +18,10 @@ function LoginPage() {
   async function createAccount() {
     await dispatch(createAccountThunk(email, password))
     history.push("/")
+  }
+
+  function resetPassword() {
+    dispatch(resetPasswordThunk("danielschneider22@gmail.com"))
   }
 
   return (
@@ -42,7 +46,7 @@ function LoginPage() {
             <button onClick={createAccount} className="LaunchButton w-100 btn-lg btn-secondary">Create Account</button>
           </div>
           <div className="d-flex justify-content-center pt-2">
-            <div>Forgot Password?</div>
+            <div onClick={() => resetPassword()}>Forgot Password?</div>
           </div>
         </div>
       </div>

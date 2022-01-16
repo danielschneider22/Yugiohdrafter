@@ -103,3 +103,22 @@ async function logoutOp(): Promise<string> {
     else
         throw new Error((await resp.json()).error)
 }
+
+export const resetPasswordThunk = (email: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
+    const result = await tryCatchPromise(dispatch, [email])<string>(resetPasswordOp)
+    if (result[0] && result[0] === "Success") {
+      dispatch(addToast({id: _.uniqueId("message-sent-"), type: "Success", description: "A password reset email has been sent", title: "Success", backgroundColor: toastBGColorDict["Success"]}))
+    }
+}
+
+async function resetPasswordOp(email: string): Promise<string> {
+    const url = `${baseApiUrl}/users/resetPassword/${email}`
+    const resp = await fetch(url, {
+            headers: {'Content-Type': 'application/json'},
+            method: 'GET',
+    })
+    if (resp.ok) 
+        return resp.text()
+    else
+        throw new Error("A password reset email could not be sent")
+}
