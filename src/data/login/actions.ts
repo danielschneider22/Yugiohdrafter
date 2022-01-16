@@ -2,7 +2,7 @@ import { LoginTypes } from "./types";
 
 
 interface LoginFetch {
-    type: string,
+    type: 'login/loginFetch',
 }
 
 export function loginFetch() {
@@ -12,17 +12,19 @@ export function loginFetch() {
 }
 
 interface LoginFetchSuccess {
-    type: string,
+    type: 'login/loginFetchSuccess',
+    email: string
 }
 
-export function loginFetchSuccess() {
+export function loginFetchSuccess(email: string) {
     return {
         type: LoginTypes.LoginFetchSuccess,
+        email
     }
 }
 
 interface LoginFetchFail {
-    type: string,
+    type: 'login/loginFetchFail',
 }
 
 export function loginFetchFail() {
@@ -31,7 +33,7 @@ export function loginFetchFail() {
     }
 }
 interface CreateAccountFetch {
-    type: string,
+    type: 'login/createAccountFetch',
 }
 
 export function createAccountFetch() {
@@ -41,18 +43,21 @@ export function createAccountFetch() {
 }
 
 interface CreateAccountFetchSuccess {
-    type: string,
+    type: 'login/createAccountFetchSuccess',
+    email: string
 }
 
-export function createAccountFetchSuccess() {
+export function createAccountFetchSuccess(email: string) {
     return {
         type: LoginTypes.CreateAccountFetchSuccess,
+        email
     }
 }
 
 interface CreateAccountFetchFail {
-    type: string,
+    type: 'login/createAccountFetchFail',
 }
+
 
 export function createAccountFetchFail() {
     return {
@@ -60,9 +65,36 @@ export function createAccountFetchFail() {
     }
 }
 
+interface ActiveSessionFetchSuccess {
+    type: 'login/activeSessionFetchSuccess',
+    email: string
+}
+
+
+export function activeSessionFetchSuccess(email: string) {
+    return {
+        type: LoginTypes.ActiveSessionFetchSuccess,
+        email
+    }
+}
+
+interface LogoutFetchSuccess {
+    type: 'login/logoutFetchSuccess'
+}
+
+
+export function logoutFetchSuccess() {
+    return {
+        type: LoginTypes.LogoutFetchSuccess,
+    }
+}
+
+
 export type LoginActions = LoginFetch | 
 LoginFetchSuccess | 
 LoginFetchFail | 
 CreateAccountFetch | 
 CreateAccountFetchSuccess | 
-CreateAccountFetchFail;
+CreateAccountFetchFail |
+ActiveSessionFetchSuccess |
+LogoutFetchSuccess;

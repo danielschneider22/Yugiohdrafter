@@ -20,6 +20,7 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
 import { getCardSetsFetchThunk } from './data/cardSets/operations';
 import LoginPage from './components/LoginPage/Login';
+import { getUserIfActiveSessionThunk } from './data/login/operations';
 
 export let ip = ""
 
@@ -29,8 +30,14 @@ export function setIP(newIP: string){
 
 function App() {
   const [ipLoaded, setIpLoaded] = useState(false)
+  const [fetchedActiveSession, setFetchedActiveSession] = useState(false)
   const cardSets = Object.values(useSelector(getCardSetsById))
   const dispatch = useDispatch();
+
+  async function fetchActiveSession() {
+    await dispatch(getUserIfActiveSessionThunk())
+    setFetchedActiveSession(true)
+  }
 
   useEffect(() => {
     // get client's ip address
@@ -51,9 +58,10 @@ function App() {
         dispatch(addSets(JSON.parse(sets)))
     } 
     dispatch(getCardSetsFetchThunk())
+    fetchActiveSession()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  if(!ipLoaded || cardSets.length === 0) {
+  if(!fetchedActiveSession || !ipLoaded || cardSets.length === 0) {
     return <div></div>
   }
   return (

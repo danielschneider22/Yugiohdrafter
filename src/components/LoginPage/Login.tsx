@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { createAccountThunk, loginThunk } from "../../data/login/operations";
 import "./Login.css"
 
@@ -7,13 +8,16 @@ function LoginPage() {
   const dispatch = useDispatch()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const history = useHistory()
 
-  function login() {
-    dispatch(loginThunk(email, password))
+  async function login() {
+    await dispatch(loginThunk(email, password))
+    history.push("/")
   }
 
-  function createAccount() {
-    dispatch(createAccountThunk(email, password))
+  async function createAccount() {
+    await dispatch(createAccountThunk(email, password))
+    history.push("/")
   }
 
   return (

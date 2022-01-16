@@ -5,4 +5,6 @@ export const LoginTypes = {
     'CreateAccountFetch': 'login/createAccountFetch',
     'CreateAccountFetchSuccess': 'login/createAccountFetchSuccess',
     'CreateAccountFetchFail': 'login/createAccountFetchFail',
+    'ActiveSessionFetchSuccess': 'login/activeSessionFetchSuccess',
+    'LogoutFetchSuccess': 'login/logoutFetchSuccess'
 };

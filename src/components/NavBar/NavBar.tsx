@@ -13,6 +13,8 @@ import CustomSetPopup from '../CustomSetPopup/CustomSetPopup';
 
 import cardImage from '../../assets/logo.png';
 import CustomSetEditPopup from '../CustomSetEditPopup/CustomSetEditPopup';
+import { getUserEmail } from '../../data/login/selectors';
+import { logoutThunk } from '../../data/login/operations';
 
 function NavBar() {
     /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -20,6 +22,8 @@ function NavBar() {
     const cardSets = useSelector(getCardSetsById)
     const dispatch = useDispatch();
     const history = useHistory();
+
+    const loggedIn = !!useSelector(getUserEmail)
 
     const latestSet = Object.keys(cardSets).length > 0 ? Object.values(cardSets).filter((set) => !set.custom_set && set.num_of_cards > 60).sort((a, b) => +new Date(b.tcg_date) - +new Date(a.tcg_date))[0] : undefined
     const customSets = Object.keys(cardSets).length > 0 ? Object.values(cardSets).filter((set) => set.custom_set) : []
@@ -112,6 +116,10 @@ function NavBar() {
         const selectHeader = document.getElementById("header")
         selectHeader!.classList.remove('header-scrolled')
     }
+
+    function logout() {
+        dispatch(logoutThunk())
+    }
     
     return (
         <header id="header" className={"header fixed-top" + (mobileMenuShown ? " forceNavToFront" : "")}>
@@ -145,7 +153,13 @@ function NavBar() {
                             </ul>
                         </li>
                         <li><a className="nav-link scrollto" href="/contactus">Contact us</a></li>
-                        <li><a className="nav-link scrollto" href="/login">Login</a></li>
+                        { !loggedIn &&
+                            <li><a className="nav-link scrollto" href="/login">Login</a></li>
+                        }
+                        { loggedIn &&
+                            <li><a className="nav-link scrollto" href="#" onClick={() => logout()}>Logout</a></li>
+                        }
+                        
                         <li className="social"><a href="https://twitter.com/YDrafter"><i className="bi bi-twitter"></i></a></li>
                         <li className="social"><a href="https://www.facebook.com/groups/341002234334925"><i className="bi bi-facebook"></i></a></li>
                         <li className="social"><a href="https://github.com/danielschneider22/Yugiohdrafter"><i className="bi bi-github"></i></a></li>
