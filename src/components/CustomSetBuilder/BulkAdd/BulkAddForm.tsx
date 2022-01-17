@@ -39,7 +39,7 @@ function BulkAddForm(props: ParentProps) {
         if(isQuickCreate && !set){
             const cardNames = cardList.split(/\r?\n/);
             const setId = getSetId(setName)
-            dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: cardNames.length, tcg_date: Date(), custom_set: true, author: userEmail}))
+            dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: cardNames.length, tcg_date: Date(), custom_set: true, author: userEmail, card_ids: []}))
             const successFetchCards = await fetchCardsByName(dispatch, cardNames, setId, "add")
             if(successFetchCards){
                 toggleCustomSetPopupVisiblity(isQuickCreate)
@@ -47,7 +47,7 @@ function BulkAddForm(props: ParentProps) {
                 dispatch(addToast({id: _.uniqueId("built-set-"), type: "Success", description: setName, title: "Custom Set Created", backgroundColor: toastBGColorDict["Success"]}))
             }
         } else if(!set) {
-            dispatch(addSet({id: getSetId(setName), set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true, author: userEmail}))
+            dispatch(addSet({id: getSetId(setName), set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true, author: userEmail, card_ids: []}))
             toggleCustomSetPopupVisiblity(isQuickCreate)
             history.push(`/CustomSetBuilder/${setName}`)
             dispatch(addToast({id: _.uniqueId("built-set-"), type: "Success", description: setName, title: "Custom Set Created", backgroundColor: toastBGColorDict["Success"]}))
