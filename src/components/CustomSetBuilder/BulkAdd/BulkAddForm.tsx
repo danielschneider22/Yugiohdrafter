@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import { useHistory } from 'react-router-dom';
 import { fetchCardsByName } from '../../../data/cards/operations';
@@ -10,6 +10,7 @@ import { CardSet } from '../../../constants/CardSet';
 import _ from 'lodash';
 import { toastBGColorDict } from '../../../constants/Toast';
 import { addToast } from '../../../data/toasts/actions';
+import { getUserEmail } from '../../../data/login/selectors';
 
 interface ParentProps{
     toggleCustomSetPopupVisiblity: (isQuickCreate: boolean) => void
@@ -27,6 +28,7 @@ function BulkAddForm(props: ParentProps) {
     const [cardList, setCardList] = useState("")
     const dispatch = useDispatch();
     const history = useHistory();
+    const userEmail = useSelector(getUserEmail)
 
     const doUpdate = (updateFunc: React.Dispatch<React.SetStateAction<string>>) => function updateState(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         updateFunc(event.currentTarget.value)
@@ -37,7 +39,7 @@ function BulkAddForm(props: ParentProps) {
         if(isQuickCreate && !set){
             const cardNames = cardList.split(/\r?\n/);
             const setId = getSetId(setName)
-            dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: cardNames.length, tcg_date: Date(), custom_set: true}))
+            dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: cardNames.length, tcg_date: Date(), custom_set: true, author: userEmail}))
             const successFetchCards = await fetchCardsByName(dispatch, cardNames, setId, "add")
             if(successFetchCards){
                 toggleCustomSetPopupVisiblity(isQuickCreate)
@@ -45,7 +47,7 @@ function BulkAddForm(props: ParentProps) {
                 dispatch(addToast({id: _.uniqueId("built-set-"), type: "Success", description: setName, title: "Custom Set Created", backgroundColor: toastBGColorDict["Success"]}))
             }
         } else if(!set) {
-            dispatch(addSet({id: getSetId(setName), set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true}))
+            dispatch(addSet({id: getSetId(setName), set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true, author: userEmail}))
             toggleCustomSetPopupVisiblity(isQuickCreate)
             history.push(`/CustomSetBuilder/${setName}`)
             dispatch(addToast({id: _.uniqueId("built-set-"), type: "Success", description: setName, title: "Custom Set Created", backgroundColor: toastBGColorDict["Success"]}))

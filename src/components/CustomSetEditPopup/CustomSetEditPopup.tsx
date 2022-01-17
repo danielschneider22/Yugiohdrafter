@@ -10,6 +10,7 @@ import { getSetId, renameSetThunk } from '../../data/cardSets/operations';
 import { isMobile } from 'react-device-detect';
 import EditDeleteCellRenderer from './EditDeleteCellRenderer';
 import { addSet } from '../../data/cardSets/actions';
+import { getUserEmail } from '../../data/login/selectors';
 
 interface ParentProps {
     toggleCustomSetEditPopupVisiblity: () => void
@@ -25,6 +26,7 @@ function CustomSetEditPopup(props: ParentProps) {
         cardsSetByIdRef.current = cardSetsById
     }, [cardSetsById])
     const cardSets = useSelector(getCardSetsAuthoredByCurrUser)
+    const userEmail = useSelector(getUserEmail)
 
     function onRowDataChanged(event: GridReadyEvent) {
         event.api.sizeColumnsToFit()
@@ -57,7 +59,7 @@ function CustomSetEditPopup(props: ParentProps) {
     function addNewSet() {
         const setName = getSetName()
         const setId = getSetId(getSetName())
-        dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true, card_ids: []}))
+        dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true, card_ids: [], author: userEmail}))
     }
 
     const gridOptions: GridOptions = {
