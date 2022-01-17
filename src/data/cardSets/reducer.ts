@@ -52,11 +52,12 @@ export default function cardSetsReducer(state = cardSetsInitialState, action: Ca
 
         return {...state, byId}
       }
-      case 'cardSets/removeSet': {
-        const allIds = state.allIds.filter((val) => val !== action.id)
+      case 'cardSets/removeSets': {
+        const idsToRemove = action.ids
+        const allIds = state.allIds.filter((val) => !idsToRemove.includes(val))
         const byId: {[key: string]: CardSet} = {}
         Object.values(state.byId).forEach((cardSet) => {
-          if(cardSet.id !== action.id){
+          if(!idsToRemove.includes(cardSet.id)){
             byId[cardSet.id] = cardSet
           }
         })

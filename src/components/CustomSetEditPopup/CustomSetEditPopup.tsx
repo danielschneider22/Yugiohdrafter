@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import './CustomSetEditPopup.css';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCardSetsById } from '../../data/cardSets/selectors';
+import { getCardSetsAuthoredByCurrUser, getCardSetsById } from '../../data/cardSets/selectors';
 import { CellDoubleClickedEvent, CellValueChangedEvent, GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { dateFormatter } from '../../helpers/aggridhelpers';
 import { useHistory } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { getSetId, renameSetThunk } from '../../data/cardSets/operations';
 import { isMobile } from 'react-device-detect';
 import EditDeleteCellRenderer from './EditDeleteCellRenderer';
 import { addSet } from '../../data/cardSets/actions';
+import { getUserEmail } from '../../data/login/selectors';
 
 interface ParentProps {
     toggleCustomSetEditPopupVisiblity: () => void
@@ -24,7 +25,8 @@ function CustomSetEditPopup(props: ParentProps) {
     useEffect(() => {
         cardsSetByIdRef.current = cardSetsById
     }, [cardSetsById])
-    const cardSets = Object.values(cardSetsById).filter((set) => set.custom_set)
+    const cardSets = useSelector(getCardSetsAuthoredByCurrUser)
+    const userEmail = useSelector(getUserEmail)
 
     function onRowDataChanged(event: GridReadyEvent) {
         event.api.sizeColumnsToFit()
@@ -57,7 +59,7 @@ function CustomSetEditPopup(props: ParentProps) {
     function addNewSet() {
         const setName = getSetName()
         const setId = getSetId(getSetName())
-        dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true, card_ids: []}))
+        dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true, card_ids: [], author: userEmail}))
     }
 
     const gridOptions: GridOptions = {
