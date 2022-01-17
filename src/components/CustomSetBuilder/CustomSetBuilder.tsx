@@ -27,6 +27,7 @@ function CustomSetBuilder() {
   const cardsSet = currSet && currSet.card_ids ? currSet.card_ids.map((id) => cards[id]) : []
 
   const scrollCardsRef = useRef(null as unknown as HTMLDivElement);
+  const [fetchedCustomSetCards, setFetchedCustomSetCards] = useState(false)
 
   useEffect(() => {
     if (scrollCardsRef) {
@@ -50,9 +51,14 @@ function CustomSetBuilder() {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  async function fetchCustomSetCards() {
+    await fetchCardsById(dispatch, currSet!.card_ids || [], currSet!.id);
+    setFetchedCustomSetCards(true)
+  }
+
   useEffect(() => {
     if (currSet?.card_ids && currSet?.card_ids.length > 0) {
-      fetchCardsById(dispatch, currSet!.card_ids || [], currSet!.id);
+      fetchCustomSetCards()
     }
   }, [currSet?.card_ids]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -137,7 +143,8 @@ function CustomSetBuilder() {
                 </span>
               </li>
             </ul>
-            {tabContent()}
+            {!fetchedCustomSetCards && <div className={"ScrollCards CardDisplayAreaTitle"}>Fetching Custom Set Cards...</div>}
+            {fetchedCustomSetCards && tabContent()}
           </div>
         </div>
       </div>
