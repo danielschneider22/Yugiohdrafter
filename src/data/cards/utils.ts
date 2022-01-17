@@ -9,6 +9,9 @@ import { fetchCards, fetchCardsById } from "./operations";
 export type SortType = "Name" | "Type" | "Rarity";
 
 export function findHighestRarity(card: VisibleCard | Card) {
+    if(!card.card_sets){
+      return 0
+    }
     let highestRarity = 0
     card.card_sets.forEach((set) => {
       const rarityVal = RarityDict[set.set_rarity]

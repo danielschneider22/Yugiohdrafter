@@ -14,7 +14,7 @@ export interface Card{
     "type": string,
     "set_name": string,
     "card_images": { image_url: string, image_url_small: string }[]
-    "card_sets": [{"set_name": string, set_rarity: Rarity}],
+    "card_sets"?: [{"set_name": string, set_rarity: Rarity}],
     "level"?: number
     "atk"?: number
 }

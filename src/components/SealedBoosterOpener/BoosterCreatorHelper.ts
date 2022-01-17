@@ -24,11 +24,11 @@ export function createBooster(cardsOfSet: Card[], cardSet: CardSet) {
         return cards
     }
 
-    const commonCards = cardsOfSet.filter((card) => card.card_sets.find((set) => set.set_name === set_name)?.set_rarity === "Common")
-    const rareCards = cardsOfSet.filter((card) => card.card_sets.find((set) => set.set_name === set_name)?.set_rarity === "Rare")
-    const ultraRare = cardsOfSet.filter((card) => card.card_sets.find((set) => set.set_name === set_name)?.set_rarity === "Ultra Rare")
-    const secretRare = cardsOfSet.filter((card) => card.card_sets.find((set) => set.set_name === set_name)?.set_rarity === "Secret Rare")
-    const superRare = cardsOfSet.filter((card) => card.card_sets.find((set) => set.set_name === set_name)?.set_rarity === "Super Rare")
+    const commonCards = cardsOfSet.filter((card) => card.card_sets ? card.card_sets.find((set) => set.set_name === set_name)?.set_rarity === "Common" : true)
+    const rareCards = cardsOfSet.filter((card) => card.card_sets ? card.card_sets.find((set) => set.set_name === set_name)?.set_rarity === "Rare" : false)
+    const ultraRare = cardsOfSet.filter((card) => card.card_sets ? card.card_sets.find((set) => set.set_name === set_name)?.set_rarity === "Ultra Rare" : false)
+    const secretRare = cardsOfSet.filter((card) => card.card_sets ? card.card_sets.find((set) => set.set_name === set_name)?.set_rarity === "Secret Rare" : false)
+    const superRare = cardsOfSet.filter((card) => card.card_sets ? card.card_sets.find((set) => set.set_name === set_name)?.set_rarity === "Super Rare" : false)
 
     
     for(let i = 0; i < 7; i++){
