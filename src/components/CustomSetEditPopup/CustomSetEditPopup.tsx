@@ -48,7 +48,8 @@ function CustomSetEditPopup(props: ParentProps) {
         let idx = 1
         while(!setName) {
             const testSetName = "New Set " + idx
-            if(!cardSetsById[testSetName]) {
+            const containsInvalidName = Object.keys(cardSetsById).some((cSetName) => cSetName.indexOf(testSetName) !== -1)
+            if(!containsInvalidName) {
                 setName = testSetName
             }
             idx++
@@ -58,7 +59,7 @@ function CustomSetEditPopup(props: ParentProps) {
 
     function addNewSet() {
         const setName = getSetName()
-        const setId = getSetId(getSetName())
+        const setId = getSetId(setName)
         dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true, card_ids: [], author: userEmail}))
     }
 

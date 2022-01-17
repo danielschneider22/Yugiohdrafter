@@ -7,6 +7,7 @@ import BoosterSelect from "../../BoosterPicker/BoosterSelect";
 import { v4 as uuidv4 } from 'uuid';
 import AddRemoveCards from "../AddRemoveCards/AddRemoveCards";
 import { getSetCards } from "../../../data/cards/utils";
+import { getUserEmail } from "../../../data/login/selectors";
 
 
 interface ParentParams {
@@ -18,7 +19,8 @@ function AddFromSets(params: ParentParams) {
     const { setEffected } = { ...params }
 
     const cardSetById = useSelector(getCardSetsById)
-    const cardSets = Object.values(cardSetById)
+    const userEmail = useSelector(getUserEmail)
+    const cardSets = Object.values(cardSetById).filter((set) => !set.author || set.author === userEmail)
     const [booster, setBooster] = useState({ cardSetName: "", id: "booster-" + uuidv4() } as Booster)
     const setShown = {...cardSetById[booster.cardSetName]}
 

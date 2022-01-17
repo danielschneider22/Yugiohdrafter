@@ -5,10 +5,12 @@ import { getLandingPageBoosterIds, getLandingPageBoosters } from "../../data/boo
 import { getCardSetsById } from "../../data/cardSets/selectors";
 import BoosterSelect from "./BoosterSelect";
 import { v4 as uuidv4 } from 'uuid';
+import { getUserEmail } from "../../data/login/selectors";
 
 function BoosterChooserArea() {
-  const dispatch = useDispatch();
-  const cardSets = Object.values(useSelector(getCardSetsById));
+  const dispatch = useDispatch()
+  const userEmail = useSelector(getUserEmail)
+  const cardSets = Object.values(useSelector(getCardSetsById)).filter((set) => !set.author || set.author === userEmail)
   const boosters = useSelector(getLandingPageBoosters)
   const boosterIds = useSelector(getLandingPageBoosterIds)
   const scrollableArea = useRef(null as unknown as HTMLDivElement)

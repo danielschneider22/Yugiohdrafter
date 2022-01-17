@@ -51,7 +51,7 @@ function CustomSetBuilder() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (currSet?.card_ids) {
+    if (currSet?.card_ids && currSet?.card_ids.length > 0) {
       fetchCardsById(dispatch, currSet!.card_ids || [], currSet!.id);
     }
   }, [currSet?.card_ids]); // eslint-disable-line react-hooks/exhaustive-deps
