@@ -16,6 +16,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 function LandingPage() {
   const dispatch = useDispatch();
+  const cardSetsById = useSelector(getCardSetsById)
   const cardSets = Object.values(useSelector(getCardSetsById))
   const boosters = useSelector(getLandingPageBoosters)
   const boosterIds = useSelector(getLandingPageBoosterIds)
@@ -31,7 +32,7 @@ function LandingPage() {
   }, [cardSets, boosters, boosterIds.length, dispatch]);
 
   function launch() {
-    getSetsForBoosters(Object.values(boosters), dispatch)
+    getSetsForBoosters(Object.values(boosters), dispatch, cardSetsById)
     if (playMode === "host")  {
       dispatch(roomAddFetchThunk(history, format))
     } else {    

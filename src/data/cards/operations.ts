@@ -72,6 +72,9 @@ export async function fetchCardsByName(dispatch: Dispatch<any>, names: string[],
 }
 
 export async function fetchCardsById(dispatch: Dispatch<any>, ids: string[], setId: string) {
+    if(ids.length === 0) {
+        return true
+    }
     const blocks = separateIntoBlocks(ids, ",")
     const fullCardList: Card[] = []
     for(const block of blocks) {

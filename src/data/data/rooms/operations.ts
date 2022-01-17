@@ -137,7 +137,7 @@ export const roomJoinRoomFetchThunk = (roomId: string, removeBoosters = true): T
 
         // fetch all non-custom set cards
         const nonCustomSets = boosters.filter((booster) => !customSets?.allIds.includes(booster.cardSetName))
-        getSetsForBoosters(nonCustomSets, dispatch)
+        getSetsForBoosters(nonCustomSets, dispatch, {})
         if (removeBoosters)
           dispatch(removeAllBoosters("draftBooster"))
         dispatch(setBoosters(boosters, "landingPageBooster"))

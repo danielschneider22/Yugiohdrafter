@@ -1,4 +1,5 @@
 import { createSelector } from "reselect";
+import { getCardsById } from "../cards/selectors";
 import { getCardSetsById } from "../cardSets/selectors";
 import { getUserPlayerInfo } from "../data/roomPlayers.ts/selectors";
 import { initState } from "../reducers";
@@ -21,8 +22,21 @@ export const getRoundComplete = createSelector([getDraftBoosters], (draftBooster
     return Object.values(draftBoosters).every((booster) => booster.cardIds && booster.cardIds.length === 0)
 })
 
-export const getAllCardSetCardsFetched = createSelector([getLandingPageBoosters, getCardSetsById], (landingPageBoosters, cardSets) => {
-    return Object.values(landingPageBoosters).every((booster) => cardSets[booster.cardSetName] && cardSets[booster.cardSetName].card_ids && cardSets[booster.cardSetName].card_ids!.length > 0)
+// for non custom boosters just make sure that the set has card ids
+// for custom sets make sure all the cards have been fetched for that set
+export const getAllCardSetCardsFetched = createSelector([getLandingPageBoosters, getCardSetsById, getCardsById], (landingPageBoosters, cardSets, cards) => {
+    const checkedSets: string[] = []
+    return Object.values(landingPageBoosters).every((booster) => {
+        const boosterSet = booster.cardSetName
+        const nonCustomBoosterCheck = cardSets[boosterSet] && cardSets[boosterSet].card_ids && cardSets[boosterSet].card_ids!.length > 0
+        if(nonCustomBoosterCheck && cardSets[boosterSet].custom_set && !checkedSets.some((set) => set === boosterSet)){
+            checkedSets.push(boosterSet)
+            return cardSets[boosterSet].card_ids?.every((id) => cards[id])
+        } else if(nonCustomBoosterCheck){
+            return true
+        }
+        return false
+    })
 })
 
 // you can only view a pack if your pack has the same or greater number of cards in it

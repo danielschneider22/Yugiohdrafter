@@ -4,7 +4,7 @@ import { Card, RarityDict, VisibleCard } from "../../constants/Card";
 import { CardSet } from "../../constants/CardSet";
 import { updateCardIds } from "../cardSets/actions";
 import { addCards } from "./actions";
-import { fetchCards } from "./operations";
+import { fetchCards, fetchCardsById } from "./operations";
 
 export type SortType = "Name" | "Type" | "Rarity";
 
@@ -64,7 +64,7 @@ export const isExtraDeckCard = (card: Card | VisibleCard) => {
   return card.type.includes("XYZ Monster") || card.type.includes("Fusion Monster") || card.type.includes("Synchro Monster")|| card.type.includes("Link Monster")
 }
 
-export function getSetsForBoosters(boosters: Booster[], dispatch: Dispatch<any>) {
+export function getSetsForBoosters(boosters: Booster[], dispatch: Dispatch<any>, cardSetsById: {[id: string]: CardSet}) {
   const fetchedSets = {} as {[key: string]: string}
   boosters.forEach((booster) => {
     if(!fetchedSets[booster.cardSetName]) {
@@ -73,6 +73,9 @@ export function getSetsForBoosters(boosters: Booster[], dispatch: Dispatch<any>)
         const cards: Card[] = JSON.parse(cardsOfSet)
         dispatch(addCards(cards))
         dispatch(updateCardIds(cards.map((card) => card.id), booster.cardSetName, "overwrite"))
+      } else if(cardSetsById[booster.cardSetName] && cardSetsById[booster.cardSetName].custom_set){
+        const set = cardSetsById[booster.cardSetName]
+        fetchCardsById(dispatch, set.card_ids!, set.id)
       } else {
         fetchCards(dispatch, booster.cardSetName);
       }

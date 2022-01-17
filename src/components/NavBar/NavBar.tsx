@@ -114,7 +114,7 @@ function NavBar() {
         dispatch(initialiazeDraftPod(8, 5, 9, ""))
         dispatch(removeAllBoosters("draftBooster"))
         dispatch(setBoosters(boosters, "landingPageBooster"))
-        getSetsForBoosters(Object.values(boosters), dispatch)
+        getSetsForBoosters(Object.values(boosters), dispatch, cardSets)
         history.push("/Draft")
         setMobileMenuShown(false)
     }

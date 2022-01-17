@@ -57,7 +57,7 @@ function CustomSetBuilder() {
   }
 
   useEffect(() => {
-    if (currSet?.card_ids && currSet?.card_ids.length > 0) {
+    if (currSet?.card_ids) {
       fetchCustomSetCards()
     }
   }, [currSet?.card_ids]); // eslint-disable-line react-hooks/exhaustive-deps
