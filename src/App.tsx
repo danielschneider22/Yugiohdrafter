@@ -7,7 +7,7 @@ import DraftComplete from './components/DraftComplete/DraftComplete';
 import NavBar from './components/NavBar/NavBar';
 import SealedBoosterOpener from './components/SealedBoosterOpener/SealedBoosterOpener';
 import ToastManager from './components/ToastManager/ToastManager';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { getClientIp } from './data/data/rooms/utils';
 import RoomPage from './components/RoomPage/RoomPage';
 import { getCardSetsById } from './data/cardSets/selectors';
@@ -23,6 +23,7 @@ import LoginPage from './components/LoginPage/Login';
 import { getUserIfActiveSessionThunk } from './data/login/operations';
 import ForgotPassword from './components/LoginPage/ForgotPassword';
 import ResetPasswordPage from './components/ResetPasswordPage/ResetPassword';
+import { OnMount } from './helpers/hooks';
 
 export let ip = ""
 
@@ -36,13 +37,7 @@ function App() {
   const cardSets = Object.values(useSelector(getCardSetsById))
   const dispatch = useDispatch();
 
-  async function fetchActiveSession() {
-    await dispatch(getUserIfActiveSessionThunk())
-    setFetchedActiveSession(true)
-  }
-
-  useEffect(() => {
-    // get client's ip address
+  OnMount(() => {
     async function getIP() {
       if(process.env.NODE_ENV === "development") {
         ip = (Math.random() * 200000) + ""
@@ -61,7 +56,13 @@ function App() {
     } 
     dispatch(getCardSetsFetchThunk())
     fetchActiveSession()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  })
+
+  async function fetchActiveSession() {
+    await dispatch(getUserIfActiveSessionThunk())
+    setFetchedActiveSession(true)
+  }
 
   if(!fetchedActiveSession || !ipLoaded || cardSets.length === 0) {
     return <div></div>
