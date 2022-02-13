@@ -4,20 +4,19 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "@cypress/code-coverage": "^3.9.12",
+    "@cypress/instrument-cra": "^1.4.0",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@mui/material": "^5.2.6",
     "@mui/styled-engine-sc": "^5.1.0",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
     "@types/react-dom": "^17.0.0",
     "ag-grid-community": "^26.2.1",
     "ag-grid-react": "^26.2.0",
     "boostrap": "^2.0.0",
     "bootstrap": "^5.0.1",
+    "cypress": "^9.4.1",
     "emailjs": "^3.5.0",
     "emailjs-com": "^3.2.0",
     "http-proxy-middleware": "^2.0.0",
@@ -35,6 +34,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
+    "start-server-and-test": "^1.14.0",
     "styled-components": "^5.3.3",
     "typescript": "^4.1.2",
     "uuid": "^8.3.2",
@@ -43,13 +43,16 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "cypress:start:app": "react-scripts -r @cypress/instrument-cra start",
+    "cypress:start:wait": "start-server-and-test cypress:start:app http://localhost:3000",
+    "cypress:open": "npm run cypress:start:wait -- \"cypress open\"",
+    "cypress:run": "npm run cypress:start:wait -- \"cypress run\"",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
     ]
   },
   "browserslist": {
