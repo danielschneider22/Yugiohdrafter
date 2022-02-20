@@ -1,35 +1,24 @@
 import './BoosterPicker.css';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { addBooster } from '../../data/boosters/actions';
-import { getLandingPageBoosterIds, getLandingPageBoosters } from '../../data/boosters/selectors';
+import { getLandingPageBoosters } from '../../data/boosters/selectors';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import { roomAddFetchThunk } from '../../data/data/rooms/operations';
 import BoosterChooserArea from './BoosterChooserArea';
-import { sortCardSet } from '../../data/cardSets/utils';
 import { getSetsForBoosters } from '../../data/cards/utils';
 import { initialiazeDraftPod } from '../../data/draftPod/actions';
-import { v4 as uuidv4 } from 'uuid';
 
 function LandingPage() {
   const dispatch = useDispatch();
   const cardSetsById = useSelector(getCardSetsById)
   const cardSets = Object.values(useSelector(getCardSetsById))
   const boosters = useSelector(getLandingPageBoosters)
-  const boosterIds = useSelector(getLandingPageBoosterIds)
   const [format, setFormat] = useState("draft" as "sealed" | "draft")
   const [playMode, setPlayMode] = useState("bots" as "bots" | "host")
   const history = useHistory()
-
-  // add a booster if booster list is empty
-  useEffect(() => {
-    if(boosterIds.length === 0 && cardSets.length > 0) {
-        dispatch(addBooster({cardSetName: cardSets.sort(sortCardSet)[0].id, id: "booster-" + uuidv4()}, "landingPageBooster"))
-    }
-  }, [cardSets, boosters, boosterIds.length, dispatch]);
 
   function launch() {
     getSetsForBoosters(Object.values(boosters), dispatch, cardSetsById)

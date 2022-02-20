@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addBooster, updateBooster } from "../../data/boosters/actions";
 import { getLandingPageBoosterIds, getLandingPageBoosters } from "../../data/boosters/selectors";
@@ -6,6 +6,7 @@ import { getCardSetsById } from "../../data/cardSets/selectors";
 import BoosterSelect from "./BoosterSelect";
 import { v4 as uuidv4 } from 'uuid';
 import { getUserEmail } from "../../data/login/selectors";
+import { sortCardSet } from "../../data/cardSets/utils";
 
 function BoosterChooserArea() {
   const dispatch = useDispatch()
@@ -14,6 +15,13 @@ function BoosterChooserArea() {
   const boosters = useSelector(getLandingPageBoosters)
   const boosterIds = useSelector(getLandingPageBoosterIds)
   const scrollableArea = useRef(null as unknown as HTMLDivElement)
+
+  // add a booster if booster list is empty
+  useEffect(() => {
+    if(boosterIds.length === 0 && cardSets.length > 0) {
+        dispatch(addBooster({cardSetName: cardSets.sort(sortCardSet)[0].id, id: "booster-" + uuidv4()}, "landingPageBooster"))
+    }
+  }, [cardSets, boosters, boosterIds.length, dispatch]);
 
   function boosterChanged(id: string, val: string) {
     dispatch(updateBooster(id, {cardSetName: val}, "landingPageBooster"))

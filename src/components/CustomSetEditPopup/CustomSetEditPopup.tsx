@@ -6,7 +6,7 @@ import { getCardSetsAuthoredByCurrUser, getCardSetsById } from '../../data/cardS
 import { CellDoubleClickedEvent, CellValueChangedEvent, GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { dateFormatter } from '../../helpers/aggridhelpers';
 import { useHistory } from 'react-router-dom';
-import { getSetId, renameSetThunk } from '../../data/cardSets/operations';
+import { getSetId, publishCardSetFetchThunk, renameSetThunk } from '../../data/cardSets/operations';
 import { isMobile } from 'react-device-detect';
 import EditDeleteCellRenderer from './EditDeleteCellRenderer';
 import { addSet } from '../../data/cardSets/actions';
@@ -60,7 +60,9 @@ function CustomSetEditPopup(props: ParentProps) {
     function addNewSet() {
         const setName = getSetName()
         const setId = getSetId(setName)
-        dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true, card_ids: [], author: userEmail}))
+        const cardSet = {id: setId, set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true, card_ids: [], author: userEmail}
+        dispatch(addSet(cardSet))
+        dispatch(publishCardSetFetchThunk(cardSet, true))
     }
 
     const gridOptions: GridOptions = {

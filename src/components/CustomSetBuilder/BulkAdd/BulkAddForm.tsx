@@ -4,7 +4,7 @@ import { isMobile } from 'react-device-detect';
 import { useHistory } from 'react-router-dom';
 import { fetchCardsByName } from '../../../data/cards/operations';
 import { addSet } from '../../../data/cardSets/actions';
-import { getSetId } from '../../../data/cardSets/operations';
+import { getSetId, publishCardSetFetchThunk } from '../../../data/cardSets/operations';
 import  '../../CustomSetPopup/CustomSetPopup.css';
 import { CardSet } from '../../../constants/CardSet';
 import _ from 'lodash';
@@ -39,7 +39,9 @@ function BulkAddForm(props: ParentProps) {
         if(isQuickCreate && !set){
             const cardNames = cardList.split(/\r?\n/);
             const setId = getSetId(setName)
-            dispatch(addSet({id: setId, set_name: setName, set_code: setName, num_of_cards: cardNames.length, tcg_date: Date(), custom_set: true, author: userEmail, card_ids: []}))
+            const cardSet = {id: setId, set_name: setName, set_code: setName, num_of_cards: cardNames.length, tcg_date: Date(), custom_set: true, author: userEmail, card_ids: []}
+            dispatch(addSet(cardSet))
+            dispatch(publishCardSetFetchThunk(cardSet))
             const successFetchCards = await fetchCardsByName(dispatch, cardNames, setId, "add")
             if(successFetchCards){
                 toggleCustomSetPopupVisiblity(isQuickCreate)
@@ -47,7 +49,9 @@ function BulkAddForm(props: ParentProps) {
                 dispatch(addToast({id: _.uniqueId("built-set-"), type: "Success", description: setName, title: "Custom Set Created", backgroundColor: toastBGColorDict["Success"]}))
             }
         } else if(!set) {
-            dispatch(addSet({id: getSetId(setName), set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true, author: userEmail, card_ids: []}))
+            const cardSet = {id: getSetId(setName), set_name: setName, set_code: setName, num_of_cards: 0, tcg_date: Date(), custom_set: true, author: userEmail, card_ids: []}
+            dispatch(addSet(cardSet))
+            dispatch(publishCardSetFetchThunk(cardSet))
             toggleCustomSetPopupVisiblity(isQuickCreate)
             history.push(`/CustomSetBuilder/${setName}`)
             dispatch(addToast({id: _.uniqueId("built-set-"), type: "Success", description: setName, title: "Custom Set Created", backgroundColor: toastBGColorDict["Success"]}))

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { resetPasswordThunk } from "../../data/login/operations";
@@ -12,7 +12,8 @@ function ResetPasswordPage() {
     const [password, setPassword] = useState("")
     const history = useHistory()
 
-    async function resetPassword() {
+    async function resetPassword(ev?: React.FormEvent) {
+        ev?.preventDefault()
         const resetPasswordSuccess = await dispatch(resetPasswordThunk(password, uuid)) as unknown as boolean
         if (resetPasswordSuccess) {
             history.push("/")
@@ -20,7 +21,7 @@ function ResetPasswordPage() {
     }
 
     return (
-        <div className="maxWH">
+        <form className="maxWH" onSubmit={resetPassword}>
             <div className="BoosterPickerWrapper d-flex justify-content-center row h-100 px-2">
                 <div className="BoosterWindowedArea bd-highlight col-sm-3">
                     <div className="InfoBlurb">
@@ -35,7 +36,7 @@ function ResetPasswordPage() {
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     )
 }
 

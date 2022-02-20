@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { sendRecoveryEmailThunk } from "../../data/login/operations";
 import "./Login.css"
@@ -7,12 +7,13 @@ function ForgotPassword() {
   const dispatch = useDispatch()
   const [email, setEmail] = useState("")
 
-  function resetPassword() {
+  function resetPassword(ev?: React.FormEvent) {
+    ev?.preventDefault()
     dispatch(sendRecoveryEmailThunk(email))
   }
 
   return (
-    <div className="maxWH">
+    <form className="maxWH" onClick={resetPassword}>
       <div className="BoosterPickerWrapper d-flex justify-content-center row h-100 px-2">
         <div className="BoosterWindowedArea bd-highlight col-sm-3">
           <div className="InfoBlurb">
@@ -27,7 +28,7 @@ function ForgotPassword() {
           </div>
         </div>
       </div>
-    </div>
+    </form>
   )
 }
 

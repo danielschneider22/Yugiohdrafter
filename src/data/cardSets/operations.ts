@@ -74,8 +74,11 @@ async function customSetsFetchOp(roomId: string): Promise<CardSet[]> {
 }
 
 export const renameSetThunk = (set: CardSet, newName: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
-    dispatch(addSet({...set, set_name: newName, id: getSetId(newName)}))
+    const newSet = {...set, set_name: newName, id: getSetId(newName)}
     dispatch(removeSets([set.id]))
+    dispatch(addSet(newSet))
+    dispatch(deleteCardSetsFetchThunk([set.id], true))
+    dispatch(publishCardSetFetchThunk(newSet, true))
 }
 
 export function getSetId(set_name: string) {
@@ -83,14 +86,15 @@ export function getSetId(set_name: string) {
 }
 
 // - card set publishing
-export const publishCardSetFetchThunk = (cardSet: CardSet): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch) => {
+export const publishCardSetFetchThunk = (cardSet: CardSet, silent?: boolean): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch) => {
     dispatch(publishSetFetch(cardSet.set_name))
     const [cardSetResult, error]: Monad<CardSet> = await tryCatchPromise(dispatch, [cardSet])<CardSet>(publishCardSetFetchOp)
     if (cardSetResult) {
       const cardSet = cardSetResult // no contract-to-model mapping needed, all fields are basic JSON types
       if (cardSet) {
         await dispatch(publishSetFetchSuccess(cardSet.set_name))
-        dispatch(addToast({id: _.uniqueId("message-sent-"), type: "Success", description: "Set published", title: "Success", backgroundColor: toastBGColorDict["Success"]}))
+        if(!silent)
+          dispatch(addToast({id: _.uniqueId("message-sent-"), type: "Success", description: "Set published", title: "Success", backgroundColor: toastBGColorDict["Success"]}))
       }
       else
         dispatch(publishSetFetchFail(error))  
@@ -115,13 +119,14 @@ async function publishCardSetFetchOp(cardSet: CardSet): Promise<CardSet> {
 
 // (custom) card set deletion
 // - card set publishing
-export const deleteCardSetsFetchThunk = (ids: string[]): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch) => {
+export const deleteCardSetsFetchThunk = (ids: string[], silent?: boolean): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch) => {
   dispatch(deleteSetsFetch(ids))
   // eslint-disable-next-line no-unused-vars
   const [, error]: Monad<{message: string}> = await tryCatchPromise(dispatch, [ids])<{message: string}>(deleteCardSetFetchOp)
   if (error === null) {
     await dispatch(deleteSetsFetchSuccess(ids))
-    dispatch(addToast({id: _.uniqueId("message-sent-"), type: "Success", description: "Set(s) deleted", title: "Success", backgroundColor: toastBGColorDict["Success"]}))
+    if(!silent)
+      dispatch(addToast({id: _.uniqueId("message-sent-"), type: "Success", description: "Set(s) deleted", title: "Success", backgroundColor: toastBGColorDict["Success"]}))
     dispatch(removeSets(ids))
   } else {
     dispatch(deleteSetsFetchFail(error))

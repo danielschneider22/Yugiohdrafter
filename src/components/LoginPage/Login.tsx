@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createAccountThunk, loginThunk } from "../../data/login/operations";
@@ -10,7 +10,8 @@ function LoginPage() {
   const [password, setPassword] = useState("")
   const history = useHistory()
 
-  async function login() {
+  async function login(ev?: React.FormEvent) {
+    ev?.preventDefault()
     const loggedIn = await dispatch(loginThunk(email, password)) as unknown as boolean
     if(loggedIn)
       history.push("/")
@@ -27,7 +28,7 @@ function LoginPage() {
   }
 
   return (
-    <div className="maxWH">
+    <form className="maxWH" onSubmit={login}>
       <div className="BoosterPickerWrapper d-flex justify-content-center row h-100 px-2">
         <div className="BoosterWindowedArea bd-highlight col-sm-3">
           <div className="InfoBlurb">
@@ -52,7 +53,7 @@ function LoginPage() {
           </div>
         </div>
       </div>
-    </div>
+    </form>
   )
 }
 
