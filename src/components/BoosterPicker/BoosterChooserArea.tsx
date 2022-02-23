@@ -34,7 +34,7 @@ function BoosterChooserArea() {
   }
 
   return (
-    <div style={{minHeight: "300px"}}>
+    <div>
       <div className="AddBoosterButton btn btn-info d-flex justify-content-center" onClick={addBoosterButtonClick} >Add Booster</div>
       <div ref={scrollableArea} className={"BoostersWrapper"}>
         {
