@@ -1,17 +1,27 @@
 .BoosterPickerWrapper{
     height: 100%;
     padding-top: 80px;
+    overflow: auto;
 }
 
 .BoosterPickerWrapper > * {
     color: white;
     font-family: "Nunito", sans-serif;
+    position: relative;
+    
 }
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    [class*="BoosterWindowedArea"] {
+        margin-bottom: 80px;
+    }
+  }
 
 .InfoBlurb{
     font-size: 30px;
     text-align: center;
-    padding-bottom: 20px;
+    padding-bottom: 40px;
     font-weight: 700;
     letter-spacing: 1px;
     color: white;

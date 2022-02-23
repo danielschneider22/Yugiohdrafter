@@ -2,16 +2,14 @@ import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addBooster, updateBooster } from "../../data/boosters/actions";
 import { getLandingPageBoosterIds, getLandingPageBoosters } from "../../data/boosters/selectors";
-import { getCardSetsById } from "../../data/cardSets/selectors";
+import { getCardSetsAccessibleToCurrUser } from "../../data/cardSets/selectors";
 import BoosterSelect from "./BoosterSelect";
 import { v4 as uuidv4 } from 'uuid';
-import { getUserEmail } from "../../data/login/selectors";
 import { sortCardSet } from "../../data/cardSets/utils";
 
 function BoosterChooserArea() {
   const dispatch = useDispatch()
-  const userEmail = useSelector(getUserEmail)
-  const cardSets = Object.values(useSelector(getCardSetsById)).filter((set) => !set.author || set.author === userEmail)
+  const cardSets = Object.values(useSelector(getCardSetsAccessibleToCurrUser))
   const boosters = useSelector(getLandingPageBoosters)
   const boosterIds = useSelector(getLandingPageBoosterIds)
   const scrollableArea = useRef(null as unknown as HTMLDivElement)
@@ -36,7 +34,7 @@ function BoosterChooserArea() {
   }
 
   return (
-    <div>
+    <div style={{minHeight: "300px"}}>
       <div className="AddBoosterButton btn btn-info d-flex justify-content-center" onClick={addBoosterButtonClick} >Add Booster</div>
       <div ref={scrollableArea} className={"BoostersWrapper"}>
         {

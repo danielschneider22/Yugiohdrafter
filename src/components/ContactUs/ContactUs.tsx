@@ -1,24 +1,21 @@
 import emailjs from 'emailjs-com';
 import _ from 'lodash';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import emailkey from '../../constants/emailkey';
 import { toastBGColorDict } from '../../constants/Toast';
 import { addToast } from '../../data/toasts/actions';
-import { scrollToggleNavVisibility } from '../NavBar/ScrollBGColorChange';
+import withScroll from '../withScroll/withScroll';
 
 type loadingState = "notLoading" | "loading" | "loaded" | "failed"
 
-function ContactUs() {
+type ParentProps = {
+    scrollCardsRef: React.MutableRefObject<HTMLDivElement>
+}
+
+function ContactUs(props: ParentProps) {
     const dispatch = useDispatch();
     const [loadingState, setLoadingState] = useState("notLoading" as loadingState)
-    const scrollCardsRef = useRef(null as unknown as HTMLDivElement)
-
-    useEffect(() => {
-        if(scrollCardsRef) {
-            scrollCardsRef.current.addEventListener('scroll', scrollToggleNavVisibility as unknown as (this: HTMLDivElement, ev: Event) => any)
-        }
-      }, [scrollCardsRef])
     
     function sendEmail(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -33,7 +30,7 @@ function ContactUs() {
         });
     }
     return (
-        <section id="contact" className="contact" ref={scrollCardsRef}>
+        <section id="contact" className="contact" ref={props.scrollCardsRef}>
             <div className="container">
 
             <header className="section-header">
@@ -55,10 +52,10 @@ function ContactUs() {
                 </div>
                 <div className="col-md-6">
                     <div className="info-box">
-                    <i className="bi bi-github"></i>
-                    <h3>Github Code</h3>
-                    <p>https://github.com/danielschneider22/Yugiohdrafter</p>
-                    <p>https://github.com/allenwhitedev/yugiohdrafter-backend</p>
+                        <i className="bi bi-github"></i>
+                        <h3>Github Code</h3>
+                        <a href="https://github.com/danielschneider22/Yugiohdrafter">Frontend</a><div/>
+                        <a href="https://github.com/danielschneider22/Yugiohdrafter">Backend</a>
                     </div>
                 </div>
                 <div className="col-md-6">
@@ -120,5 +117,5 @@ function ContactUs() {
     );
 }
 
-export default ContactUs;
+export default withScroll(ContactUs);
 

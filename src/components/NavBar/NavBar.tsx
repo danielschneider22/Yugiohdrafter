@@ -5,7 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Booster } from '../../constants/Booster';
 import { removeAllBoosters, resetBoosterCards, setBoosters } from '../../data/boosters/actions';
 import { getSetsForBoosters } from '../../data/cards/utils';
-import { getCardSetsById } from '../../data/cardSets/selectors';
+import { getCardSetsAccessibleToCurrUser, getCardSetsById } from '../../data/cardSets/selectors';
 import { clearRoomInfo } from '../../data/data/rooms/actions';
 import { resetDeckAndSideboard } from '../../data/deck/actions';
 import { initialiazeDraftPod } from '../../data/draftPod/actions';
@@ -22,13 +22,14 @@ function NavBar() {
     /* eslint-disable jsx-a11y/anchor-is-valid */
     const [mobileMenuShown, setMobileMenuShown] = useState(false)
     const cardSets = useSelector(getCardSetsById)
+    const accessibleCardSets = useSelector(getCardSetsAccessibleToCurrUser)
     const dispatch = useDispatch();
     const history = useHistory();
 
     const loggedIn = !!useSelector(getUserEmail)
 
-    const latestSet = Object.keys(cardSets).length > 0 ? Object.values(cardSets).filter((set) => !set.custom_set && set.num_of_cards > 60).sort((a, b) => +new Date(b.tcg_date) - +new Date(a.tcg_date))[0] : undefined
-    const customSets = Object.keys(cardSets).length > 0 ? Object.values(cardSets).filter((set) => set.custom_set) : []
+    const latestSet = Object.keys(accessibleCardSets).length > 0 ? Object.values(accessibleCardSets).filter((set) => !set.custom_set && set.num_of_cards > 60).sort((a, b) => +new Date(b.tcg_date) - +new Date(a.tcg_date))[0] : undefined
+    const customSets = Object.keys(accessibleCardSets).length > 0 ? Object.values(accessibleCardSets).filter((set) => set.custom_set) : []
     function toggleMobileMenu() {
         setMobileMenuShown(!mobileMenuShown)
     }
@@ -124,6 +125,10 @@ function NavBar() {
         defaultClearAndClose()
     }
 
+    function goToPage(page: string) {
+        history.push("/" + page)
+    }
+
     function defaultClearAndClose() {
         dispatch(removeAllBoosters("draftBooster"))
         dispatch(resetDeckAndSideboard())
@@ -169,9 +174,9 @@ function NavBar() {
 
                                 </ul>
                             </li>
-                            <li><a className="nav-link scrollto" href="/contactus">Contact us</a></li>
+                            <li><a className="nav-link scrollto" href="#" onClick={() => goToPage("contactus")}>Contact us</a></li>
                             {!loggedIn &&
-                                <li><a className="nav-link scrollto" href="/login">Login</a></li>
+                                <li><a className="nav-link scrollto" href="#" onClick={() => goToPage("login")}>Login</a></li>
                             }
                             {loggedIn &&
                                 <li><a className="nav-link scrollto" href="#" onClick={() => logout()}>Logout</a></li>

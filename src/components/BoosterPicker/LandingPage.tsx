@@ -10,8 +10,14 @@ import { roomAddFetchThunk } from '../../data/data/rooms/operations';
 import BoosterChooserArea from './BoosterChooserArea';
 import { getSetsForBoosters } from '../../data/cards/utils';
 import { initialiazeDraftPod } from '../../data/draftPod/actions';
+import Footer from '../Footer/Footer';
+import withScroll from '../withScroll/withScroll';
 
-function LandingPage() {
+type ParentProps = {
+  scrollCardsRef: React.MutableRefObject<HTMLDivElement>
+}
+
+function LandingPage(props: ParentProps) {
   const dispatch = useDispatch();
   const cardSetsById = useSelector(getCardSetsById)
   const cardSets = Object.values(useSelector(getCardSetsById))
@@ -38,7 +44,7 @@ function LandingPage() {
 
   return (
     <div className="maxWH">
-      <div className="BoosterPickerWrapper d-flex justify-content-center row h-100">
+      <div className="BoosterPickerWrapper d-flex justify-content-center row h-100" ref={props.scrollCardsRef}>
         <div className="BoosterWindowedArea bd-highlight col-sm-6">
           <div className="InfoBlurb">
               Pick Format and Card Sets
@@ -64,6 +70,7 @@ function LandingPage() {
             <button className="LaunchButton w-50 btn-lg btn-success" onClick={launch}>Launch</button>
           </div>
         </div>
+        <Footer />
       </div>
     </div>
     
@@ -71,5 +78,5 @@ function LandingPage() {
   );
 }
 
-export default LandingPage;
+export default withScroll(LandingPage);
 

@@ -2,34 +2,28 @@ import './MainCardArea.css'
 
 import { VisibleCard } from '../../constants/Card';
 import BottomBar from '../BottomBar/BottomBar';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { sortCards, SortType } from '../../data/cards/utils';
-import { scrollToggleNavVisibility } from '../NavBar/ScrollBGColorChange';
 import { isMobile } from 'react-device-detect';
+import withScroll from '../withScroll/withScroll';
 
 interface ParentProps{
     unsortedCards: VisibleCard[],
     title: string,
     subTitle?: string,
     cardClicked: (card: VisibleCard) => void,
-    loadedCards: boolean
+    loadedCards: boolean,
+    scrollCardsRef: React.MutableRefObject<HTMLDivElement>
 }
 
 function MainCardArea(props: ParentProps) {
-  const { unsortedCards, cardClicked, loadedCards, title, subTitle } = props
+  const { unsortedCards, cardClicked, loadedCards, title, subTitle, scrollCardsRef } = props
   const [sortType, toggleSortType] = useState("Name" as SortType)
-  const scrollCardsRef = useRef(null as unknown as HTMLDivElement)
 
   const cards = unsortedCards.sort(sortCards(sortType))
 
-  useEffect(() => {
-    if(scrollCardsRef) {
-        scrollCardsRef.current.addEventListener('scroll', scrollToggleNavVisibility as unknown as (this: HTMLDivElement, ev: Event) => any)
-    }
-  }, [scrollCardsRef])
-
   const safariIOSSpacingStyle: React.CSSProperties = {paddingTop: -1000}
-  safariIOSSpacingStyle.marginTop = isMobile ? 400 : 800
+  safariIOSSpacingStyle.marginTop = isMobile ? 400 : 200
   safariIOSSpacingStyle.color = 'transparent'
 
   return (
@@ -55,4 +49,4 @@ function MainCardArea(props: ParentProps) {
   );
 }
 
-export default MainCardArea;
+export default withScroll(MainCardArea);

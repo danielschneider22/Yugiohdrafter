@@ -1,34 +1,61 @@
-import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { sendRecoveryEmailThunk } from "../../data/login/operations";
+import * as Yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import "./Login.css"
+
+type UserSubmitForm = {
+  email: string;
+};
 
 function ForgotPassword() {
   const dispatch = useDispatch()
-  const [email, setEmail] = useState("")
 
-  function resetPassword(ev?: React.FormEvent) {
-    ev?.preventDefault()
-    dispatch(sendRecoveryEmailThunk(email))
+  const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .required('Email is required')
+      .email('Email is invalid'),
+  });
+
+  const {
+    handleSubmit,
+    register,
+    getValues,
+    formState: { errors }
+  } = useForm<UserSubmitForm>({
+    resolver: yupResolver(validationSchema)
+  });
+
+  function resetPassword() {
+    dispatch(sendRecoveryEmailThunk(getValues("email")))
   }
 
   return (
-    <form className="maxWH" onClick={resetPassword}>
-      <div className="BoosterPickerWrapper d-flex justify-content-center row h-100 px-2">
-        <div className="BoosterWindowedArea bd-highlight col-sm-3">
-          <div className="InfoBlurb">
-              Password Recovery
-          </div>
-          <label className="control-label col-6" htmlFor="setName">Email Address:</label>
-          <div className="col-12">          
-              <input type="email" value={email} onChange={(val) => setEmail(val.currentTarget.value)} className="form-control dark-themed-textarea" placeholder="Email" required/>
-          </div>
-          <div className="d-flex justify-content-center pt-2">
-            <button onClick={resetPassword} className="LaunchButton w-100 btn-lg btn-primary">Send Password Recovery Email</button>
+    <div className="register-form">
+      <form className="maxWH" onSubmit={handleSubmit(resetPassword)}>
+        <div className="BoosterPickerWrapper d-flex justify-content-center row h-100 px-2">
+          <div className="BoosterWindowedArea bd-highlight col-sm-3">
+            <div className="InfoBlurb">
+                Password Recovery
+            </div>
+            <div className="col-12">          
+                <input
+                  type="email"
+                  className={`form-control dark-themed-textarea form-control ${errors.email ? 'is-invalid' : ''}` }
+                  placeholder="Email"
+                  {...register('email')}
+                />
+                <div className="invalid-feedback">{errors.email?.message}</div>
+            </div>
+            <div className="d-flex justify-content-center pt-2">
+              <button type="submit" className="LaunchButton w-100 btn-lg btn-primary">Send Password Recovery Email</button>
+            </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
+    
   )
 }
 

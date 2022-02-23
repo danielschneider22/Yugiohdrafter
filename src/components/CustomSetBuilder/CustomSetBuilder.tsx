@@ -5,17 +5,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCardSetsById } from "../../data/cardSets/selectors";
 import { useHistory, useParams } from "react-router-dom";
 import NavItem from "../NavItem/NavItem";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import BulkAddForm from "./BulkAdd/BulkAddForm";
 import { fetchCardsById } from "../../data/cards/operations";
 import { getSetCards } from "../../data/cards/utils";
-import { scrollToggleNavVisibility } from "../NavBar/ScrollBGColorChange";
 import AddFromSets from "./AddFromSets/AddFromSets";
 import ViewEditList from "./ViewEditList/ViewEditList";
 import { deleteCardSetsFetchThunk, publishCardSetFetchThunk } from "../../data/cardSets/operations";
 import { getCardsById } from "../../data/cards/selectors";
+import withScroll from "../withScroll/withScroll";
 
-function CustomSetBuilder() {
+type ParentProps = {
+  scrollCardsRef: React.MutableRefObject<HTMLDivElement>
+}
+
+function CustomSetBuilder(props: ParentProps) {
   const dispatch = useDispatch();
   const history = useHistory();
   const cardSetsById = useSelector(getCardSetsById);
@@ -26,20 +30,7 @@ function CustomSetBuilder() {
   const cards = useSelector(getCardsById)
   const cardsSet = currSet && currSet.card_ids ? currSet.card_ids.map((id) => cards[id]) : []
 
-  const scrollCardsRef = useRef(null as unknown as HTMLDivElement);
   const [fetchedCustomSetCards, setFetchedCustomSetCards] = useState(false)
-
-  useEffect(() => {
-    if (scrollCardsRef) {
-      scrollCardsRef.current.addEventListener(
-        "scroll",
-        scrollToggleNavVisibility as unknown as (
-          this: HTMLDivElement,
-          ev: Event
-        ) => any
-      );
-    }
-  }, [scrollCardsRef]);
 
   if (!currSet) {
     history.push("/");
@@ -94,7 +85,7 @@ function CustomSetBuilder() {
   }
 
   return (
-    <div className="overflowSetBuilderWrapper" ref={scrollCardsRef}>
+    <div className="overflowSetBuilderWrapper" ref={props.scrollCardsRef}>
       <div className="setBuilderWrapper">
         <div className="BoosterPickerWrapper d-flex justify-content-center row h-100">
           <div className="BoosterWindowedArea bd-highlight col-sm-12">
@@ -152,5 +143,5 @@ function CustomSetBuilder() {
   );
 }
 
-export default CustomSetBuilder;
+export default withScroll(CustomSetBuilder);
 
