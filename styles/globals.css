@@ -13,6 +13,9 @@ body {
   background: inherit;
   
 }
+body > div, body > div >div, main > div, main{
+  height: 100%;
+}
 html{
   background: url(/assets/images/yugiohbg.png) top center no-repeat;
   background-size:100% 100%;

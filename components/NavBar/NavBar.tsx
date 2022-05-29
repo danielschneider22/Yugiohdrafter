@@ -156,7 +156,7 @@ function NavBar() {
 
                     <nav id="navbar" className={"navbar" + (mobileMenuShown ? " navbar-mobile" : "")}>
                         <ul>
-                            {/* <li><Link to="/" className="nav-link scrollto" onClick={() => defaultClearAndClose()}>Home</Link></li> */}
+                            {<li><a className="nav-link scrollto" onClick={() => defaultClearAndClose()}>Home</a></li>}
                             <li className="dropdown" onClick={showCustomSetsDropdown}><a href="#"><span>Custom Sets</span> <i className="bi bi-chevron-down"></i></a>
                                 <ul className={customSetsDropdownVisible ? "dropdown-active" : ""}>
                                     <li><a href="#" onClick={() => toggleCustomSetPopupVisiblity(false)}>Create Custom Set</a></li>

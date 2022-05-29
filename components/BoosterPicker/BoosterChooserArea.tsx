@@ -6,6 +6,7 @@ import { getCardSetsAccessibleToCurrUser } from "../../data/cardSets/selectors";
 import BoosterSelect from "./BoosterSelect";
 import { v4 as uuidv4 } from 'uuid';
 import { sortCardSet } from "../../data/cardSets/utils";
+import styles from "./BoosterPicker.module.css"
 
 function BoosterChooserArea() {
   const dispatch = useDispatch()
@@ -35,8 +36,8 @@ function BoosterChooserArea() {
 
   return (
     <div>
-      <div className="AddBoosterButton btn btn-info d-flex justify-content-center" onClick={addBoosterButtonClick} >Add Booster</div>
-      <div ref={scrollableArea} className={"BoostersWrapper"}>
+      <div className={`${styles.AddBoosterButton} btn btn-info d-flex justify-content-center`} onClick={addBoosterButtonClick} >Add Booster</div>
+      <div ref={scrollableArea} className={styles.BoostersWrapper}>
         {
           boosterIds.map((boosterId, idx) => {
             return (

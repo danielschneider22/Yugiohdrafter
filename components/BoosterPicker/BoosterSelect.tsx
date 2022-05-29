@@ -4,6 +4,8 @@ import { CardSet } from "../../constants/CardSet";
 import { removeBooster } from "../../data/boosters/actions";
 import { sortCardSet } from "../../data/cardSets/utils";
 
+import styles from "./BoosterPicker.module.css"
+
 interface ParentProps {
     cardSets: CardSet[]
     boosterNum: number
@@ -26,9 +28,9 @@ function BoosterSelect(props: ParentProps) {
   const boosterText = sideText || <>Booster <br/>#{(boosterNum + 1)}</>
 
   return (
-      <div className="BoosterSelect d-flex" style={customStyle}>
-          {!hideRemoveButton && <div className="DeleteButton btn-sm btn-danger" onClick={dispatchRemoveBooster}><span>x</span></div>}
-          <div className={"BoosterText"}>{boosterText}</div>
+      <div className={`${styles.BoosterSelect} d-flex`} style={customStyle}>
+          {!hideRemoveButton && <div className={`${styles.DeleteButton} btn-sm btn-danger`} onClick={dispatchRemoveBooster}><span>x</span></div>}
+          <div className={styles.BoosterText}>{boosterText}</div>
           <select value={booster.cardSetName} onChange={(event) => boosterChanged(booster.id, event.target.value)}>
             {cardSetsSorted.map((set) => {
                 return <option value={set.id} key={set.id}>{set.set_name}</option>;

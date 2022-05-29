@@ -8,7 +8,7 @@ import { CardSet } from "../../constants/CardSet";
 import { toastBGColorDict } from "../../constants/Toast";
 import { getJSONWithErrorHandling } from "../../helpers/errorHandling";
 import { Monad } from "../../helpers/utils";
-import { ip } from "../../pages";
+import { ip } from "../../pages/_app";
 import { addToast } from "../toasts/actions";
 import { tryCatchPromise } from "../utils";
 import { addSet, addSets, deleteSetsFetch, deleteSetsFetchFail, deleteSetsFetchSuccess, publishSetFetch, publishSetFetchFail, publishSetFetchSuccess, removeSets } from "./actions";
@@ -22,11 +22,11 @@ export const getCardSetsFetchThunk = (): ThunkAction<void, RootStateOrAny, unkno
   const customCardSetsPromise = tryCatchPromise(dispatch)<CardSet[]>(customSetsFetchOp)
   const [officalCardSetsResult, customCardSetsResult] = await Promise.all([officalCardSetsPromise, customCardSetsPromise])
   const [officialCardSets, errorOfficalCardSets]: Monad<CardSet[]> = officalCardSetsResult 
-  const [customCardSets, errorCustomCardSets]: Monad<CardSet[]> = customCardSetsResult
+  let [customCardSets, errorCustomCardSets]: Monad<CardSet[]> = customCardSetsResult
   
   const failToFetchSetToast = () => dispatch(addToast({id: _.uniqueId("message-sent-"), type: "Danger", description: "Could not fetch sets.", title: "Failure", backgroundColor: toastBGColorDict["Danger"]}))
-  if (officialCardSets && customCardSets) {
-    const cardSets = officialCardSets.concat(customCardSets) // no contract-to-model mapping needed, all fields are basic JSON types
+  if (officialCardSets) {
+    const cardSets = officialCardSets.concat(customCardSets || []) // no contract-to-model mapping needed, all fields are basic JSON types
     if (cardSets) {
       dispatch(addSets(cardSets))
     }
