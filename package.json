@@ -18,12 +18,13 @@
     "ag-grid-community": "^26.2.1",
     "ag-grid-react": "^26.2.0",
     "boostrap": "^2.0.0",
-    "bootstrap": "^5.0.1",
     "emailjs": "^3.5.0",
     "emailjs-com": "^3.2.0",
     "http-proxy-middleware": "^2.0.0",
     "lodash": "^4.17.21",
     "moment": "2.29.1",
+    "next": "^12.1.6",
+    "next-redux-wrapper": "^7.0.5",
     "public-ip": "^4.0.4",
     "react": "^17.0.2",
     "react-device-detect": "^1.17.0",
@@ -31,8 +32,6 @@
     "react-hook-form": "^7.27.1",
     "react-icons": "^4.3.1",
     "react-redux": "^7.2.4",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
     "redux": "4.1.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
@@ -44,10 +43,10 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "eslintConfig": {
     "extends": [

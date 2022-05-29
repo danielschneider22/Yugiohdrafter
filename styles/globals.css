@@ -1,0 +1,81 @@
+body {
+  margin: 0;
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  width: 100%;
+  color: white;
+  /* prevent overscroll bounce*/
+  /* overflow-y: hidden; */
+  -webkit-overflow-scrolling: touch;
+  background: inherit;
+  
+}
+html{
+  background: url(/assets/images/yugiohbg.png) top center no-repeat;
+  background-size:100% 100%;
+  position: fixed;
+  height: 100%;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* .AppWrapper{
+  background: url(./assets/yugiohbg.png) top center no-repeat;
+  background-size:100% 100%;
+} */
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  [class*="AppWrapper"] {
+    background-size:initial;
+  }
+}
+
+.maxWH{
+  height: 100%;
+  width: 100%;
+}
+
+.container{
+  max-width: none !important;
+}
+.maxHeight{
+  height: 100%;
+}
+.row>* {
+  padding-left: 0px;
+}
+
+.navbar{
+  padding-top: .25rem !important;
+  padding-bottom: .25rem !important;
+}
+
+.ag-center-cols-viewport{
+  overflow-x: hidden !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}

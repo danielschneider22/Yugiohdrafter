@@ -1,0 +1,59 @@
+.RoomPage {
+  padding-top: 100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.centerText {
+  margin: 0 auto;
+}
+.playersList {
+  list-style: none;
+  padding-left: 0px;
+}
+.roomPlayer {
+  margin: 8px;
+  border: 2px solid #3e3e3e;
+  border-radius: 5px;
+  padding: 8px;
+}
+.copyRoomUrlToClipboard {
+  cursor: pointer;
+}
+
+.roomPlayerInput{
+  background-color: #424242;
+  color: white;
+  margin-left: 5px;
+}
+
+.LaunchButton{
+  text-align: center;
+}
+
+.HostWaitButton{
+  text-align: center;
+}
+
+.currPlayerReadyButton{
+  cursor: pointer;
+}
+.readyButton{
+  padding: 0;
+  font-weight: bold;
+  height: 30px;
+  width: 30px;
+}
+.xButton > i{
+  color: #bb0000;
+  font-size: 25px;
+}
+.checkButton > i{
+  color: green;
+  font-size: 25px;
+}
+
+.SubtitleRoom{
+  margin-bottom: 20px;
+}

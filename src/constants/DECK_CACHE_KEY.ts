@@ -1,1 +1,0 @@
-export const DECK_CACHE_KEY = 'yugiohdrafter.com-deck'

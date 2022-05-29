@@ -1,0 +1,102 @@
+.Sidebar{
+    position: relative;
+    color: #ffffff75;
+    overflow: auto;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #434648;
+    box-shadow: rgb(0 0 0 / 40%) 0 2px 5px;
+    padding: 3px 24px 3px 24px;
+    z-index: 999;
+    overflow-x: hidden;
+    float: right;
+    overflow:visible
+}
+
+.CardPickerTab {
+    cursor: pointer;
+    text-align: center;
+    transform: rotate(90deg);
+    z-index: 10;
+    background-color: #151515;
+    color: white;
+    display: block;
+    width: 10rem;
+    height: 2.3rem;
+    border-top-right-radius: 9px;
+    border-top-left-radius: 9px;
+    box-shadow: rgb(0 0 0 / 40%) 2px -5px 5px;
+    -webkit-transition: background-color 0.4s ease-out;
+    -moz-transition: background-color 0.4s ease-out;
+    -o-transition: background-color 0.4s ease-out;
+    transition: background-color 0.4s ease-out;
+    position: relative;
+    bottom: -100px;
+    transition: all 0.5s cubic-bezier(0.6, 0.05, 0.28, 0.91);
+    padding-top: 3px;
+    -webkit-transform-origin: 50% 51%;
+    transform-origin: 50% 51%;
+}
+
+
+.CardPickerTab.ActiveTab{
+    background-color: rgb(67 70 72);
+}
+
+.CardPickerTab.InactiveTab:hover{
+    background-color: #6d4e15;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: ".";    
+    display: block;    
+    height: 0;    
+    overflow: hidden; 
+}
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; } /* IE < 8 */
+
+.HideSidebar{
+    width: 0px !important;
+}
+
+.ShowSidebar{
+    width: 250px;
+}
+
+.CardsWrapper{
+    position: relative;
+    overflow: hidden;
+    overflow-y: scroll;
+    height: 100%;
+    text-align: center;
+}
+
+.CardsWrapper::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
+.CardLeftArea{
+    cursor: pointer;
+}
+
+@media screen and (min-width: 640px) {
+    .CardLeftArea:hover {
+        box-shadow: rgb(0 0 0 / 60%) 0 2px 5px;
+        transition: all 0.3s ease-out;
+        transform: scale(1.04);
+    }
+}
+
+.CardPickerButtonContainer{
+    position: absolute;
+}
+.TabArrow{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 8px;
+}

@@ -1,0 +1,8 @@
+export enum RoomPlayersActionTypes 
+{
+  // - room player change name fetch
+  ROOM_UPDATE_PLAYER_FETCH = 'rooms/ROOM_UPDATE_PLAYER_FETCH',
+  ROOM_UPDATE_PLAYER_FETCH_FAIL = 'rooms/ROOM_UPDATE_PLAYER_FETCH_FAIL',
+  ROOM_UPDATE_PLAYER_FETCH_SUCCESS = 'rooms/ROOM_UPDATE_PLAYER_FETCH_SUCCESS',
+  
+}
