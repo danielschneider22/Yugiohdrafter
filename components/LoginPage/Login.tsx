@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { createAccountThunk, loginThunk } from "../../data/login/operations";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import "./Login.css"
+import { useRouter } from 'next/router';
+import styles from "./Login.module.css"
 
 import * as Yup from 'yup';
 
@@ -33,12 +33,12 @@ function LoginPage() {
   });
 
   const dispatch = useDispatch()
-  const history = useHistory()
+  const router = useRouter();
 
   async function attemptLogin() {
     const loggedIn = await dispatch(loginThunk(getValues("email"), getValues("password"))) as unknown as boolean
     if(loggedIn)
-        history.push("/")
+        router.replace("/")
   }
 
   function login() {
@@ -49,7 +49,7 @@ function LoginPage() {
     if(!errors.email && !errors.password) {
       const createdAccount = await dispatch(createAccountThunk(getValues("email"), getValues("password"))) as unknown as boolean
       if(createdAccount)
-        history.push("/")
+        router.replace("/")
     }
   }
 
@@ -58,7 +58,7 @@ function LoginPage() {
   }
 
   function resetPassword() {
-    history.push("/forgotPassword")
+    router.push("/forgotPassword")
   }
 
   return (
@@ -66,7 +66,7 @@ function LoginPage() {
       <form className="maxWH" onSubmit={handleSubmit(login)}>
         <div className="BoosterPickerWrapper d-flex justify-content-center row h-100 px-2">
           <div className="BoosterWindowedArea bd-highlight col-sm-3">
-            <div className="InfoBlurb">
+            <div className={"InfoBlurb"}>
                 Login
             </div>
             <div className="form-group pb-2">
@@ -74,7 +74,7 @@ function LoginPage() {
               <div className="col-12">          
                   <input
                     type="email"
-                    className={`form-control dark-themed-textarea form-control ${errors.email ? 'is-invalid' : ''}` }
+                    className={`form-control ${styles["dark-themed-textarea"]} form-control ${errors.email ? 'is-invalid' : ''}` }
                     placeholder="Email"
                     {...register('email')}
                   />
@@ -86,7 +86,7 @@ function LoginPage() {
               <div className="col-12">          
                   <input
                     type="password"
-                    className={`form-control dark-themed-textarea form-control ${errors.password ? 'is-invalid' : ''}` }
+                    className={`form-control ${styles["dark-themed-textarea"]} form-control ${errors.password ? 'is-invalid' : ''}` }
                     placeholder="Password"
                     {...register('password')}
                   />
@@ -97,10 +97,10 @@ function LoginPage() {
               <button type="submit" className="LaunchButton w-100 btn-lg btn-primary">Login with Email</button>
             </div>
             <div className="d-flex justify-content-center pt-2">
-              <button onClick={handleSubmit(createAccount)} className="LaunchButton w-100 btn-lg btn-secondary">Create Account</button>
+              <button onClick={handleSubmit(createAccount)} className="w-100 btn-lg btn-secondary">Create Account</button>
             </div>
             <div className="d-flex justify-content-center pt-2">
-              <div className="forgotPassword" onClick={() => resetPassword()}>Forgot Password?</div>
+              <div className={styles.forgotPassword} onClick={() => resetPassword()}>Forgot Password?</div>
             </div>
           </div>
         </div>

@@ -172,9 +172,9 @@ function NavBar() {
 
                                 </ul>
                             </li>
-                            <li><Link className="nav-link scrollto" href="contactUs">Contact us</Link></li>
+                            <li><Link className="nav-link scrollto" href="/contactUs">Contact us</Link></li>
                             {!loggedIn &&
-                                <li><a className="nav-link scrollto" href="#" onClick={() => goToPage("login")}>Login</a></li>
+                                <li><Link href="/login"><a className="nav-link scrollto">Login</a></Link></li>
                             }
                             {loggedIn &&
                                 <li><a className="nav-link scrollto" href="#" onClick={() => logout()}>Logout</a></li>
