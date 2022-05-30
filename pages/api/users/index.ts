@@ -1,30 +1,18 @@
-import { Collection } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
-import { connectToDatabase } from "../../../mongodb";
-import nextSession from "next-session";
+import { withIronSessionApiRoute } from "iron-session/next";
 
-const getSession = nextSession();
-
-const ObjectId = require('mongodb').ObjectId;
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    switch (req.method) {
-        case 'GET': {
-            return getActiveSession(req, res);
+export default withIronSessionApiRoute(async function handler(req: NextApiRequest, res: NextApiResponse) {
+        switch (req.method) {
+            case 'GET': {
+                return res.send(req.session.user?.isAuth ? req.session?.user.email : "No active session");
+            }
         }
+    },
+    {
+        cookieName: "user",
+        password: "HswQ64dwc3E1dmvFL8LyTE5Cz5zda3eP",
+        cookieOptions: {
+            secure: process.env.NODE_ENV === "production",
+        },
     }
-}
-
-async function getActiveSession(req: NextApiRequest, res: NextApiResponse) {
-    const userSession = await getSession(req, res);
-    console.log(userSession)
-
-    userSession.llama = "llama!"
-    console.log(userSession)
-
-    if (userSession.isAuth) {
-      return res.send(userSession.email)
-    } else {
-      return res.send(("No active session"))
-    }
-}
+)

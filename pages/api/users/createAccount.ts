@@ -1,15 +1,11 @@
 import { Collection } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../../../mongodb";
-import nextSession from "next-session";
 import bcrypt from 'bcrypt';
 import { User } from "../../../models/User";
+import { withIronSessionApiRoute } from "iron-session/next";
 
-const getSession = nextSession();
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const userSession = await getSession(req, res);
-
+export default withIronSessionApiRoute(async function handler(req: NextApiRequest, res: NextApiResponse) {
   let { db } = await connectToDatabase();
   const userCollection: Collection<User> = db.collection('users');
   const users: User[] = await userCollection?.find().toArray()!
@@ -26,8 +22,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log(dbResult)
 
     if (dbResult?.acknowledged) {
-      userSession.isAuth = true;
-      userSession.email = req.body.email;
+      req.session.user = {
+        isAuth: true,
+        email: req.body.email,
+      };
+      await req.session.save();
     }
     else
       return res.status(500).json({ error: `Could not create user '.` })
@@ -36,4 +35,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   catch (e) {
     return res.status(500).end();
   }
+},
+{
+  cookieName: "user",
+  password: "HswQ64dwc3E1dmvFL8LyTE5Cz5zda3eP",
+  cookieOptions: {
+      secure: process.env.NODE_ENV === "production",
+  },
 }
+)

@@ -1,9 +1,15 @@
+import { withIronSessionApiRoute } from "iron-session/next";
 import { NextApiRequest, NextApiResponse } from "next";
-import nextSession from "next-session";
 
-const getSession = nextSession();
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const userSession = await getSession(req, res);
-  userSession.destroy();
+export default withIronSessionApiRoute(async function handler(req: NextApiRequest, res: NextApiResponse) {
+  req.session.destroy();
+  res.send({ ok: true });
+},
+{
+  cookieName: "user",
+  password: "HswQ64dwc3E1dmvFL8LyTE5Cz5zda3eP",
+  cookieOptions: {
+      secure: process.env.NODE_ENV === "production",
+  },
 }
+)
