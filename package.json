@@ -70,7 +70,6 @@
   "devDependencies": {
     "@types/lodash": "^4.14.170",
     "@types/react": "^17.0.11",
-    "@types/react-router-dom": "^5.1.7",
     "@types/uuid": "^8.3.1"
   }
 }

@@ -17,6 +17,7 @@ import { logoutThunk } from '../../data/login/operations';
 import { toastBGColorDict } from '../../constants/Toast';
 import { addToast } from '../../data/toasts/actions';
 import Image from 'next/image';
+import Link from 'next/link';
 
 function NavBar() {
     /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -120,11 +121,6 @@ function NavBar() {
         setMobileMenuShown(false)
     }
 
-    function goHome() {
-        // history.push("/")
-        defaultClearAndClose()
-    }
-
     function goToPage(page: string) {
         // history.push("/" + page)
     }
@@ -149,14 +145,16 @@ function NavBar() {
             {customSetEditPopupVisible && <CustomSetEditPopup toggleCustomSetEditPopupVisiblity={toggleCustomSetEditPopupVisiblity} />}
             {!customSetPopupVisible && !customSetEditPopupVisible &&
                 <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
-                    <div className="logo d-flex align-items-center" onClick={goHome}>
-                        { <Image src={cardImage} alt="Yugioh Drafter Logo" />}
-                        <span>YugiohDrafter</span>
-                    </div>
+                    <Link href="/">
+                        <div className="logo d-flex align-items-center" onClick={() => defaultClearAndClose()}>
+                            { <Image src={cardImage} alt="Yugioh Drafter Logo" />}
+                            <span>YugiohDrafter</span>
+                        </div>
+                    </Link>
 
                     <nav id="navbar" className={"navbar" + (mobileMenuShown ? " navbar-mobile" : "")}>
                         <ul>
-                            {<li><a className="nav-link scrollto" onClick={() => defaultClearAndClose()}>Home</a></li>}
+                            {<li><Link href="/"><a className="nav-link scrollto" onClick={() => defaultClearAndClose()}>Home</a></Link></li>}
                             <li className="dropdown" onClick={showCustomSetsDropdown}><a href="#"><span>Custom Sets</span> <i className="bi bi-chevron-down"></i></a>
                                 <ul className={customSetsDropdownVisible ? "dropdown-active" : ""}>
                                     <li><a href="#" onClick={() => toggleCustomSetPopupVisiblity(false)}>Create Custom Set</a></li>
@@ -174,7 +172,7 @@ function NavBar() {
 
                                 </ul>
                             </li>
-                            <li><a className="nav-link scrollto" href="#" onClick={() => goToPage("contactus")}>Contact us</a></li>
+                            <li><Link className="nav-link scrollto" href="contactUs">Contact us</Link></li>
                             {!loggedIn &&
                                 <li><a className="nav-link scrollto" href="#" onClick={() => goToPage("login")}>Login</a></li>
                             }
