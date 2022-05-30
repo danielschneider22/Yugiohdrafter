@@ -1,4 +1,6 @@
-import { Db, MongoClient } from 'mongodb';
+import { Collection, Db, MongoClient } from 'mongodb';
+import { CardSet } from './constants/CardSet';
+import { User } from './constants/User';
 
 const MONGODB_URI = process.env.MONGODB_URI || "";
 const MONGODB_DB = process.env.DB_NAME || "";
@@ -15,6 +17,7 @@ if (!MONGODB_DB) {
 
 let cachedClient: MongoClient | null = null;
 let cachedDb: Db | null = null;
+const collections: { cardSets?: Collection<CardSet>, users?: Collection<User> } = {}
 
 export async function connectToDatabase() {
     // check the cached.
@@ -23,6 +26,7 @@ export async function connectToDatabase() {
         return {
             client: cachedClient,
             db: cachedDb,
+            collections
         };
     }
 
@@ -40,9 +44,16 @@ export async function connectToDatabase() {
     // set cache
     cachedClient = client;
     cachedDb = db;
+    
+    const cardSetsCollection: Collection<CardSet> = db.collection('cardSets');
+    collections.cardSets = cardSetsCollection;
+
+    const usersCollection: Collection<User> = db.collection('users');
+    collections.users = usersCollection;
 
     return {
         client: cachedClient,
         db: cachedDb,
+        collections,
     };
 }

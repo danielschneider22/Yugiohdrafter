@@ -3,7 +3,7 @@ import { sendRecoveryEmailThunk } from "../../data/login/operations";
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import "./Login.css"
+import styles from "./Login.module.css"
 
 type UserSubmitForm = {
   email: string;
@@ -32,7 +32,7 @@ function ForgotPassword() {
   }
 
   return (
-    <div className="register-form">
+    <div className={styles["register-form"]}>
       <form className="maxWH" onSubmit={handleSubmit(resetPassword)}>
         <div className="BoosterPickerWrapper d-flex justify-content-center row h-100 px-2">
           <div className="BoosterWindowedArea bd-highlight col-sm-3">

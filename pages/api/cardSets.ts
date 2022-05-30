@@ -13,10 +13,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 async function getCardSets(req: NextApiRequest, res: NextApiResponse) {
   try {
-      let { db } = await connectToDatabase();
-      const cardSetsCollection: Collection = db.collection('cardSets');
-      const setsFromDb = await cardSetsCollection?.find().toArray()
-      return res.json(setsFromDb)
+      let { collections } = await connectToDatabase();
+      const cardSets = await collections.cardSets?.find().toArray()
+      return res.json(cardSets)
   } catch (error: any) {
       return res.json({
           message: new Error(error).message,

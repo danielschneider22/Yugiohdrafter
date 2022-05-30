@@ -1,10 +1,10 @@
 import { useDispatch } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
 import { resetPasswordThunk } from "../../data/login/operations";
-import "./ResetPassword.css"
+import styles from "./ResetPassword.module.css"
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import router, { useRouter } from "next/router";
 
 type UserSubmitForm = {
     email: string;
@@ -19,16 +19,16 @@ function ResetPasswordPage() {
             .max(40, 'Password must not exceed 40 characters'),
     });
 
-    const params: { newPasswordId: string } = useParams()
-    const uuid = params.newPasswordId
+    const { query } = useRouter();
+    const uuid = query.token as string
+    
 
     const dispatch = useDispatch()
-    const history = useHistory()
 
     async function handleResetPassword() {
         const resetPasswordSuccess = await dispatch(resetPasswordThunk(getValues("password"), uuid)) as unknown as boolean
         if (resetPasswordSuccess) {
-            history.push("/")
+            router.replace("/")
         }
     }
 
@@ -46,7 +46,7 @@ function ResetPasswordPage() {
     });
 
     return (
-        <div className="register-form">
+        <div className={styles["register-form"]}>
             <form className="maxWH" onSubmit={handleSubmit(resetPassword)}>
                 <div className="BoosterPickerWrapper d-flex justify-content-center row h-100 px-2">
                     <div className="BoosterWindowedArea bd-highlight col-sm-3">

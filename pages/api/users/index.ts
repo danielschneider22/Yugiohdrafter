@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withIronSessionApiRoute } from "iron-session/next";
+import { UserCookie } from "../../../constants/UserCookie";
 
 export default withIronSessionApiRoute(async function handler(req: NextApiRequest, res: NextApiResponse) {
         switch (req.method) {
@@ -8,11 +9,5 @@ export default withIronSessionApiRoute(async function handler(req: NextApiReques
             }
         }
     },
-    {
-        cookieName: "user",
-        password: "HswQ64dwc3E1dmvFL8LyTE5Cz5zda3eP",
-        cookieOptions: {
-            secure: process.env.NODE_ENV === "production",
-        },
-    }
+    UserCookie
 )
