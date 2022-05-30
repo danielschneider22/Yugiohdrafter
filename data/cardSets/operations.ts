@@ -61,7 +61,7 @@ export async function fetchOfficialCardSetsOp(dispatch: Dispatch<any>) {
 
 // get custom sets from yugiohdrafter-backend database
 async function customSetsFetchOp(roomId: string): Promise<CardSet[]> {
-  const url = `${baseApiUrl}/cardSet`
+  const url = `${baseApiUrl}/cardSets`
   const resp = await fetch(url, {
     headers: {'Content-Type': 'application/json'},
     method: 'GET',
