@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../../../mongodb";
-import { resetPasswordDict } from "../../../state/resetPasswords";
 import bcrypt from 'bcrypt';
 import { addUserToSession } from "../../../helpers/loginsessionhelper";
 import { UserCookie } from "../../../constants/UserCookie";
@@ -9,11 +8,11 @@ import { withIronSessionApiRoute } from "iron-session/next";
 export default withIronSessionApiRoute(async function handler(req: NextApiRequest, res: NextApiResponse) {
   let { collections } = await connectToDatabase();
   
-  console.log(resetPasswordDict)
-  const email = resetPasswordDict[req.body.uuid]
-  if (!email) {
+  const resetToken = await collections.resetTokens?.findOne( {"_id": req.body.uuid})
+  if (!resetToken) {
     return res.status(401).json({ error: "No email recovery sent for this account." })
   }
+  const email = resetToken!.email
   const users = await collections.users?.find().toArray()!
   const user = users.find((user) => user.email === email)
   if (!user) {
@@ -36,4 +35,4 @@ export default withIronSessionApiRoute(async function handler(req: NextApiReques
   }
 },
   UserCookie
-  )
+)
