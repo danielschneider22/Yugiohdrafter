@@ -74,10 +74,7 @@ function CustomSetEditPopup(props: ParentProps) {
         onCellValueChanged,
         frameworkComponents: {
             editDeleteCellRenderer: EditDeleteCellRenderer,
-        },
-        columnDefs:[
-            {field: "fishy", width: 100}
-        ]
+        }
     }
 
     const actionStyle = {display: "flex", justifyContent: "center", alignItems: "center"}
@@ -95,10 +92,10 @@ function CustomSetEditPopup(props: ParentProps) {
                                     </div>
                                     <div className={`ag-theme-alpine ${styles.setGrid}`}>
                                         <AgGridReact rowData={cardSets} gridOptions={gridOptions}>
-                                            {/* <AgGridColumn width={100} field="set_name" headerName="Name" editable={true}></AgGridColumn>
-                                            {!isMobile && <AgGridColumn width={10} field="num_of_cards" headerName="# Cards"></AgGridColumn>}
-                                            {!isMobile && <AgGridColumn width={10} field="tcg_date" headerName="Updated Date" valueFormatter={dateFormatter}></AgGridColumn>}
-                                            <AgGridColumn field="action" headerName="" cellRenderer={"editDeleteCellRenderer"} minWidth={150} cellStyle={actionStyle} cellRendererParams={{toggleCustomSetEditPopupVisiblity}}></AgGridColumn> */}
+                                            <AgGridColumn field="set_name" headerName="Name" editable={true}></AgGridColumn>
+                                            {!isMobile && <AgGridColumn field="num_of_cards" headerName="# Cards"></AgGridColumn>}
+                                            {!isMobile && <AgGridColumn field="tcg_date" headerName="Updated Date" valueFormatter={dateFormatter}></AgGridColumn>}
+                                            <AgGridColumn field="action" headerName="" cellRenderer={"editDeleteCellRenderer"} minWidth={150} cellStyle={actionStyle} cellRendererParams={{toggleCustomSetEditPopupVisiblity}}></AgGridColumn>
                                         </AgGridReact>
                                     </div>
                                     <div className={`form-group ${cstyles.submit}`}>        

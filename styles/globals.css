@@ -13,7 +13,7 @@ body {
   background: inherit;
   
 }
-body > div, body > div >div, main > div, main{
+body > #__next, main > div, main, #__next>div{
   height: 100%;
   width: 100%;
 }
