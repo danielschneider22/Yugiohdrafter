@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import styles from './layout.module.css';
 import NavBar from '../NavBar/NavBar';
+import ToastManager from '../ToastManager/ToastManager';
 
 export const siteTitle = 'Yugioh Drafter';
 
@@ -21,6 +22,11 @@ export default function Layout(props: MyProps) {
 
         <meta name="og:title" content={siteTitle} />
       </Head>
+      <ToastManager
+        position="bottom-left"
+        autoDelete={true}
+        dismissTime={7000}
+      />
       <header>
         <NavBar />
       </header>

@@ -22,6 +22,7 @@ export default withIronSessionApiRoute(async function handler(req: NextApiReques
     const salt = await bcrypt.genSalt()
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
     const dbResult = await collections.users?.updateOne({ email }, { $set: { password: hashedPassword } })
+    await collections.resetTokens?.deleteOne( {"_id": req.body.uuid})
 
     if (dbResult?.acknowledged) {
       await(addUserToSession(req, req.body.email))
