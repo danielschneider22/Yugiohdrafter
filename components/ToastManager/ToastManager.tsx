@@ -11,6 +11,8 @@ import { Toast } from '../../constants/Toast';
 import { removeToast } from '../../data/toasts/actions';
 import Image from 'next/image';
 
+import { CgClose } from 'react-icons/cg';
+
 interface ParentProps {
     position: "top-right" | "bottom-right" | "top-left" | "bottom-left",
     autoDelete: boolean,
@@ -65,7 +67,7 @@ function ToastManager(props: ParentProps) {
                             style={{ backgroundColor: toast.backgroundColor }}
                         >
                             <button onClick={() => deleteToast(toast.id)}>
-                                X
+                                <CgClose />
                             </button>
                             <div className={styles["notification-image"]}>
                                 <Image src={getIcon(toast)} alt={toast.type} />
