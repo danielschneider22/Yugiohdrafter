@@ -11,9 +11,9 @@ function CustomSetPopup(props: ParentProps) {
 
     return (
         <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
-            <nav id="navbar" className="navbar navbar-mobile customSet">
+            <nav id="navbar" className={`navbar navbar-mobile customSet`}>
                 <ul className="form-group" style={!isQuickCreate ? {bottom: "50%"} : {}}>
-                    <div className="container contactPopup">
+                    <div className={`container ${styles.contactPopup}`}>
                         <div className="row h-100">
                             <div className="col-lg-12">
                                 <BulkAddForm isQuickCreate={isQuickCreate} toggleCustomSetPopupVisiblity={toggleCustomSetPopupVisiblity}/>

@@ -18,6 +18,7 @@ import { toastBGColorDict } from '../../constants/Toast';
 import { addToast } from '../../data/toasts/actions';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 function NavBar() {
     /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -25,7 +26,7 @@ function NavBar() {
     const cardSets = useSelector(getCardSetsById)
     const accessibleCardSets = useSelector(getCardSetsAccessibleToCurrUser)
     const dispatch = useDispatch();
-    // const history = useHistory();
+    const router = useRouter();
 
     const loggedIn = !!useSelector(getUserEmail)
 
@@ -50,7 +51,7 @@ function NavBar() {
     function redirectToLoginPageIfNotLoggedIn() {
         if (!loggedIn) {
             dispatch(addToast({ id: _.uniqueId("message-sent-"), type: "Warning", description: "Login to View and Edit Custom Sets", title: "Login", backgroundColor: toastBGColorDict["Warning"] }))
-            // history.push("/login")
+            router.push("/login")
             return false
         }
         return true
@@ -117,12 +118,8 @@ function NavBar() {
         dispatch(removeAllBoosters("draftBooster"))
         dispatch(setBoosters(boosters, "landingPageBooster"))
         getSetsForBoosters(Object.values(boosters), dispatch, cardSets)
-        // history.push("/Draft")
+        router.push("/Draft")
         setMobileMenuShown(false)
-    }
-
-    function goToPage(page: string) {
-        // history.push("/" + page)
     }
 
     function defaultClearAndClose() {
@@ -162,7 +159,6 @@ function NavBar() {
                                     <li><a href="#" onClick={() => toggleCustomSetPopupVisiblity(true)}>Quick Create from List</a></li>
                                 </ul>
                             </li>
-                            {/* <input onChange={(event) => setIP(event.currentTarget.value)} /> */}
                             <li className="dropdown" onClick={showQuickDraftDropdown}><a href="#"><span>Quick Draft</span> <i className="bi bi-chevron-down"></i></a>
                                 <ul className={quickDraftDropdownVisible ? "dropdown-active" : ""}>
                                     <li><a href="#" onClick={() => quickDraft("retro_draft_custom")}>Retro Draft</a></li>

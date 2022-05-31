@@ -10,6 +10,7 @@ import _ from 'lodash';
 import { toastBGColorDict } from '../../../constants/Toast';
 import { addToast } from '../../../data/toasts/actions';
 import { getUserEmail } from '../../../data/login/selectors';
+import { useRouter } from 'next/router';
 
 interface ParentProps{
     toggleCustomSetPopupVisiblity: (isQuickCreate: boolean) => void
@@ -26,7 +27,7 @@ function BulkAddForm(props: ParentProps) {
     const [setName, setSetName] = useState("")
     const [cardList, setCardList] = useState("")
     const dispatch = useDispatch();
-    // const history = {} // useHistory();
+    const router = useRouter();
     const userEmail = useSelector(getUserEmail)
 
     const doUpdate = (updateFunc: React.Dispatch<React.SetStateAction<string>>) => function updateState(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -44,7 +45,7 @@ function BulkAddForm(props: ParentProps) {
             const successFetchCards = await fetchCardsByName(dispatch, cardNames, setId, "add")
             if(successFetchCards){
                 toggleCustomSetPopupVisiblity(isQuickCreate)
-                // history.push(`/CustomSetBuilder/${setName}`)
+                router.push(`/CustomSetBuilder/${setName}`)
                 dispatch(addToast({id: _.uniqueId("built-set-"), type: "Success", description: setName, title: "Custom Set Created", backgroundColor: toastBGColorDict["Success"]}))
             }
         } else if(!set) {
@@ -52,7 +53,7 @@ function BulkAddForm(props: ParentProps) {
             dispatch(addSet(cardSet))
             dispatch(publishCardSetFetchThunk(cardSet))
             toggleCustomSetPopupVisiblity(isQuickCreate)
-            // history.push(`/CustomSetBuilder/${setName}`)
+            router.push(`/CustomSetBuilder/${setName}`)
             dispatch(addToast({id: _.uniqueId("built-set-"), type: "Success", description: setName, title: "Custom Set Created", backgroundColor: toastBGColorDict["Success"]}))
         } else {
             const cardNames = cardList.split(/\r?\n/);
@@ -64,29 +65,29 @@ function BulkAddForm(props: ParentProps) {
     }
 
     return (
-        <form onSubmit={submit} className="contact-form h-100">
+        <form onSubmit={submit} className={`${styles["contact-form"]} h-100`}>
             {!set && <>
-                <div className="CreateCustomSetTitle">
+                <div className={styles["CreateCustomSetTitle"]}>
                     Create a Custom Set
                 </div>
                 <div className="form-group setName">
                     <label className="control-label col-6" htmlFor="setName">Set Name:</label>
                     <div className={isQuickCreate ? "col-6" : "col-12"}>          
-                        <input value={setName} onChange={doUpdate(setSetName)} type="text" className="form-control form-control-white" placeholder="Enter Set Name" name="setName" required/>
+                        <input value={setName} onChange={doUpdate(setSetName)} type="text" className={`form-control ${styles["form-control-white"]}`} placeholder="Enter Set Name" name="setName" required/>
                     </div>
                 </div>
             </>}
             {isQuickCreate &&
-                <div className="form-group CreateSetTextArea cardList">
+                <div className={`form-group ${styles.CreateSetTextArea} ${styles.cardList}`}>
                 <label className="control-label col-6" htmlFor="cardList">Card List:</label>
-                <div className="col-12">
-                    <textarea value={cardList} onChange={doUpdate(setCardList)} className={`form-control form-control-white ${isDarkTheme ? "dark-themed-textarea" : ""}`} placeholder={placeHolderText} name="cardList" required></textarea>
+                <div className="col-12 maxWH">
+                    <textarea value={cardList} onChange={doUpdate(setCardList)} className={`form-control ${styles.cardListTextArea} ${styles["form-control-white"]} ${isDarkTheme ? styles["dark-themed-textarea"] : ""}`} placeholder={placeHolderText} name="cardList" required></textarea>
                 </div>
             </div>
             }
             
-            <div className="form-group submit">        
-                <button type="submit" className="btn-lg btn-default submitButton">Submit</button>
+            <div className={`form-group ${styles.submit}`}>        
+                <button type="submit" className={`btn-lg btn-default ${styles.submitButton}`}>Submit</button>
             </div>
         </form>
     );

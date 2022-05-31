@@ -2,7 +2,9 @@ import '../styles/boostrap.min.css';
 import '../styles/bootstrapicons.css';
 import '../styles/vendorStyles.css'
 import '../styles/globals.css'
-
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
 
 import type { AppProps } from 'next/app'
 import { wrapper } from '../data/reducers';
