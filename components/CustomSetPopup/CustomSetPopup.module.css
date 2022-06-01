@@ -36,7 +36,11 @@
     color: #fff;
     font-weight: 600;
 }
+.contact-form .submitButton:hover{
+    background: #16172e;
+}
 .contact-form .submitButton:focus{
+    background: #101020;
     box-shadow:none;
 }
 .contact-form{

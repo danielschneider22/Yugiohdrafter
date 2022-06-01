@@ -1,9 +1,8 @@
-import "./CustomSetBuilder.css";
+import styles from "./CustomSetBuilder.module.css";
 
 import { useDispatch, useSelector } from "react-redux";
 
 import { getCardSetsById } from "../../data/cardSets/selectors";
-import { useHistory, useParams } from "react-router-dom";
 import NavItem from "../NavItem/NavItem";
 import { useEffect, useState } from "react";
 import BulkAddForm from "./BulkAdd/BulkAddForm";
@@ -14,6 +13,8 @@ import ViewEditList from "./ViewEditList/ViewEditList";
 import { deleteCardSetsFetchThunk, publishCardSetFetchThunk } from "../../data/cardSets/operations";
 import { getCardsById } from "../../data/cards/selectors";
 import withScroll from "../withScroll/withScroll";
+import { useRouter } from 'next/router';
+import { OnMount } from "../../helpers/hooks";
 
 type ParentProps = {
   scrollCardsRef: React.MutableRefObject<HTMLDivElement>
@@ -21,30 +22,28 @@ type ParentProps = {
 
 function CustomSetBuilder(props: ParentProps) {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const router = useRouter();
   const cardSetsById = useSelector(getCardSetsById);
-  const params: { id: string } = useParams();
+  const { id } = router.query
   const currSet = Object.values(cardSetsById).find(
-    (set) => set.set_name === params.id
+    (set) => set.set_name === id
   );
   const cards = useSelector(getCardsById)
   const cardsSet = currSet && currSet.card_ids ? currSet.card_ids.map((id) => cards[id]) : []
 
-  const [fetchedCustomSetCards, setFetchedCustomSetCards] = useState(false)
+  const [fetchedCards, setFetchedCards] = useState(false)
 
-  if (!currSet) {
-    history.push("/");
-  }
-
-  useEffect(() => {
-    if (currSet) {
+  OnMount(() => {
+    if (!currSet) {
+      router.push("/");
+    } else {
       getSetCards(currSet, dispatch);
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  })
 
   async function fetchCustomSetCards() {
     await fetchCardsById(dispatch, currSet!.card_ids || [], currSet!.id);
-    setFetchedCustomSetCards(true)
+    setFetchedCards(true)
   }
 
   useEffect(() => {
@@ -85,13 +84,13 @@ function CustomSetBuilder(props: ParentProps) {
   }
 
   return (
-    <div className="overflowSetBuilderWrapper" ref={props.scrollCardsRef}>
-      <div className="setBuilderWrapper">
+    <div className={styles["overflowSetBuilderWrapper"]} ref={props.scrollCardsRef}>
+      <div className={styles["setBuilderWrapper"]}>
         <div className="BoosterPickerWrapper d-flex justify-content-center row h-100">
           <div className="BoosterWindowedArea bd-highlight col-sm-12">
             <ul className="nav nav-tabs justify-content-around">
               <li className="">
-                <div className="SetBuilderTitle">{params.id}</div>
+                <div className={styles["SetBuilderTitle"]}>{id}</div>
               </li>
               <li className="d-flex flex-row flex-wrap justify-content-center">
                 <NavItem
@@ -134,8 +133,8 @@ function CustomSetBuilder(props: ParentProps) {
                 </span>
               </li>
             </ul>
-            {!fetchedCustomSetCards && <div className={"ScrollCards CardDisplayAreaTitle"}>Fetching Custom Set Cards...</div>}
-            {fetchedCustomSetCards && tabContent()}
+            {!fetchedCards && <div className={`${styles.ScrollCards} ${styles.CardDisplayAreaTitle}`}>Fetching Custom Set Cards...</div>}
+            {fetchedCards && tabContent()}
           </div>
         </div>
       </div>

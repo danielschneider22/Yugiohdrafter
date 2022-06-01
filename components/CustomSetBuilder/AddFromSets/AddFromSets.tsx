@@ -9,7 +9,6 @@ import AddRemoveCards from "../AddRemoveCards/AddRemoveCards";
 import { getSetCards } from "../../../data/cards/utils";
 import { getUserEmail } from "../../../data/login/selectors";
 
-
 interface ParentParams {
     setEffected: CardSet,
 }
@@ -32,7 +31,7 @@ function AddFromSets(params: ParentParams) {
     // setShown.card_ids = setShown.card_ids ? setShown.card_ids.filter((id) => !setEffected.card_ids?.find((i) => i === id)) : []
 
     return (
-        <div>
+        <div className="maxWH">
             <BoosterSelect
                 cardSets={cardSets}
                 boosterNum={0}

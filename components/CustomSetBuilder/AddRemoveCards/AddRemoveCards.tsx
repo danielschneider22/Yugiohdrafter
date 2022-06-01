@@ -1,10 +1,10 @@
-import { GridOptions, RowHeightParams } from "ag-grid-community";
+import { GridOptions } from "ag-grid-community";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import { useSelector } from "react-redux";
 import { CardSet } from "../../../constants/CardSet";
 import { getCardsById } from "../../../data/cards/selectors";
 import AddOrRemoveCardButton from "./AddOrRemoveCardButton";
-import './AddRemoveCards.css'
+import styles from './AddRemoveCards.module.css'
 import HoverShowCardImage from "./HoverShowCardImage";
 
 interface ParentParams{
@@ -43,13 +43,13 @@ function AddRemoveCards(params: ParentParams) {
             filter: true,
             resizable: true,
         },
-        getRowHeight: (params: RowHeightParams) => {
+        getRowHeight: (params) => {
             return Math.max(Math.ceil((params.data.desc.length / 87)) * 30, 45)
         }
     }
 
     return (
-        <div className="ag-theme-alpine-dark CardsGrid">
+        <div className={`ag-theme-alpine-dark ${styles.CardsGrid}`}>
             <AgGridReact rowData={cardsSetShown} gridOptions={gridOptions}>
                 <AgGridColumn field="action" headerName="" cellRenderer={"addOrRemoveRenderer"} cellRendererParams={{set: setEffected}} width={75} floatingFilter={false} filter={false}></AgGridColumn>
                 <AgGridColumn field="name" headerName="Name" cellStyle={{cursor: "pointer", fontWeight: "bold", color: "#b1b100", textDecoration: "underline"}} sort={"asc"} tooltipComponent={"hoverShowCardImage"} tooltipField="name"></AgGridColumn>
