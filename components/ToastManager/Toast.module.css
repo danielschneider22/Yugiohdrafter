@@ -80,10 +80,7 @@
 .notification-image {
     float: left;
     margin-right: 15px;
-}
-
-.notification-image img {
-    width: 30px;
+		width: 30px;
     height: 30px;
 }
 
