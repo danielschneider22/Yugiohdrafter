@@ -3,7 +3,8 @@ import { CardSetsActions } from './actions';
 
 export const cardSetsInitialState = {
     allIds: [] as string[],
-    byId: {} as {[key: string]: CardSet}
+    byId: {} as {[key: string]: CardSet},
+    initFetchComplete: false,
 }
 
 export default function cardSetsReducer(state = cardSetsInitialState, action: CardSetsActions) {
@@ -20,6 +21,7 @@ export default function cardSetsReducer(state = cardSetsInitialState, action: Ca
             ...state,
             allIds,
             byId,
+            initFetchComplete: action.initFetchComplete || state.initFetchComplete
         }
       }
       case 'cardSets/addSet': {

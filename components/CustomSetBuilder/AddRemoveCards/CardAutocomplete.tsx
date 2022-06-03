@@ -37,6 +37,7 @@ export default function CardAutocomplete(params: ParentParams) {
       onChange={(onChange as any)}
       onInputChange={onInputChange}
       value={activeOption}
+      style={{marginTop: 10}}
       sx={{
         display: "inline-flex",
         width: "30%",
@@ -44,7 +45,7 @@ export default function CardAutocomplete(params: ParentParams) {
         margin,
         "& .MuiButtonBase-root,.MuiSvgIcon-root": {
           color: "white",
-          border: "none"
+          border: "none",
         },
         "& .MuiOutlinedInput-input": {
           color: "white",

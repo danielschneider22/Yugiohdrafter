@@ -3,14 +3,16 @@ import { CardSet } from "../../constants/CardSet";
 import { CardSetActionTypes as types } from './types'
 
 interface AddSets {
+    initFetchComplete?: boolean;
     type: 'cardSets/addSets',
     cardSets: CardSet[]
 }
 
-export function addSets(cardSets: CardSet[]) {
+export function addSets(cardSets: CardSet[], initFetchComplete?: boolean) {
     return {
         type: 'cardSets/addSets',
         cardSets,
+        initFetchComplete,
     }
 }
 

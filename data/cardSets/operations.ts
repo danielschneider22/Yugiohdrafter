@@ -28,7 +28,7 @@ export const getCardSetsFetchThunk = (): ThunkAction<void, RootStateOrAny, unkno
   if (officialCardSets) {
     const cardSets = officialCardSets.concat(customCardSets || []) // no contract-to-model mapping needed, all fields are basic JSON types
     if (cardSets) {
-      dispatch(addSets(cardSets))
+      dispatch(addSets(cardSets, true))
     }
     else {
       failToFetchSetToast()

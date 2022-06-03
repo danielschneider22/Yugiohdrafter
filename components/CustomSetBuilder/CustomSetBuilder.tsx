@@ -2,7 +2,7 @@ import styles from "./CustomSetBuilder.module.css";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { getCardSetsById } from "../../data/cardSets/selectors";
+import { getCardSetsById, getInitFetchComplete } from "../../data/cardSets/selectors";
 import NavItem from "../NavItem/NavItem";
 import { useEffect, useState } from "react";
 import BulkAddForm from "./BulkAdd/BulkAddForm";
@@ -14,7 +14,6 @@ import { deleteCardSetsFetchThunk, publishCardSetFetchThunk } from "../../data/c
 import { getCardsById } from "../../data/cards/selectors";
 import withScroll from "../withScroll/withScroll";
 import { useRouter } from 'next/router';
-import { OnMount } from "../../helpers/hooks";
 
 type ParentProps = {
   scrollCardsRef: React.MutableRefObject<HTMLDivElement>
@@ -23,6 +22,7 @@ type ParentProps = {
 function CustomSetBuilder(props: ParentProps) {
   const dispatch = useDispatch();
   const router = useRouter();
+  const initFetchSetComplete = useSelector(getInitFetchComplete)
   const cardSetsById = useSelector(getCardSetsById);
   const { id } = router.query
   const currSet = Object.values(cardSetsById).find(
@@ -33,13 +33,11 @@ function CustomSetBuilder(props: ParentProps) {
 
   const [fetchedCards, setFetchedCards] = useState(false)
 
-  OnMount(() => {
-    if (!currSet) {
-      router.push("/");
-    } else {
+  useEffect(() => {
+    if (initFetchSetComplete && currSet && !currSet!.card_ids) {
       getSetCards(currSet, dispatch);
     }
-  })
+  }, [initFetchSetComplete, currSet]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function fetchCustomSetCards() {
     await fetchCardsById(dispatch, currSet!.card_ids || [], currSet!.id);
@@ -111,21 +109,21 @@ function CustomSetBuilder(props: ParentProps) {
               </li>
               <li>
                 <span
-                  className="input-group-text btn btn-primary add-card-button"
+                  className={`input-group-text btn btn-primary ${styles["add-card-button"]}`}
                   id="inputGroup-sizing-sm"
                   onClick={() => { dispatch(publishCardSetFetchThunk(currSet!)) }}
                 >
                   Publish Set
                 </span>
                 <span
-                  className="input-group-text btn btn-secondary add-card-button"
+                  className={`input-group-text btn btn-secondary ${styles["add-card-button"]}`}
                   id="inputGroup-sizing-sm"
                   onClick={ exportSet }
                 >
                   Export Set
                 </span>
                 <span
-                    className="input-group-text btn btn-danger add-card-button"
+                    className={`input-group-text btn btn-danger ${styles["add-card-button"]}`}
                     id="inputGroup-sizing-sm"
                     onClick={() => {dispatch(deleteCardSetsFetchThunk([currSet!.id]))}}
                   >

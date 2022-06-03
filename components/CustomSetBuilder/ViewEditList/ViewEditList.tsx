@@ -7,6 +7,8 @@ import { updateCardIds } from "../../../data/cardSets/actions";
 import AddRemoveCards from "../AddRemoveCards/AddRemoveCards";
 import CardAutocomplete, { AutocompleteOption } from "../AddRemoveCards/CardAutocomplete";
 
+import styles from "../CustomSetBuilder.module.css"
+
 interface ParentParams {
     currSet: CardSet
 }
@@ -63,7 +65,7 @@ function ViewEditList(params: ParentParams) {
             <span style={{marginTop: "30px"}} />
             <CardAutocomplete
                 id={"add-autocomplete"}
-                label={"Card to Add"}
+                label={"Search a Card to Add"}
                 options={addOptions}
                 setActiveOption={setAddActiveOption}
                 activeOption={addActiveOption}
@@ -71,7 +73,7 @@ function ViewEditList(params: ParentParams) {
                 setCurrInputVal={setAddInputVal}
             />
             <span
-                className="input-group-text btn btn-success add-card-button"
+                className={`input-group-text btn btn-primary ${styles["add-card-button"]}`}
                 id="inputGroup-sizing-sm"
                 onClick={addCardtoSet}
             >
@@ -79,7 +81,7 @@ function ViewEditList(params: ParentParams) {
             </span>
             <CardAutocomplete
                 id={"remove-autocomplete"}
-                label={"Card to Remove"}
+                label={"Search a Card to Remove"}
                 options={options}
                 setActiveOption={setRemoveActiveOption}
                 activeOption={removeActiveOption}
