@@ -1,4 +1,4 @@
-import './BottomBar.css';
+import styles from './BottomBar.module.css';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -62,15 +62,15 @@ function BottomBar(props: ParentProps) {
       width = showExport ? "30%" : "20%"
 
   return (
-    <div className="BottomBar row" style={{width}}>
-        <div className={"justify-content-center DeckCount row " + (showExport ? "col-6" : "col-11")}>
+    <div className={`${styles.BottomBar} row`} style={{width}}>
+        <div className={`justify-content-center ${styles.DeckCount} row ` + (showExport ? "col-6" : "col-11")}>
             <div className="col-4">Sort: </div>
-            <div className="SortButton btn-secondary col-8" onClick={changeSort}>{sortType}</div>
+            <div className={`${styles.SortButton} ${styles['btn-secondary']} btn-secondary col-8`} onClick={changeSort}>{sortType}</div>
         </div>
         <div className="col-1"/>
         { showExport &&
           <div className="col-5 justify-content-center">
-            <div className="input-group input-group export-input-group">
+            <div className={`input-group ${styles['export-input-group']}`}>
               <input type="text" onChange={(e) => setDeckName(e.currentTarget.value)} className="form-control" placeholder={isMobile ? "Deck" : "Deck Name"} aria-label="Small" aria-describedby="inputGroup-sizing" />
               <div className="input-group-append">
                 <span className="input-group-text btn btn-success" id="inputGroup-sizing-sm" onClick={exportToYDK}>Export</span>

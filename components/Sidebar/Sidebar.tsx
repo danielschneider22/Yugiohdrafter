@@ -5,7 +5,7 @@ import { getCardsById } from '../../data/cards/selectors';
 import { isExtraDeckCard } from '../../data/cards/utils';
 import { deckToSideboard, extraDeckToSideboard, sideboardToDeck, sideboardToExtraDeck } from '../../data/deck/actions';
 import { getDeck, getExtraDeck, getSideboard } from '../../data/deck/selectors';
-import './Sidebar.css';
+import styles from './Sidebar.module.css';
 import Tab from './Tab';
 
 export type TabType = "Main Deck" | "Sideboard" | "Extra Deck"
@@ -67,8 +67,8 @@ function Sidebar(props: ParentProps) {
   }
 
   return (
-    <div className={"Sidebar active clearfix"}>
-      {parentMaxWidth && <div className="CardPickerButtonContainer">
+    <div className={`${styles.Sidebar} active ${styles.clearfix} clearfix`}>
+      {parentMaxWidth && <div className={styles.CardPickerButtonContainer}>
         {shownTabs.map((tabName, idx) => {
           return(
             <Tab 
@@ -86,11 +86,11 @@ function Sidebar(props: ParentProps) {
       </div>
       }
       
-      <div className="CardsWrapper">
+      <div className={styles.CardsWrapper}>
         {activeTabCards && activeTabCards.map((card, idx) => {
           return (
             <img
-              className="CardLeftArea" 
+              className={styles.CardLeftArea}
               key={card.name + idx} 
               alt={card.name} 
               src={card.card_images[0].image_url} 

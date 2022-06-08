@@ -1,5 +1,5 @@
 import { TabType } from './Sidebar';
-import './Sidebar.css';
+import styles from './Sidebar.module.css';
 
 interface ParentProps{
   tabName: TabType
@@ -25,9 +25,9 @@ function Sidebar(props: ParentProps) {
   }
 
   return (
-    <div onClick={onTabClicked} className={"CardPickerTab" + (isActive ? " ActiveTab" : " InactiveTab")} style={tabsStyle}>
+    <div onClick={onTabClicked} className={styles.CardPickerTab + " "  + (isActive ? styles.ActiveTab : styles.InactiveTab)} style={tabsStyle}>
         {text}
-        <span className="TabArrow">{showSidebar ? "▼" :"▲"}</span>
+        <span className={styles.TabArrow}>{showSidebar ? "▼" :"▲"}</span>
     </div>
     
   );

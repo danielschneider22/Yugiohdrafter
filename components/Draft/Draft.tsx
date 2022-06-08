@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 
 import { Booster } from '../../constants/Booster';
 import { VisibleCard } from '../../constants/Card';
@@ -34,6 +33,10 @@ import { toastBGColorDict } from '../../constants/Toast';
 import { addToast } from '../../data/toasts/actions';
 import _ from 'lodash';
 import { isMobile } from "react-device-detect";
+import { useRouter } from 'next/router';
+
+import sidebarStyles from '../Sidebar/Sidebar.module.css'
+import mainCardAreaStyle from '../MainCardArea/MainCardArea.module.css'
 
 function Draft() {
   const dispatch = useDispatch();
@@ -51,7 +54,7 @@ function Draft() {
   const draftBoosters = useSelector(getDraftBoosters)
   const draftBoostersIds = useSelector(getDraftBoosterIds)
   const playerPosition = useSelector(getPlayerPosition)
-  const history = useHistory();
+  const router = useRouter();
   const boosterNum = useSelector(getBoosterNum)
 
   const [showSidebar, toggleShowSidebar] = useState(false)
@@ -60,7 +63,7 @@ function Draft() {
 
   useEffect(() => {
     if(landingPageBoosterIds.length === 0) {
-      history.push("/");
+      router.push("/");
     }
   }, [])  // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -68,7 +71,7 @@ function Draft() {
   useEffect(() => {
     if(allCardSetCardsFetched && packComplete && landingPageBoosterIds.length > 0) {
       if (currLPBooster && currLPBooster.id === landingPageBoosters[landingPageBoosterIds[landingPageBoosterIds.length - 1]].id) { // completed last booster
-        history.push("/DraftComplete");
+        router.push("/DraftComplete");
         dispatch(addToast({id: _.uniqueId("draft-complete-"), type: "Success", description: "Edit and Export your Deck", title: "Draft Complete", backgroundColor: toastBGColorDict["Success"]}))
       } else {
         let nextBooster: Booster
@@ -85,7 +88,7 @@ function Draft() {
       
     }
     
-  }, [cardSets, currLPBooster, cardsById, dispatch, packComplete, allCardSetCardsFetched, landingPageBoosters, landingPageBoosterIds, numPlayers, history]);
+  }, [cardSets, currLPBooster, cardsById, dispatch, packComplete, allCardSetCardsFetched, landingPageBoosters, landingPageBoosterIds, numPlayers]);
 
   function toggleSidebar() {
     toggleShowSidebar(!showSidebar)
@@ -109,10 +112,10 @@ function Draft() {
   return (
     <div className="maxWH">
       <div className="maxWH">
-        <div ref={sidebarRef} className={`ExpandContract maxHeight ${showSidebar ? "ShowSidebar" : "HideSidebar"}`}>
+        <div ref={sidebarRef} className={`${mainCardAreaStyle.ExpandContract} maxHeight ${showSidebar ? sidebarStyles.ShowSidebar : sidebarStyles.HideSidebar}`}>
           <Sidebar shownTabs={["Main Deck", "Sideboard", "Extra Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />
         </div>
-        <div className={`justify-content-center maxHeight ExpandContract MainCardAreaWrapper`} style={{ width: showSidebar ? "calc(100% - 250px)" : "100%" }}>
+        <div className={`justify-content-center maxHeight ${mainCardAreaStyle.ExpandContract} ${mainCardAreaStyle.MainCardAreaWrapper}`} style={{ width: showSidebar ? "calc(100% - 250px)" : "100%" }}>
             <MainCardArea 
               unsortedCards={cards}
               title={isMobile ? "DRAFTING" : "DRAFTING PACK: " + boosterNum}

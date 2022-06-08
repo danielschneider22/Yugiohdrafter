@@ -14,9 +14,9 @@ const withScroll = (
     }, [scrollCardsRef])
 
     return (
-      <div>
+      <>
         <WrappedComponent scrollCardsRef={scrollCardsRef} {...props} />
-      </div>
+      </>
     );
   };
 };

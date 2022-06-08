@@ -1,4 +1,4 @@
-import './MainCardArea.css'
+import styles from './MainCardArea.module.css'
 
 import { VisibleCard } from '../../constants/Card';
 import BottomBar from '../BottomBar/BottomBar';
@@ -27,13 +27,13 @@ function MainCardArea(props: ParentProps) {
   safariIOSSpacingStyle.color = 'transparent'
 
   return (
-    <div ref={scrollCardsRef} className={"ScrollCards"}>
-        <div className={"CardDisplayAreaTitle " + (subTitle ? "TitleNoMargin" : "TitleMargin")}>{title}</div>
+    <div ref={scrollCardsRef} className={styles.ScrollCards}>
+        <div className={styles.CardDisplayAreaTitle + " " + (subTitle ? styles.TitleNoMargin : styles.TitleMargin)}>{title}</div>
         { subTitle &&
-          <div className="CardDisplayAreaSubTitle">{subTitle}</div>
+          <div className={styles.CardDisplayAreaSubTitle}>{subTitle}</div>
         }
         {cards && cards.map((card, idx) => {
-            return <img className="VisibleCard" key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"} onClick={() => cardClicked(card)}/>
+            return <img className={styles.VisibleCard} key={card.name + idx} alt={card.name} src={card.card_images[0].image_url} width={"300"} height={"438"} onClick={() => cardClicked(card)}/>
         })}
         {(!cards || cards.length === 0) && !loadedCards &&
             <div>Loading cards...</div>
