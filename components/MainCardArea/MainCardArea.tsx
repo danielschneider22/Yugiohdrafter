@@ -23,7 +23,7 @@ function MainCardArea(props: ParentProps) {
   const cards = unsortedCards.sort(sortCards(sortType))
 
   const safariIOSSpacingStyle: React.CSSProperties = {paddingTop: -1000}
-  safariIOSSpacingStyle.marginTop = isMobile ? 400 : 200
+  safariIOSSpacingStyle.marginTop = isMobile ? 400 : 500
   safariIOSSpacingStyle.color = 'transparent'
 
   return (

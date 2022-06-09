@@ -71,7 +71,7 @@ function Draft() {
   useEffect(() => {
     if(allCardSetCardsFetched && packComplete && landingPageBoosterIds.length > 0) {
       if (currLPBooster && currLPBooster.id === landingPageBoosters[landingPageBoosterIds[landingPageBoosterIds.length - 1]].id) { // completed last booster
-        router.push("/DraftComplete");
+        router.push("/draftComplete");
         dispatch(addToast({id: _.uniqueId("draft-complete-"), type: "Success", description: "Edit and Export your Deck", title: "Draft Complete", backgroundColor: toastBGColorDict["Success"]}))
       } else {
         let nextBooster: Booster

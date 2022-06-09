@@ -1,4 +1,4 @@
-import './DraftComplete.css';
+import styles from './DraftComplete.module.css';
 
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,10 @@ import { deckToSideboard } from '../../data/deck/actions';
 import { getDeck } from '../../data/deck/selectors';
 import MainCardArea from '../MainCardArea/MainCardArea';
 import Sidebar from '../Sidebar/Sidebar';
+
+import sidebarStyles from '../Sidebar/Sidebar.module.css'
+import mainCardAreaStyle from '../MainCardArea/MainCardArea.module.css'
+
 
 function DraftComplete() {
   const dispatch = useDispatch();
@@ -37,10 +41,10 @@ function DraftComplete() {
   return (
     <div className="maxWH">
       <div className="maxWH">
-        <div ref={sidebarRef} className={`ExpandContract maxHeight ${showSidebar ? "ShowSidebar" : "HideSidebar"}`}>
+        <div ref={sidebarRef} className={`${mainCardAreaStyle.ExpandContract} maxHeight ${showSidebar ? sidebarStyles.ShowSidebar : sidebarStyles.HideSidebar}`}>
           <Sidebar shownTabs={["Sideboard", "Extra Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />
         </div>
-        <div className={`justify-content-center maxHeight ExpandContract MainCardAreaWrapper`} style={{ width: showSidebar ? "calc(100% - 250px)" : "100%" }}>
+        <div className={`justify-content-center maxHeight ${mainCardAreaStyle.ExpandContract} ${mainCardAreaStyle.MainCardAreaWrapper}`} style={{ width: showSidebar ? "calc(100% - 250px)" : "100%" }}>
             <MainCardArea 
               unsortedCards={cards}
               title={"MAINDECK: " + cards.length}
