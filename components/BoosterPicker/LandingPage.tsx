@@ -32,7 +32,7 @@ function LandingPage(props: ParentProps) {
   function launch() {
     getSetsForBoosters(Object.values(boosters), dispatch, cardSetsById)
     if (playMode === "host")  {
-      // dispatch(roomAddFetchThunk(history, format))
+      dispatch(roomAddFetchThunk(router, format))
     } else {
       dispatch(resetDeckAndSideboard())
       dispatch(resetBoosterCards("landingPageBooster"))

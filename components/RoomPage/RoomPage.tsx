@@ -1,7 +1,8 @@
 import _ from 'lodash';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
 import { toastBGColorDict } from '../../constants/Toast';
 import { getAllCardSetCardsFetched, getDraftBoosterIds } from '../../data/boosters/selectors';
 import { getUserPlayerInfo } from '../../data/data/roomPlayers.ts/selectors';
@@ -11,19 +12,17 @@ import { addToast } from '../../data/toasts/actions';
 import { RootState } from '../../models/RootState';
 import styles from './RoomPage.module.css'
 import RoomPlayers from './RoomPlayers';
-import { useHistory } from 'react-router-dom';
 
 // const COPIED_TO_CLIPBOARD_DURATION = 3000 // milliseconds
 
 function RoomPage() {
-  const params: {id: string} = useParams()
-  const roomId = params.id
+  const router = useRouter()
+  const roomId = router.query.id as string
   const room = useSelector((state: RootState) => roomByIdSel(state, roomId))
   const dispatch = useDispatch()
   // const [recentlyCopiedToClipboard, setRecentlyCopiedToClipboard] = useState(false)
   const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
   const userPlayer = useSelector(getUserPlayerInfo)
-  const history = useHistory()
   const draftBoostersIds = useSelector(getDraftBoosterIds)
 
   function copyRoomUrlToClipboard() {
@@ -37,21 +36,23 @@ function RoomPage() {
 
   // initialization
   useEffect(() => {
-    if(!room) {
-      dispatch(roomGetFetchThunk(roomId))
+    if(roomId) {
+      if(!room) {
+        dispatch(roomGetFetchThunk(roomId))
+      }
+      const updateRoomInterval = setInterval(() => dispatch(roomGetFetchThunk(roomId)), 3000);
+      return () => {
+        clearInterval(updateRoomInterval)
+      };
     }
-    const updateRoomInterval = setInterval(() => dispatch(roomGetFetchThunk(roomId)), 3000);
-    return () => {
-      clearInterval(updateRoomInterval)
-    };
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [roomId])
 
   useEffect(() => {
     if(room && room.started && room.format === "draft") {
-      history.push(`/room/draft/${roomId}`);
+      router.push(`/room/draft/${roomId}`);
     }
     if(room && room.started && room.format === "sealed") {
-      history.push(`/SealedBooster`);
+      router.push(`/SealedBooster`);
     }
   }, [draftBoostersIds, room]) // eslint-disable-line react-hooks/exhaustive-deps
   
@@ -60,7 +61,7 @@ function RoomPage() {
       <main className={styles.RoomPage}>
         <h2>Room Could Not Be Found (May Have Expired)</h2>
         <br />
-        <h2><b className={styles.centerText}><Link to='/'>{'<- Back To Home'}</Link></b></h2>
+        <h2><b className={styles.centerText}><Link href="/">{'<- Back To Home'}</Link></b></h2>
       </main>
     )
   
@@ -70,9 +71,9 @@ function RoomPage() {
   
   function start() {
     if(room.format === "draft")
-      dispatch(roomStartDraftFetchThunk(history, roomId))
+      dispatch(roomStartDraftFetchThunk(router, roomId))
     else
-     dispatch(roomStartSealedFetchThunk(history, roomId))
+     dispatch(roomStartSealedFetchThunk(router, roomId))
   }
   
   return (

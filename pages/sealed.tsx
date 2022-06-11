@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Layout from '../components/Layout/layout'
 import SealedBoosterOpener from '../components/SealedBoosterOpener/SealedBoosterOpener'
 
-const DraftPage: NextPage = () => {
+const SealedPage: NextPage = () => {
   return (
     <Layout>
       <SealedBoosterOpener />
@@ -10,4 +10,4 @@ const DraftPage: NextPage = () => {
   )
 }
 
-export default DraftPage
+export default SealedPage

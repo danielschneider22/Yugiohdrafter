@@ -1,7 +1,6 @@
+import { useRouter } from "next/router";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { ip } from "../../App";
 import { RoomPlayer } from "../../constants/RoomPlayer";
 import { getAllCardSetCardsFetched } from "../../data/boosters/selectors";
 import { roomUpdatePlayerFetchThunk } from "../../data/data/roomPlayers.ts/operations";
@@ -9,6 +8,7 @@ import { roomPlayersStateForRoomSel } from "../../data/data/roomPlayers.ts/selec
 import { getRoomPlayerId } from "../../data/data/rooms/operations";
 import { roomByIdSel } from "../../data/data/rooms/selectors";
 import { RootState } from "../../models/RootState";
+import { ip } from "../../pages/_app";
 import styles from './RoomPage.module.css'
 
 function isPlayerUser(roomPlayer: RoomPlayer, room: string){
@@ -16,8 +16,9 @@ function isPlayerUser(roomPlayer: RoomPlayer, room: string){
 }
 
 function RoomPlayers() {
-  const params: {id: string} = useParams()
-  const room = useSelector((state: RootState) => roomByIdSel(state, params.id))
+  const router = useRouter();
+  const roomId = router.query.id as string
+  const room = useSelector((state: RootState) => roomByIdSel(state, roomId))
   const roomPlayers = useSelector((state: RootState) => roomPlayersStateForRoomSel(state, room))
   const dispatch = useDispatch()
   const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)

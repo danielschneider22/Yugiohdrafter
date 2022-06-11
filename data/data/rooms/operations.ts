@@ -5,15 +5,12 @@ import { ThunkAction } from "redux-thunk"
 import { baseApiUrl } from "../../../constants/baseApiUrl"
 import { RoomC } from "../../../contracts/RoomC"
 import { Room } from "../../../models/Room"
-import { Monad } from "../../../utils"
 
 import { tryCatchPromise } from "../../utils"
 import { roomAddFetch, roomAddFetchFail, roomAddFetchSuccess, roomGetFetch, roomGetFetchFail, roomGetFetchSuccess, roomJoinRoomFetch, roomJoinRoomFetchFail, roomJoinRoomFetchSuccess, roomMakePicksFetch, roomMakePicksFetchFail, roomMakePicksFetchSuccess, roomNextRoundFetch, roomNextRoundFetchFail, roomNextRoundFetchSuccess, roomStartDraftFetch, roomStartDraftFetchFail, roomStartDraftFetchSuccess, roomStartSealedFetch, roomStartSealedFetchFail, roomStartSealedFetchSuccess } from "./actions"
-import {History} from 'history'
 import { RoomPlayer } from "../../../constants/RoomPlayer"
 import { Booster } from "../../../constants/Booster"
 import { getDraftBoosterIds, getDraftBoosters, getSortedLPBoosters } from "../../boosters/selectors"
-import { ip } from "../../../App"
 import { RoomResultC } from "../../../contracts/RoomResultC"
 import { removeAllBoosters, resetBoosterCards, setBoosters } from "../../boosters/actions"
 import { getSetsForBoosters } from "../../cards/utils"
@@ -27,9 +24,12 @@ import { getUserPlayerInfo, roomPlayersById } from "../roomPlayers.ts/selectors"
 import { CardPick } from "../../../constants/CardPick"
 import { makeAIPicks } from "../../../components/Draft/utils"
 import { fetchCardsById } from "../../cards/operations"
+import { Monad } from "../../../helpers/utils"
+import { NextRouter } from "next/router"
+import { ip } from "../../../pages/_app"
 
 // - mappers
-export function roomContractToModel(roomC: RoomC): Room { // mutates
+export function roomContractToModel(roomC: Room): Room { // mutates
   const expires = moment(roomC.expires)
   
   if (!expires.isValid()) // invalid expires field returned from backend
@@ -44,7 +44,7 @@ export function getRoomPlayerId(ip: string, roomId: string) {
   return ip + "-" + roomId
 }
 
-export const roomAddFetchThunk = (history: History, format: "sealed" | "draft"): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
+export const roomAddFetchThunk = (router: NextRouter, format: "sealed" | "draft"): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
   dispatch(roomAddFetch())
   const boostersLP = getSortedLPBoosters(getState())
   const customSets = getCustomSets(getState()).filter((set) => boostersLP.some((booster) => booster.cardSetName === set.id))
@@ -55,7 +55,7 @@ export const roomAddFetchThunk = (history: History, format: "sealed" | "draft"):
     const room = await roomContractToModel(roomResultC.room)
     if (room) {
       await dispatch(roomAddFetchSuccess(room, roomResultC.roomPlayers, roomResultC.boostersLP, roomResultC.boostersDraft))
-      return history.push(`/room/${room.id}`)
+      return router.push(`/room/${room.id}`)
     }
     else
       dispatch(roomAddFetchFail(error))  
@@ -169,7 +169,7 @@ async function roomJoinRoomFetchOp(roomId: string): Promise<RoomC> {
 }
 
 
-export const roomStartDraftFetchThunk = (history: History, roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
+export const roomStartDraftFetchThunk = (router: NextRouter, roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
   dispatch(roomStartDraftFetch())
   const firstLPBooster = getSortedLPBoosters(getState())[0]
   const cardSets = getCardSetsById(getState())
@@ -182,7 +182,7 @@ export const roomStartDraftFetchThunk = (history: History, roomId: string): Thun
     const room = await roomContractToModel(roomResultC.room)
     if (room) {
       await dispatch(roomStartDraftFetchSuccess(room, roomResultC.roomPlayers, roomResultC.boostersLP, roomResultC.boostersDraft))
-      return history.push(`/room/${room.id}`)
+      return router.push(`/room/${room.id}`)
     }
     else
       dispatch(roomStartDraftFetchFail(error))  
@@ -205,7 +205,7 @@ async function roomStartDraftFetchOp(roomId: string, boostersDraft: Booster[]): 
     throw new Error(`Fetch failure from startDraft(). Response from '${url}': ${JSON.stringify(resp)}`)
 }
 
-export const roomStartSealedFetchThunk = (history: History, roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
+export const roomStartSealedFetchThunk = (router: NextRouter, roomId: string): ThunkAction<void, RootStateOrAny, unknown, Action<string>> => async (dispatch, getState) => {
   dispatch(roomStartSealedFetch())
   const [roomResultC, error]: Monad<RoomResultC> = await tryCatchPromise(dispatch, [roomId])<RoomResultC>(roomStartSealedFetchOp)
   if (roomResultC) {
@@ -213,7 +213,7 @@ export const roomStartSealedFetchThunk = (history: History, roomId: string): Thu
     if (room) {
       dispatch(resetBoosterCards("landingPageBooster"))
       await dispatch(roomStartSealedFetchSuccess(room, roomResultC.roomPlayers, roomResultC.boostersLP, roomResultC.boostersDraft))
-      return history.push(`/room/${room.id}`)
+      return router.push(`/room/${room.id}`)
     }
     else
       dispatch(roomStartSealedFetchFail(error))  
