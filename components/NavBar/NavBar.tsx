@@ -122,15 +122,15 @@ function NavBar() {
         setMobileMenuShown(false)
     }
 
-    function defaultClearAndClose() {
-        dispatch(removeAllBoosters("draftBooster"))
-        dispatch(resetDeckAndSideboard())
-        dispatch(resetBoosterCards("landingPageBooster"))
-        dispatch(clearRoomInfo())
-        setMobileMenuShown(false)
-        const selectHeader = document.getElementById("header")
-        selectHeader!.classList.remove('header-scrolled')
-    }
+    // function defaultClearAndClose() {
+    //     dispatch(removeAllBoosters("draftBooster"))
+    //     dispatch(resetDeckAndSideboard())
+    //     dispatch(resetBoosterCards("landingPageBooster"))
+    //     dispatch(clearRoomInfo())
+    //     setMobileMenuShown(false)
+    //     const selectHeader = document.getElementById("header")
+    //     selectHeader!.classList.remove('header-scrolled')
+    // }
 
     function logout() {
         dispatch(logoutThunk())
@@ -143,7 +143,7 @@ function NavBar() {
             {!customSetPopupVisible && !customSetEditPopupVisible &&
                 <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
                     <Link href="/">
-                        <div className="logo d-flex align-items-center" onClick={() => defaultClearAndClose()}>
+                        <div className="logo d-flex align-items-center">
                             { <Image src={cardImage} alt="Yugioh Drafter Logo" />}
                             <span>YugiohDrafter</span>
                         </div>
@@ -151,7 +151,7 @@ function NavBar() {
 
                     <nav id="navbar" className={"navbar" + (mobileMenuShown ? " navbar-mobile" : "")}>
                         <ul>
-                            {<li><Link href="/"><a className="nav-link scrollto" onClick={() => defaultClearAndClose()}>Home</a></Link></li>}
+                            {<li><Link href="/"><a className="nav-link scrollto">Home</a></Link></li>}
                             <li className="dropdown" onClick={showCustomSetsDropdown}><a href="#"><span>Custom Sets</span> <i className="bi bi-chevron-down"></i></a>
                                 <ul className={customSetsDropdownVisible ? "dropdown-active" : ""}>
                                     <li><a href="#" onClick={() => toggleCustomSetPopupVisiblity(false)}>Create Custom Set</a></li>

@@ -1,6 +1,6 @@
+import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 
 import { VisibleCard } from '../../constants/Card';
 import { createBoostersForFetchedSets } from '../../data/boosters/operations';
@@ -10,12 +10,17 @@ import { isExtraDeckCard } from '../../data/cards/utils';
 import { getCardSetsById } from '../../data/cardSets/selectors';
 import {
     addCardsToSideboard,
+    resetDeckAndSideboard,
     sideboardToDeck,
     sideboardToExtraDeck,
 } from '../../data/deck/actions';
 import { getSideboard } from '../../data/deck/selectors';
 import MainCardArea from '../MainCardArea/MainCardArea';
 import Sidebar from '../Sidebar/Sidebar';
+
+import sidebarStyles from '../Sidebar/Sidebar.module.css'
+import mainCardAreaStyle from '../MainCardArea/MainCardArea.module.css'
+import { OnMount } from '../../helpers/hooks';
 
 let populatedSideboard = false
 
@@ -27,7 +32,7 @@ function SealedBoosterOpener() {
   const boosters = useSelector(getLandingPageBoosters)
   const sideboard = useSelector(getSideboard)
   const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
-  const history = useHistory()
+  const router = useRouter()
 
   const [showSidebar, toggleShowSidebar] = useState(false)
   
@@ -39,12 +44,12 @@ function SealedBoosterOpener() {
     cards.push({...cardsById[cardId], origIdx: idx})
   })
 
-  useEffect(() => {
+  OnMount(() => {
     if(Object.values(boosters).length === 0) {
-      history.push("/");
+      router.push("/");
     }
     populatedSideboard = false
-  }, []);  // eslint-disable-line react-hooks/exhaustive-deps
+  })
 
   //create boosters when all sets for boosters are fetched
   useEffect(() => {
@@ -71,16 +76,15 @@ function SealedBoosterOpener() {
   return (
     <div className="maxWH">
       <div className="maxWH">
-        <div ref={sidebarRef} className={`ExpandContract maxHeight ${showSidebar ? "ShowSidebar" : "HideSidebar"}`}>
-          <Sidebar shownTabs={["Main Deck", "Extra Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />
+        <div ref={sidebarRef} className={`${mainCardAreaStyle.ExpandContract} maxHeight ${showSidebar ? sidebarStyles.ShowSidebar : sidebarStyles.HideSidebar}`}>
+          <Sidebar shownTabs={["Main Deck", "Sideboard", "Extra Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />
         </div>
-        <div className={`justify-content-center maxHeight ExpandContract MainCardAreaWrapper`} style={{ width: showSidebar ? "calc(100% - 250px)" : "100%" }}>
+        <div className={`justify-content-center maxHeight ${mainCardAreaStyle.ExpandContract} ${mainCardAreaStyle.MainCardAreaWrapper}`} style={{ width: showSidebar ? "calc(100% - 250px)" : "100%" }}>
             <MainCardArea 
               unsortedCards={cards}
               title={"SIDEBOARD: " + cards.length}
               cardClicked={addCardToDeck}
-              loadedCards={populatedSideboard}
-            />
+              loadedCards={populatedSideboard} />
         </div>
       </div>
     </div>

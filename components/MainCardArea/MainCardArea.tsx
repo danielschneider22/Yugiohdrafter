@@ -25,6 +25,7 @@ function MainCardArea(props: ParentProps) {
   const safariIOSSpacingStyle: React.CSSProperties = {paddingTop: -1000}
   safariIOSSpacingStyle.marginTop = isMobile ? 400 : 500
   safariIOSSpacingStyle.color = 'transparent'
+  safariIOSSpacingStyle.minHeight = '1000px'
 
   return (
     <div ref={scrollCardsRef} className={styles.ScrollCards}>

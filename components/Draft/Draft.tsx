@@ -37,6 +37,7 @@ import { useRouter } from 'next/router';
 
 import sidebarStyles from '../Sidebar/Sidebar.module.css'
 import mainCardAreaStyle from '../MainCardArea/MainCardArea.module.css'
+import { OnMount } from '../../helpers/hooks';
 
 function Draft() {
   const dispatch = useDispatch();
@@ -61,11 +62,11 @@ function Draft() {
   
   const sidebarRef = useRef(null as unknown as HTMLDivElement)
 
-  useEffect(() => {
+  OnMount(() => {
     if(landingPageBoosterIds.length === 0) {
       router.push("/");
     }
-  }, [])  // eslint-disable-line react-hooks/exhaustive-deps
+  })
 
   //create boosters when all sets are fetched and starting new pack
   useEffect(() => {

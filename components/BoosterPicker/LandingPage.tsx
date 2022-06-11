@@ -13,6 +13,8 @@ import { initialiazeDraftPod } from '../../data/draftPod/actions';
 import Footer from '../Footer/Footer';
 import withScroll from '../withScroll/withScroll';
 import { useRouter } from 'next/router';
+import { resetDeckAndSideboard } from '../../data/deck/actions';
+import { resetBoosterCards } from '../../data/boosters/actions';
 
 type ParentProps = {
   scrollCardsRef: React.MutableRefObject<HTMLDivElement>
@@ -31,11 +33,13 @@ function LandingPage(props: ParentProps) {
     getSetsForBoosters(Object.values(boosters), dispatch, cardSetsById)
     if (playMode === "host")  {
       // dispatch(roomAddFetchThunk(history, format))
-    } else {    
+    } else {
+      dispatch(resetDeckAndSideboard())
+      dispatch(resetBoosterCards("landingPageBooster"))
       if(format === "draft") {
         dispatch(initialiazeDraftPod(8, 5, 9, ""))
       }
-      router.push(format === "sealed" ? "/SealedBooster" : "/draft")
+      router.push(format === "sealed" ? "/sealed" : "/draft")
     }
   }
 
