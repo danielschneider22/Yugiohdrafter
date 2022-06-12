@@ -55,6 +55,10 @@ function RoomPage() {
       router.push(`/sealed`);
     }
   }, [draftBoostersIds, room]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  if(!roomId) {
+    return <span></span>
+  }
   
   if (room === null)
     return (

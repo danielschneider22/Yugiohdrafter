@@ -129,7 +129,7 @@ export const roomJoinRoomFetchThunk = (roomId: string, removeBoosters = true): T
 
         // fetch all custom set cards
         if(customSets && customSets.allIds.length > 0) {
-          Object.values(customSets.byId).forEach(async (set) => {
+          await Object.values(customSets.byId).forEach(async (set) => {
             dispatch(addSet({id: set.id, set_name: set.set_name, set_code: set.set_code, num_of_cards: set.card_ids!.length, tcg_date: Date(), card_ids: set.card_ids, custom_set: true}))
             await fetchCardsById(dispatch, set.card_ids!, set.id)
           })
