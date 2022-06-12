@@ -1,8 +1,8 @@
 import { RoomPlayer } from '../../constants/RoomPlayer';
-import { ip } from '../../pages';
 import { RoomAction } from '../data/rooms/actions';
 import { RoomsActionTypes } from '../data/rooms/types';
 import { DraftPodActions } from './actions';
+import { ip } from "../../pages/_app";
 
 export const draftPodInitialState = {
     numPlayers: 8,

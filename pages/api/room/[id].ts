@@ -21,12 +21,13 @@ export async function getRoom(roomId: string, res: NextApiResponse) {
   try {
     const roomPlayers = await collections.roomPlayers?.find({ id: { $in: room.roomPlayerIds } }).toArray()
     const boostersLP = await collections.boosters?.find({ id: { $in: room.boosterIdsLP } }).toArray()
+    const boostersDraft = !room.boosterIdsDraft ? [] : await collections.boosters?.find({ id: { $in: room.boosterIdsDraft } }).toArray()
     const customSets = await collections.cardSets?.find({ id: { $in: Array.from(new Set(boostersLP?.map((booster) => booster.cardSetName))) } }).toArray()
   
     const result: RoomResultC = {
       room,
       roomPlayers: arrToState(roomPlayers),
-      boostersDraft: {allIds: [], byId: {}},
+      boostersDraft: arrToState(boostersDraft),
       boostersLP: arrToState(boostersLP),
       customSets: arrToState(customSets),
     }

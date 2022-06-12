@@ -35,7 +35,7 @@ function LandingPage(props: ParentProps) {
       dispatch(roomAddFetchThunk(router, format))
     } else {
       dispatch(resetDeckAndSideboard())
-      dispatch(resetBoosterCards("landingPageBooster"))
+      dispatch(resetBoosterCards("draftBooster"))
       if(format === "draft") {
         dispatch(initialiazeDraftPod(8, 5, 9, ""))
       }

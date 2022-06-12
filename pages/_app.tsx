@@ -36,6 +36,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       } else {
         ip = await getClientIp()
       }
+      ip = await getClientIp()
       
       setIpLoaded(true)
     }

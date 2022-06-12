@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
 
 import { VisibleCard } from '../../constants/Card';
 import {
@@ -26,21 +25,24 @@ import Sidebar from '../Sidebar/Sidebar';
 import { toastBGColorDict } from '../../constants/Toast';
 import { addToast } from '../../data/toasts/actions';
 import _ from 'lodash';
-import { getRoomPlayerId, roomGetFetchThunk, roomJoinRoomFetchThunk, roomMakePickFetchThunk, roomNextRoundFetchThunk } from '../../data/data/rooms/operations';
+import { getRoomPlayerId, roomGetFetchThunk, roomMakePickFetchThunk, roomNextRoundFetchThunk } from '../../data/data/rooms/operations';
 import { CardPick } from '../../constants/CardPick';
 import { getUserPlayerInfo } from '../../data/data/roomPlayers.ts/selectors';
 import { isMobile } from 'react-device-detect';
 import { RoomResultC } from '../../contracts/RoomResultC';
 import { checkCacheDeck } from '../../data/deck/operations';
 import { ip } from '../../pages/_app';
+import { useRouter } from 'next/router';
+
+import sidebarStyles from '../Sidebar/Sidebar.module.css'
+import mainCardAreaStyle from '../MainCardArea/MainCardArea.module.css'
 
 let updateRoomInterval: any
 
 function RoomDraft() {
   const dispatch = useDispatch();
-
-  const params: {id: string} = useParams()
-  const roomId = params.id
+  const router = useRouter()
+  const roomId = router.query.id as string
   const cardsById = useSelector(getCardsById)
   const cardSets = useSelector(getCardSetsById)
   const roundComplete = useSelector(getRoundComplete)
@@ -51,7 +53,6 @@ function RoomDraft() {
   const allCardSetCardsFetched = useSelector(getAllCardSetCardsFetched)
   const cards = useSelector(getCardsForPositionInDraft) as VisibleCard[]
   const positionBooster = useSelector(getPositionBooster)
-  const history = useHistory();
   const packViewable = useSelector(canViewPack)
   const playerInfo = useSelector(getUserPlayerInfo)
   const boosterNum = useSelector(getBoosterNum)
@@ -63,25 +64,26 @@ function RoomDraft() {
   async function awaitRoomFetch() {
     await dispatch(checkCacheDeck(roomId))
     const roomResultC = await dispatch(roomGetFetchThunk(roomId)) as unknown as RoomResultC
-    await dispatch(roomJoinRoomFetchThunk(roomId, false))
     
     if (roomResultC.boostersDraft?.allIds.length === 0) {
-      history.push("/");
+      router.push("/");
     }
 
     updateRoomInterval = setInterval(() => dispatch(roomGetFetchThunk(roomId)), 1000);
   }
 
   useEffect(() => {
-    awaitRoomFetch()
+    if(roomId) 
+      awaitRoomFetch()
     return () => { clearInterval(updateRoomInterval) }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [roomId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // go to draft complete when finished and start a new round if host and boosters are finished
   useEffect(() => {
-    if(allCardSetCardsFetched && roundComplete && landingPageBoosterIds.length > 0) {
+    if(allCardSetCardsFetched && roundComplete && landingPageBoosterIds.length > 0 && roomId) {
       if (currLPBooster && currLPBooster.id === landingPageBoosters[landingPageBoosterIds[landingPageBoosterIds.length - 1]].id) { // completed last booster
-        history.push("/draftComplete");
+        clearInterval(updateRoomInterval)
+        router.push("/draftComplete");
         dispatch(addToast({id: _.uniqueId("draft-complete-"), type: "Success", description: "Edit and Export your Deck", title: "Draft Complete", backgroundColor: toastBGColorDict["Success"]}))
       } else if(playerInfo?.isHost) {
         dispatch(roomNextRoundFetchThunk(roomId))
@@ -89,7 +91,7 @@ function RoomDraft() {
       
     }
     
-  }, [cardSets, currLPBooster, cardsById, dispatch, roundComplete, allCardSetCardsFetched, landingPageBoosters, landingPageBoosterIds, numPlayers, history, playerInfo, roomId]);
+  }, [cardSets, currLPBooster, cardsById, dispatch, roundComplete, allCardSetCardsFetched, landingPageBoosters, landingPageBoosterIds, numPlayers, playerInfo, roomId]);
 
   function toggleSidebar() {
     toggleShowSidebar(!showSidebar)
@@ -110,10 +112,10 @@ function RoomDraft() {
   return (
     <div className="maxWH">
       <div className="maxWH">
-        <div ref={sidebarRef} className={`ExpandContract maxHeight ${showSidebar ? "ShowSidebar" : "HideSidebar"}`}>
+        <div ref={sidebarRef} className={`${mainCardAreaStyle.ExpandContract} maxHeight ${showSidebar ? sidebarStyles.ShowSidebar : sidebarStyles.HideSidebar}`}>
           <Sidebar shownTabs={["Main Deck", "Sideboard", "Extra Deck"]} toggleSidebar={toggleSidebar} showSidebar={showSidebar} parentWidth={sidebarRef.current && sidebarRef.current.clientWidth} />
         </div>
-        <div className={`justify-content-center maxHeight ExpandContract MainCardAreaWrapper`} style={{ width: showSidebar ? "calc(100% - 250px)" : "100%" }}>
+        <div className={`justify-content-center maxHeight ${mainCardAreaStyle.ExpandContract} ${mainCardAreaStyle.MainCardAreaWrapper}`} style={{ width: showSidebar ? "calc(100% - 250px)" : "100%" }}>
             { packViewable &&
               <MainCardArea 
                 unsortedCards={cards}
@@ -126,8 +128,8 @@ function RoomDraft() {
             { !packViewable &&
               <div className={"ScrollCards CardDisplayAreaTitle"}>Waiting for other players...</div>
             }
-            
-            
+
+
         </div>
       </div>
     </div>

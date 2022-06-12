@@ -36,10 +36,7 @@ async function addRoom(req: NextApiRequest, res: NextApiResponse) {
     position: -1
   }
   
-  let dbResult: InsertManyResult<any> | InsertOneResult<any> | undefined = await collections.roomPlayers?.insertOne(hostPlayer)
-  if (!dbResult?.acknowledged) {
-    return res.status(500).json({ error: `Could not add host player to room '.` })
-  }
+  await collections.roomPlayers?.insertOne(hostPlayer)
 
   const boostersNew: Booster[] = req.body.boostersLP
   const customSetsNew: CardSet[] = req.body.customSets
@@ -55,15 +52,8 @@ async function addRoom(req: NextApiRequest, res: NextApiResponse) {
     boosterIdsRound: []
   }
 
-  dbResult = await collections.boosters?.insertMany(boostersNew)
-  if (!dbResult?.acknowledged) {
-    return res.status(500).json({ error: `Could not add boosters to db '.` })
-  }
-
-  dbResult = await collections.rooms?.insertOne(roomNew)
-  if (!dbResult?.acknowledged) {
-    return res.status(500).json({ error: `Could not create room '.` })
-  }
+  await collections.boosters?.insertMany(boostersNew)
+  await collections.rooms?.insertOne(roomNew)
 
   const result: RoomResultC = {
     room: roomNew,

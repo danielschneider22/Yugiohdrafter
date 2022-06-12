@@ -52,7 +52,7 @@ function RoomPage() {
       router.push(`/room/draft/${roomId}`);
     }
     if(room && room.started && room.format === "sealed") {
-      router.push(`/SealedBooster`);
+      router.push(`/sealed`);
     }
   }, [draftBoostersIds, room]) // eslint-disable-line react-hooks/exhaustive-deps
   
