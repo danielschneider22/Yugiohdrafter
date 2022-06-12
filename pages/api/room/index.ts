@@ -6,14 +6,12 @@ import { Booster } from "../../../constants/Booster";
 import { CardSet } from "../../../constants/CardSet";
 import { RoomPlayer } from "../../../constants/RoomPlayer";
 import { UserCookie } from "../../../constants/UserCookie";
-import { RoomC } from "../../../contracts/RoomC";
 import { RoomResultC } from "../../../contracts/RoomResultC";
 import { ROOM_DEFAULT_EXPIRATION, unique4CharString } from "../../../helpers/roomHelpers";
 import { Room } from "../../../models/Room";
 import { connectToDatabase } from "../../../mongodb";
 
 export default withIronSessionApiRoute(async function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log("fish")
     switch (req.method) {
         case 'POST': {
             return addRoom(req, res);

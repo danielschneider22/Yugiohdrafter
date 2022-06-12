@@ -30,10 +30,12 @@
 
 .LaunchButton{
   text-align: center;
+  height: 50px;
 }
 
 .HostWaitButton{
   text-align: center;
+  height: 50px;
 }
 
 .currPlayerReadyButton{
@@ -56,4 +58,10 @@
 
 .SubtitleRoom{
   margin-bottom: 20px;
+  text-align: center;
+  height: 20px;
+}
+.loadSets{
+  text-align: center;
+  height: 50px;
 }

@@ -91,7 +91,7 @@ function RoomPage() {
       }
       <RoomPlayers />
       { !allCardSetCardsFetched &&
-        <div>Loading sets for draft...</div>
+        <div className={styles.loadSets}>Loading sets for draft...</div>
       }
       { userPlayer && userPlayer!.isHost &&
         <div className="d-flex justify-content-center">

@@ -28,11 +28,11 @@ import { addToast } from '../../data/toasts/actions';
 import _ from 'lodash';
 import { getRoomPlayerId, roomGetFetchThunk, roomJoinRoomFetchThunk, roomMakePickFetchThunk, roomNextRoundFetchThunk } from '../../data/data/rooms/operations';
 import { CardPick } from '../../constants/CardPick';
-import { ip } from '../../App';
 import { getUserPlayerInfo } from '../../data/data/roomPlayers.ts/selectors';
 import { isMobile } from 'react-device-detect';
 import { RoomResultC } from '../../contracts/RoomResultC';
 import { checkCacheDeck } from '../../data/deck/operations';
+import { ip } from '../../pages/_app';
 
 let updateRoomInterval: any
 

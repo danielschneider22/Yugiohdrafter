@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
-import { Collection, ObjectId } from "mongodb";
+import { Collection, ObjectId, WithId } from "mongodb";
 import { Room } from "../models/Room";
+import { State } from "../models/State";
 
 // - global constants
 export const ROOM_DEFAULT_EXPIRATION = 30 // 30 minutes
@@ -18,4 +19,12 @@ export async function unique4CharString(roomCollection?: Collection<Room>) { // 
   // - more collisions than allowed RETRY_ID_COLLISIONS_NUM, log error and return null
   console.error(`Error: 'unique4CharString' had more than ${RETRY_ID_COLLISIONS_NUM} collisions.`) 
   return undefined
+}
+
+export function arrToState(arr: WithId<any>[] | undefined) {
+  if(!arr)
+    return { allIds: [], byId: {} }
+  const state: State<any> = {allIds: arr.map((el) => el.id), byId: {}}
+  arr.forEach((el: { id: string }) => state.byId[el.id] = el)
+  return state
 }

@@ -34,7 +34,7 @@ async function postCardSet(req: NextApiRequest, res: NextApiResponse) {
     author: req.session.user.email,
     card_ids: req.body.card_ids
   }
-  const dbResult = await collections.cardSets?.insertOne(customSet)
+  const dbResult = await collections.cardSets?.updateOne({ id: req.body.id }, { $set: customSet }, {upsert: true})
 
   if (dbResult?.acknowledged)
     res.json(customSet)

@@ -3,7 +3,7 @@ import { RoomPlayer } from "../../../constants/RoomPlayer";
 import { Room } from "../../../models/Room";
 import { RootState } from "../../../models/RootState";
 import { State } from "../../../models/State";
-import { ip } from "../../../pages";
+import { ip } from "../../../pages/_app";
 
 export const roomPlayersStateSel = (state: RootState) => state.data.roomPlayers
 export const roomPlayersById = (state: RootState) => state.data.roomPlayers.byId
