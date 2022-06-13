@@ -4,10 +4,12 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toastBGColorDict } from '../../constants/Toast';
+import { resetBoosterCards } from '../../data/boosters/actions';
 import { getAllCardSetCardsFetched, getDraftBoosterIds } from '../../data/boosters/selectors';
 import { getUserPlayerInfo } from '../../data/data/roomPlayers.ts/selectors';
 import { roomGetFetchThunk, roomStartDraftFetchThunk, roomStartSealedFetchThunk } from '../../data/data/rooms/operations';
 import { roomByIdSel } from '../../data/data/rooms/selectors';
+import { resetDeckAndSideboard } from '../../data/deck/actions';
 import { addToast } from '../../data/toasts/actions';
 import { RootState } from '../../models/RootState';
 import styles from './RoomPage.module.css'
@@ -52,6 +54,8 @@ function RoomPage() {
       router.push(`/room/draft/${roomId}`);
     }
     if(room && room.started && room.format === "sealed") {
+      dispatch(resetDeckAndSideboard())
+      dispatch(resetBoosterCards("draftBooster"))
       router.push(`/sealed`);
     }
   }, [draftBoostersIds, room]) // eslint-disable-line react-hooks/exhaustive-deps

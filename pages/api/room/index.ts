@@ -10,6 +10,7 @@ import { RoomResultC } from "../../../contracts/RoomResultC";
 import { ROOM_DEFAULT_EXPIRATION, unique4CharString } from "../../../helpers/roomHelpers";
 import { Room } from "../../../models/Room";
 import { connectToDatabase } from "../../../mongodb";
+import { getRoom } from "./[id]";
 
 export default withIronSessionApiRoute(async function handler(req: NextApiRequest, res: NextApiResponse) {
     switch (req.method) {
@@ -55,13 +56,5 @@ async function addRoom(req: NextApiRequest, res: NextApiResponse) {
   await collections.boosters?.insertMany(boostersNew)
   await collections.rooms?.insertOne(roomNew)
 
-  const result: RoomResultC = {
-    room: roomNew,
-    roomPlayers: {
-      allIds: roomNew.roomPlayerIds,
-      byId: { [hostPlayer.id]: hostPlayer },
-    },
-    boostersLP: {allIds: [], byId: {}}
-  }
-  res.json(result)
+  return await getRoom(roomId, res)
 }

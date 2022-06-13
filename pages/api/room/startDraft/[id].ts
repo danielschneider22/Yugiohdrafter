@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 
-async function removeNotReadyPlayers(room: Room) {
+export async function removeNotReadyPlayers(room: Room) {
   let { collections } = await connectToDatabase();
   await collections.roomPlayers?.deleteMany({ $and: [ { id: { $in: room.roomPlayerIds}}, { isReady: false } ] })
   return;
