@@ -6,6 +6,7 @@ import ToastManager from '../ToastManager/ToastManager';
 export const siteTitle = 'Yugioh Drafter';
 
 interface MyProps{
+  title: string,
   children: React.ReactNode;
 }
 
@@ -21,6 +22,7 @@ export default function Layout(props: MyProps) {
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet" />
 
         <meta name="og:title" content={siteTitle} />
+        <title>{props.title}</title>
       </Head>
       <ToastManager
         position="bottom-left"

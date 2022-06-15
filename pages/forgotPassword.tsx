@@ -4,7 +4,7 @@ import ForgotPassword from '../components/LoginPage/ForgotPassword'
 
 const ForgotPasswordPage: NextPage = () => {
   return (
-    <Layout>
+    <Layout title={"Forgot Password: Yugioh Drafter Login"}>
       <ForgotPassword />
     </Layout>
   )

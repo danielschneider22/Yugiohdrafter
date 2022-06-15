@@ -4,7 +4,7 @@ import Layout from '../components/Layout/layout'
 
 const ContactUsPage: NextPage = () => {
   return (
-    <Layout>
+    <Layout title={"Contact Us - Yugioh Draft"}>
       <ContactUs />
     </Layout>
   )
