@@ -31,12 +31,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   OnMount(() => {
     async function getIP() {
-      if(process.env.NODE_ENV === "development") {
-        ip = (Math.random() * 200000) + ""
-      } else {
-        ip = await getClientIp()
-      }
-      ip = await getClientIp()
+      // if(process.env.NODE_ENV === "development") {
+      //   ip = (Math.random() * 200000) + ""
+      // } else {
+      //   ip = await getClientIp()
+      // }
+      // ip = await getClientIp()
+      ip = (Math.random() * 200000) + ""
       
       setIpLoaded(true)
     }
