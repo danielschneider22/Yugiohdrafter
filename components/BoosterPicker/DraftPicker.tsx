@@ -20,7 +20,7 @@ type ParentProps = {
   scrollCardsRef: React.MutableRefObject<HTMLDivElement>
 }
 
-function LandingPage(props: ParentProps) {
+function DraftPicker(props: ParentProps) {
   const dispatch = useDispatch();
   const cardSetsById = useSelector(getCardSetsById)
   const cardSets = Object.values(useSelector(getCardSetsById))
@@ -83,5 +83,5 @@ function LandingPage(props: ParentProps) {
   );
 }
 
-export default withScroll(LandingPage);
+export default withScroll(DraftPicker);
 

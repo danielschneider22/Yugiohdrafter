@@ -1,11 +1,11 @@
 import type { NextPage } from 'next'
-import LandingPage from '../components/LandingPage/LandingPage'
+import DraftPicker from '../components/BoosterPicker/DraftPicker'
 import Layout from '../components/Layout/layout'
 
 const Home: NextPage = () => {
   return (
-    <Layout title={"Yugioh Draft Landing Page"}>
-      <LandingPage />
+    <Layout title={"Yugioh Draft Picker"}>
+      <DraftPicker />
     </Layout>
   )
 }

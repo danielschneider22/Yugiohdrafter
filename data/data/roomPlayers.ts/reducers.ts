@@ -15,7 +15,7 @@ export function roomPlayersReducer(state: State<RoomPlayer> = roomsPlayersInitia
     case RoomsActionTypes.ROOMS_START_DRAFT_FETCH_SUCCESS:
     case RoomsActionTypes.ROOMS_MAKE_PICKS_FETCH_SUCCESS:
     case RoomPlayersActionTypes.ROOM_UPDATE_PLAYER_FETCH_SUCCESS:
-      return stateAddStateWithoutMutation<RoomPlayer>(state, action.roomPlayers)
+      return action.roomPlayers
     case RoomsActionTypes.ROOMS_CLEAR_ROOM_INFO:
       return roomsPlayersInitialState
     default:

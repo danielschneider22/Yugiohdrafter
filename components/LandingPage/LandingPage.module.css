@@ -1,0 +1,10 @@
+.battlePackGrid{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  text-align: center;
+  max-width: 1600px;
+  padding-top: 30px;
+}
+.battlePackImage{
+  display: block;
+}

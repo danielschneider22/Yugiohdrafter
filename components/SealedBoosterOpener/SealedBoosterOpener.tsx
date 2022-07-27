@@ -46,7 +46,7 @@ function SealedBoosterOpener() {
 
   OnMount(() => {
     if(Object.values(boosters).length === 0) {
-      router.push("/");
+      router.push("/draftPicker");
     }
     populatedSideboard = false
   })
