@@ -126,7 +126,7 @@ function RoomDraft() {
               />
             }
             { !packViewable &&
-              <div className={"ScrollCards CardDisplayAreaTitle"}>Waiting for other players...</div>
+              <div className={mainCardAreaStyle.ScrollCards + " " + mainCardAreaStyle.CardDisplayAreaTitle}>Waiting for other players...</div>
             }
 
 

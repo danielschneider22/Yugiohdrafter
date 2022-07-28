@@ -14,6 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ error: `Could not find room '.` })
 
   await collections.boosters?.insertMany(boostersNew)
+  collections.boosters?.deleteMany({ id: { $in: room.boosterIdsDraft } })
 
   const boosterIdsLPIdx = room.boosterIdsLP.findIndex((id) => id === room!.currLPBoosterId)
   const roomUpdates = {

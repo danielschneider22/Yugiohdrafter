@@ -52,7 +52,7 @@ async function addRoom(req: NextApiRequest, res: NextApiResponse) {
     format: req.body.format,
     boosterIdsRound: []
   }
-
+  await collections.boosters?.deleteMany({ id: { $in: roomNew.boosterIdsLP } })
   await collections.boosters?.insertMany(boostersNew)
   await collections.rooms?.insertOne(roomNew)
 

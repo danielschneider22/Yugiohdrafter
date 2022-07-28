@@ -107,9 +107,9 @@ export default function getBoostersReducer(boosterType: BoosterType) {
       {
         let stateNew
         if(boosterType === "draftBooster" && action.boostersDraft){
-          stateNew = stateRemoveDupeState<Booster>(state, action.boostersDraft)
+          stateNew = action.boostersDraft
         } else if (boosterType === "landingPageBooster" && action.boostersLP) {
-          stateNew = stateRemoveDupeState<Booster>(state, action.boostersLP)
+          stateNew = action.boostersLP
         } else {
           stateNew = state
         }

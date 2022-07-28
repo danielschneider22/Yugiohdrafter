@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Booster } from "../../../../constants/Booster";
 import { CardPick } from "../../../../constants/CardPick";
-import { RoomPlayer } from "../../../../constants/RoomPlayer";
 import { Room } from "../../../../models/Room";
 import { connectToDatabase } from "../../../../mongodb";
 import { getRoom } from "../[id]";
@@ -14,9 +13,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const room = await collections.rooms?.findOne({id: roomId}) as Room
 
   const boostersDraft = await collections.boosters?.find({ id: { $in: room.boosterIdsDraft } }).toArray() as Booster[]
-  await draftPicks.forEach(async (pick) => {
+  await Promise.all(draftPicks.map(async (pick) => {
     await removeCardFromBooster(boostersDraft, pick.cardId, pick.boosterId)
-  })
+  }));
 
   await updatePlayerPositions(room)
 
@@ -37,9 +36,11 @@ async function updatePlayerPositions(room: Room) {
   const boostersDraft = await collections.boosters?.find({ id: { $in: room.boosterIdsDraft } }).toArray() as Booster[]
   if(boostersDraft.every((booster) => booster.cardIds?.length === boostersDraft[0].cardIds?.length)) {
     const roomPlayers = await collections.roomPlayers?.find({ id: { $in: room.roomPlayerIds } }).toArray()
-    await roomPlayers?.forEach(async (player) => {
-      await collections.roomPlayers?.updateOne({id: player.id}, { $set: { position: player.position === room.numPlayers - 1 ? 0 : player.position + 1 }})
-    })
+    if(roomPlayers) {
+      await Promise.all(roomPlayers.map(async (player) => {
+        await collections.roomPlayers?.updateOne({id: player.id}, { $set: { position: player.position === room.numPlayers - 1 ? 0 : player.position + 1 }})
+      }));
+    }
     // await room.roomPlayerIds.forEach(async (id) => {
 
       // await collections.roomPlayers?.updateOne({id}, { $cond: { 
