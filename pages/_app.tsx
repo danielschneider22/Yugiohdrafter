@@ -56,7 +56,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     await dispatch(getUserIfActiveSessionThunk())
     setFetchedActiveSession(true)
   }
-  return <Component {...pageProps} />
+  return !fetchedActiveSession ? <div></div> : <Component {...pageProps} />
 }
 
 export default wrapper.withRedux(MyApp);
