@@ -4,7 +4,7 @@ import ResetPasswordPage from '../components/ResetPasswordPage/ResetPassword'
 
 const ResetPassword: NextPage = () => {
   return (
-    <Layout title={"Yugioh Draft Login: Reset Password"}>
+    <Layout title={"YugiohDrafter - Reset Password"}>
       <ResetPasswordPage />
     </Layout>
   )

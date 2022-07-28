@@ -4,7 +4,7 @@ import SealedBoosterOpener from '../components/SealedBoosterOpener/SealedBooster
 
 const SealedPage: NextPage = () => {
   return (
-    <Layout title={"Yugioh Draft Sealed"}>
+    <Layout title={"YugiohDrafter - Sealed Deck"}>
       <SealedBoosterOpener />
     </Layout>
   )

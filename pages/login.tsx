@@ -4,7 +4,7 @@ import LoginPage from '../components/LoginPage/Login'
 
 const Login: NextPage = () => {
   return (
-    <Layout title={"Yugioh Drafter Login"}>
+    <Layout title={"YugiohDrafter - Login"}>
       <LoginPage />
     </Layout>
   )
