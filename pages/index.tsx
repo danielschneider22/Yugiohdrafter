@@ -4,7 +4,7 @@ import Layout from '../components/Layout/layout'
 
 const Home: NextPage = () => {
   return (
-    <Layout title={"YugiohDrafter - Yugioh Draft Simulator with Bots and Friends"}>
+    <Layout title={"YugiohDrafter - Yugioh Draft and Booster Pack Simulator"}>
       <LandingPage />
     </Layout>
   )
