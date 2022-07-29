@@ -66,7 +66,7 @@ function RoomDraft() {
     const roomResultC = await dispatch(roomGetFetchThunk(roomId)) as unknown as RoomResultC
     
     if (roomResultC.boostersDraft?.allIds.length === 0) {
-      router.push("/");
+      router.push("/draftPicker");
     }
 
     updateRoomInterval = setInterval(() => dispatch(roomGetFetchThunk(roomId)), 1000);

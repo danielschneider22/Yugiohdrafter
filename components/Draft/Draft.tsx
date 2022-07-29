@@ -64,7 +64,7 @@ function Draft() {
 
   OnMount(() => {
     if(landingPageBoosterIds.length === 0) {
-      router.push("/");
+      router.push("/draftPicker");
     }
   })
 
