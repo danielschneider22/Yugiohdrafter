@@ -1,0 +1,57 @@
+.BottomBar{
+    position: sticky;
+    height: 50px;
+    bottom: 0px;
+    background-color: #121512;
+    float: left;
+    text-align: center;
+    border-top-right-radius: 9px;
+    box-shadow: rgb(0 0 0 / 40%) 2px -5px 5px;
+}
+
+@media only screen and (max-width: 768px) {
+    .BottomBar {
+      width: 100%;
+    }
+  }
+
+.DeckCount{
+    font-size: 1vw;
+    line-height: 50px;
+    overflow: hidden;
+    /* margin-top: 10px !important; */
+}
+
+@media only screen and (max-width: 768px) {
+    .DeckCount {
+        font-size: 18px;
+    }
+}
+
+.SortButton.btn-secondary{
+    text-align: center;
+    cursor: pointer;
+    line-height: 40px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.SortButton:active{
+    background-color: #353535 !important;
+}
+
+.ExportButton.btn-success{
+    background-color: #008c68;
+    border-color: #008c68;
+    text-align: center;
+    cursor: pointer;
+    line-height: 40px;
+}
+
+.DeckTitleInput{
+    background-color: #404040;
+    color: white;
+}
+
+.export-input-group{
+    padding:5px;
+}

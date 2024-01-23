@@ -1,0 +1,68 @@
+.ScrollCards::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+.ScrollCards::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+.CardDisplayAreaTitle{
+    font-size: 40px;
+    margin-top: 10px;
+    font-family: 'Alegreya', serif;
+    font-family: 'B612', sans-serif;
+    white-space: nowrap;
+    letter-spacing: 7px;
+}
+.TitleNoMargin{
+    margin-bottom: 0px;
+}
+.TitleMargin{
+    margin-bottom: 30px;
+}
+
+.CardDisplayAreaSubTitle{
+    font-size: 25px;
+    font-family: 'Alegreya', serif;
+    font-family: 'B612', sans-serif;
+    white-space: nowrap;
+    color: rgb(255, 255, 149);
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+@media only screen and (max-width: 768px) {
+    .CardDisplayAreaTitle {
+        font-size: 30px;
+    }
+  }
+
+.VisibleCard{
+    padding: 5px;
+    cursor: pointer;
+}
+
+.VisibleCard:hover{
+    box-shadow: rgb(0 0 0 / 60%) 0 2px 5px;
+    transition: all 0.3s ease-out;
+    transform: scale(1.04);
+}
+
+.MainCardAreaWrapper{
+    height: 100%;
+    position: relative;
+}
+
+.ScrollCards{
+    /* overflow-y: scroll; */
+    overflow: auto;
+    text-align: center;
+    height: 100%;
+    padding-top: 80px;
+    overflow-x: hidden;
+}
+
+.ExpandContract{
+    transition: all 0.5s cubic-bezier(0.6, 0.05, 0.28, 0.91);
+    display: inline-block;
+}
