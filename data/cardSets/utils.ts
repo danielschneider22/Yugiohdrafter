@@ -7,8 +7,8 @@ export const sortCardSet = (a: CardSet, b: CardSet) => {
       return 1
     }
     else {
-      const nameA = a.id.toUpperCase(); // ignore upper and lowercase
-      const nameB = b.id.toUpperCase(); // ignore upper and lowercase
+      const nameA = (a.id ?? '').toUpperCase();
+      const nameB = (b.id ?? '').toUpperCase();
       if (nameA < nameB) {
         return -1;
       }
