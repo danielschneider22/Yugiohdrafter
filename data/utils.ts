@@ -48,25 +48,34 @@ export const tryCatchPromise = (dispatch: Dispatch<any>, funcArgs?: any[]) => as
 }
 
 export function loadStateFromCache<T>(cacheKey: CacheKey, fallbackState: T): T {
+  if (typeof window === 'undefined') {
+    return fallbackState
+  }
+  const stateCachedStr = window.localStorage.getItem(cacheKey)
+  if (!stateCachedStr) {
+    return fallbackState
+  }
   try {
-    // add empty string fallback so JSON.parse() fails, JSON.parse(null) will actually succeed + return null
-    const stateCachedStr = localStorage.getItem(cacheKey) || '' 
-    // catch will stop crash, and logic will fallthrough to return boostersInitialState if parse fails
-    const stateCached = JSON.parse(stateCachedStr as string)  
-    return stateCached
+    return JSON.parse(stateCachedStr)
   } catch(error) {
     console.log(`Error: Was not able to initialize '${cacheKey}' from cache. ${error}`)
+    return fallbackState
   }
-  return fallbackState
 }
 
 export function setCache(cacheKey: CacheKey, state: any) {
+  if (typeof window === 'undefined') {
+    return
+  }
   try {
-    localStorage.setItem(cacheKey, JSON.stringify(state))
+    window.localStorage.setItem(cacheKey, JSON.stringify(state))
   } catch(error) {
     console.log(`Error: Could not set cache '${cacheKey}'. ${error}`)
   }
 }
 export function clearCache(cacheKey: CacheKey) {
-  localStorage.removeItem(cacheKey)
+  if (typeof window === 'undefined') {
+    return
+  }
+  window.localStorage.removeItem(cacheKey)
 }
